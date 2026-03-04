@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellie Does Crochet and Stuff</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #000000;
+            --gold: #C9A94E;
+            --gold-light: #D4BA6A;
+            --gold-dark: #A8893A;
+            --off-white: #F5F0E8;
+            --cream: #FAF7F2;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            background-color: var(--black);
+            color: var(--off-white);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* ── Navigation ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--gold);
+            transition: background 0.4s ease;
+        }
+
+        nav .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 40px;
+        }
+
+        nav .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 36px;
+            list-style: none;
+        }
+
+        nav .nav-links a {
+            font-family: 'Jost', sans-serif;
+            font-weight: 400;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--off-white);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        nav .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        nav .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 6px 12px;
+            font-family: 'Jost', sans-serif;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        /* ── Section Divider with Diamond ── */
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 40px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            max-width: 400px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+
+        .divider .diamond {
+            width: 10px;
+            height: 10px;
+            background: var(--gold);
+            transform: rotate(45deg);
+            margin: 0 24px;
+            flex-shrink: 0;
+        }
+
+        /* ── Hero Section ── */
+        .hero {
+            padding: 140px 40px 80px;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 400;
+            font-size: clamp(32px, 5vw, 64px);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            font-size: 14px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--off-white);
+            opacity: 0.7;
+            margin-bottom: 60px;
+        }
+
+        .hero-images {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr 1fr;
+            gap: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .hero-images .hero-img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            border: 1px solid rgba(201, 169, 78, 0.3);
+            transition: border-color 0.4s ease, transform 0.4s ease;
+        }
+
+        .hero-images .hero-img:hover {
+            border-color: var(--gold);
+        }
+
+        .hero-images .hero-img.center {
+            position: relative;
+            border: 2px solid var(--gold);
+        }
+
+        .hero-center-wrap {
+            position: relative;
+        }
+
+        .hero-center-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(201, 169, 78, 0.15) 0%,
+                rgba(201, 169, 78, 0.05) 40%,
+                rgba(201, 169, 78, 0.05) 60%,
+                rgba(201, 169, 78, 0.2) 100%
+            );
+            pointer-events: none;
+        }
+
+        /* ── Section Styling ── */
+        section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .section-label {
+            font-family: 'Jost', sans-serif;
+            font-weight: 400;
+            font-size: 11px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 400;
+            font-size: clamp(24px, 3.5vw, 42px);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--off-white);
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        /* ── About Section ── */
+        .about {
+            padding-bottom: 20px;
+        }
+
+        .about-text {
+            max-width: 760px;
+            margin: 0 auto 50px;
+            text-align: center;
+            font-size: 17px;
+            line-height: 2;
+            color: var(--off-white);
+            opacity: 0.85;
+        }
+
+        .about-images {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .about-images img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            border: 1px solid rgba(201, 169, 78, 0.2);
+            transition: border-color 0.4s ease, transform 0.4s ease;
+        }
+
+        .about-images img:hover {
+            border-color: var(--gold);
+            transform: scale(1.02);
+        }
+
+        /* ── Gallery Section ── */
+        .gallery {
+            padding-bottom: 20px;
+        }
+
+        .gallery-category {
+            margin-bottom: 70px;
+        }
+
+        .category-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 400;
+            font-size: 20px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .category-title::before,
+        .category-title::after {
+            content: '\2014\2014';
+            margin: 0 16px;
+            opacity: 0.4;
+            font-weight: 300;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .gallery-grid.cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .gallery-grid.cols-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            border: 1px solid rgba(201, 169, 78, 0.15);
+            transition: border-color 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+            display: block;
+        }
+
+        .gallery-item:hover img {
+            border-color: var(--gold);
+            border-width: 2px;
+            transform: scale(1.03);
+            filter: brightness(1.05);
+        }
+
+        /* ── Lightbox ── */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.95);
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: contain;
+            border: 2px solid var(--gold);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            color: var(--gold);
+            background: none;
+            border: 1px solid var(--gold);
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        /* ── Contact / Order Section ── */
+        .contact-section {
+            padding-bottom: 20px;
+        }
+
+        .invitation-card {
+            max-width: 700px;
+            margin: 0 auto;
+            border: 1px solid var(--gold);
+            padding: 60px 50px;
+            text-align: center;
+            position: relative;
+            background: rgba(201, 169, 78, 0.03);
+        }
+
+        .invitation-card::before {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border: 1px solid rgba(201, 169, 78, 0.3);
+            pointer-events: none;
+        }
+
+        .invitation-card .card-label {
+            font-family: 'Jost', sans-serif;
+            font-weight: 400;
+            font-size: 11px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 24px;
+        }
+
+        .invitation-card .card-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 400;
+            font-size: 26px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--off-white);
+            margin-bottom: 32px;
+        }
+
+        .invitation-card p {
+            font-size: 15px;
+            line-height: 2;
+            color: var(--off-white);
+            opacity: 0.8;
+            margin-bottom: 16px;
+        }
+
+        .order-details {
+            list-style: none;
+            margin: 28px 0;
+            padding: 0;
+        }
+
+        .order-details li {
+            font-family: 'Jost', sans-serif;
+            font-weight: 400;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--off-white);
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(201, 169, 78, 0.15);
+        }
+
+        .order-details li:last-child {
+            border-bottom: none;
+        }
+
+        .email-link {
+            display: inline-block;
+            margin-top: 20px;
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            letter-spacing: 3px;
+            color: var(--gold);
+            text-decoration: none;
+            border: 1px solid var(--gold);
+            padding: 14px 40px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .email-link:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        /* ── Closing CTA Section ── */
+        .closing {
+            padding-bottom: 80px;
+        }
+
+        .closing-text {
+            max-width: 760px;
+            margin: 0 auto 50px;
+            text-align: center;
+            font-size: 18px;
+            line-height: 2;
+            color: var(--off-white);
+            opacity: 0.85;
+            font-style: italic;
+        }
+
+        .closing-images {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .closing-images img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            border: 1px solid rgba(201, 169, 78, 0.2);
+            transition: border-color 0.4s ease, transform 0.4s ease;
+        }
+
+        .closing-images img:hover {
+            border-color: var(--gold);
+            transform: scale(1.02);
+        }
+
+        /* ── Footer ── */
+        footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid rgba(201, 169, 78, 0.3);
+        }
+
+        footer p {
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--off-white);
+            opacity: 0.4;
+        }
+
+        /* ── Scroll Animations ── */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .hero-images {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                gap: 16px;
+            }
+
+            .hero-images .hero-img:first-child,
+            .hero-images .hero-img:last-child {
+                display: none;
+            }
+
+            .about-images {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gallery-grid,
+            .gallery-grid.cols-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gallery-grid.cols-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .closing-images {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .closing-images img:nth-child(4),
+            .closing-images img:nth-child(5) {
+                display: block;
+            }
+
+            .invitation-card {
+                padding: 40px 30px;
+            }
+
+            nav .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.96);
+                flex-direction: column;
+                align-items: center;
+                padding: 24px 0;
+                gap: 20px;
+                border-bottom: 1px solid var(--gold);
+            }
+
+            nav .nav-links.open {
+                display: flex;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero {
+                padding: 120px 20px 60px;
+            }
+
+            section {
+                padding: 0 20px;
+            }
+
+            .hero-title {
+                letter-spacing: 4px;
+            }
+
+            .about-images {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .gallery-grid,
+            .gallery-grid.cols-2,
+            .gallery-grid.cols-4 {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .closing-images {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .divider {
+                padding: 40px 20px;
+            }
+
+            .section-title {
+                letter-spacing: 3px;
+            }
+
+            .category-title {
+                font-size: 16px;
+                letter-spacing: 3px;
+            }
+
+            .category-title::before,
+            .category-title::after {
+                content: '\2014';
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-inner">
+            <div class="logo">Ellie Crochet</div>
+            <button class="mobile-toggle" id="mobileToggle">Menu</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">About</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="hero-title fade-in">Ellie Does Crochet<br>and Stuff</h1>
+        <p class="hero-subtitle fade-in">Handcrafted with Love</p>
+        <div class="hero-images fade-in">
+            <img src="images/hero_left.jpg" alt="Crochet creation" class="hero-img">
+            <div class="hero-center-wrap">
+                <img src="images/hero_center.jpg" alt="Featured crochet piece" class="hero-img center">
+            </div>
+            <img src="images/hero_right.jpg" alt="Crochet creation" class="hero-img">
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="divider"><div class="diamond"></div></div>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <p class="section-label fade-in">The Artist</p>
+        <h2 class="section-title fade-in">About Ellie</h2>
+        <p class="about-text fade-in">
+            I'm a college student with way too much yarn and a desire to create. Whether it's a hat shaped like your favorite character, a funky beanie for festivals, or a cozy hood for everyday wear &mdash; I love bringing creative ideas to life with a crochet hook.
+        </p>
+        <div class="about-images fade-in">
+            <img src="images/about1.jpg" alt="About Ellie 1">
+            <img src="images/about2.jpg" alt="About Ellie 2">
+            <img src="images/about3.jpg" alt="About Ellie 3">
+            <img src="images/about4.jpg" alt="About Ellie 4">
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="divider"><div class="diamond"></div></div>
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <p class="section-label fade-in">The Collection</p>
+        <h2 class="section-title fade-in">Gallery</h2>
+
+        <!-- Cat Ear Hat with Tassle -->
+        <div class="gallery-category fade-in">
+            <h3 class="category-title">Cat Ear Hat with Tassle</h3>
+            <div class="gallery-grid cols-4">
+                <div class="gallery-item"><img src="images/gallery1.jpg" alt="Cat Ear Hat 1"></div>
+                <div class="gallery-item"><img src="images/gallery2.jpg" alt="Cat Ear Hat 2"></div>
+                <div class="gallery-item"><img src="images/gallery3.jpg" alt="Cat Ear Hat 3"></div>
+                <div class="gallery-item"><img src="images/gallery4.jpg" alt="Cat Ear Hat 4"></div>
+            </div>
+        </div>
+
+        <!-- Open Hoods -->
+        <div class="gallery-category fade-in">
+            <h3 class="category-title">Open Hoods</h3>
+            <div class="gallery-grid cols-2">
+                <div class="gallery-item"><img src="images/open_hoods1.jpg" alt="Open Hood 1"></div>
+                <div class="gallery-item"><img src="images/open_hoods2.jpg" alt="Open Hood 2"></div>
+            </div>
+        </div>
+
+        <!-- Jester / Clown -->
+        <div class="gallery-category fade-in">
+            <h3 class="category-title">Jester / Clown</h3>
+            <div class="gallery-grid cols-4">
+                <div class="gallery-item"><img src="images/jester1.jpg" alt="Jester Hat 1"></div>
+                <div class="gallery-item"><img src="images/jester2.jpg" alt="Jester Hat 2"></div>
+                <div class="gallery-item"><img src="images/jester3.jpg" alt="Jester Hat 3"></div>
+                <div class="gallery-item"><img src="images/jester4.jpg" alt="Jester Hat 4"></div>
+            </div>
+        </div>
+
+        <!-- Funky Hats -->
+        <div class="gallery-category fade-in">
+            <h3 class="category-title">Funky Hats</h3>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="images/funky1.jpg" alt="Funky Hat 1"></div>
+                <div class="gallery-item"><img src="images/funky2.jpg" alt="Funky Hat 2"></div>
+                <div class="gallery-item"><img src="images/funky3.jpg" alt="Funky Hat 3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="divider"><div class="diamond"></div></div>
+
+    <!-- Contact / Order Section -->
+    <section class="contact-section" id="contact">
+        <p class="section-label fade-in">Inquiries</p>
+        <h2 class="section-title fade-in">Place an Order</h2>
+        <div class="invitation-card fade-in">
+            <p class="card-label">You Are Cordially Invited</p>
+            <h3 class="card-title">To Commission a Piece</h3>
+            <p>To place an order, please provide the following details:</p>
+            <ul class="order-details">
+                <li>Your Name</li>
+                <li>Character Description</li>
+                <li>Hat Style Preference</li>
+                <li>Budget</li>
+            </ul>
+            <a href="mailto:Eleanor@aughey.com" class="email-link">Eleanor@aughey.com</a>
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="divider"><div class="diamond"></div></div>
+
+    <!-- Closing CTA -->
+    <section class="closing">
+        <p class="section-label fade-in">Let's Create</p>
+        <h2 class="section-title fade-in">Get in Touch</h2>
+        <p class="closing-text fade-in">
+            If any of these hat styles interest you, shoot me a message and let's make something awesome together!
+        </p>
+        <div class="closing-images fade-in">
+            <img src="images/closing1.jpg" alt="Closing showcase 1">
+            <img src="images/closing2.jpg" alt="Closing showcase 2">
+            <img src="images/closing3.jpg" alt="Closing showcase 3">
+            <img src="images/closing4.jpg" alt="Closing showcase 4">
+            <img src="images/closing5.jpg" alt="Closing showcase 5">
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Ellie Does Crochet and Stuff &mdash; Handcrafted Originals</p>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">&times;</button>
+        <img src="" alt="Enlarged view" id="lightboxImg">
+    </div>
+
+    <script>
+        // Mobile navigation toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileToggle.addEventListener('click', function () {
+            navLinks.classList.toggle('open');
+        });
+
+        // Close mobile nav on link click
+        navLinks.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', function () {
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxClose = document.getElementById('lightboxClose');
+
+        document.querySelectorAll('.gallery-item img').forEach(function (img) {
+            img.addEventListener('click', function () {
+                lightboxImg.src = this.src;
+                lightboxImg.alt = this.alt;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        lightboxClose.addEventListener('click', function (e) {
+            e.stopPropagation();
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        lightbox.addEventListener('click', function () {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        lightboxImg.addEventListener('click', function (e) {
+            e.stopPropagation();
+        });
+
+        // Escape key closes lightbox
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Scroll animations
+        const fadeElements = document.querySelectorAll('.fade-in');
+
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        fadeElements.forEach(function (el) {
+            observer.observe(el);
+        });
+    </script>
+
+</body>
+</html>

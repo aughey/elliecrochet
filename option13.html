@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ellie Does Crochet and Stuff</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #0D1117;
+  --green: #00FF41;
+  --green-dim: #00cc34;
+  --amber: #FFB000;
+  --white: #E6EDF3;
+  --gray: #8B949E;
+  --border: #1a2332;
+  --glow: 0 0 8px rgba(0, 255, 65, 0.3);
+  --glow-strong: 0 0 15px rgba(0, 255, 65, 0.5);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--green);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* CRT curvature effect */
+body::before {
+  content: '';
+  position: fixed;
+  top: -2%;
+  left: -2%;
+  width: 104%;
+  height: 104%;
+  border-radius: 12px;
+  box-shadow:
+    inset 0 0 80px rgba(0, 0, 0, 0.6),
+    inset 0 0 200px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Scanline overlay */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 2px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+.terminal-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Terminal window chrome */
+.terminal-window {
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  background: rgba(13, 17, 23, 0.95);
+}
+
+.terminal-titlebar {
+  background: #161b22;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #30363d;
+}
+
+.terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.terminal-dot.red { background: #ff5f57; }
+.terminal-dot.yellow { background: #febc2e; }
+.terminal-dot.green { background: #28c840; }
+
+.terminal-title-text {
+  color: var(--gray);
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.terminal-body {
+  padding: 24px;
+}
+
+/* Green glow on all text */
+h1, h2, h3, p, span, a, li, label {
+  text-shadow: var(--glow);
+}
+
+/* Navigation */
+nav {
+  margin-bottom: 10px;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+}
+
+.nav-list li::before {
+  content: '$ ';
+  color: var(--amber);
+  text-shadow: 0 0 8px rgba(255, 176, 0, 0.3);
+}
+
+.nav-list a {
+  color: var(--green);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-list a:hover {
+  color: var(--amber);
+  text-shadow: 0 0 10px rgba(255, 176, 0, 0.4);
+}
+
+/* Prompt styling */
+.prompt {
+  color: var(--amber);
+  text-shadow: 0 0 8px rgba(255, 176, 0, 0.3);
+}
+
+.command {
+  color: var(--white);
+  text-shadow: 0 0 5px rgba(230, 237, 243, 0.2);
+}
+
+/* Section headers */
+.section-header {
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #30363d;
+}
+
+.section-header h2 {
+  color: var(--amber);
+  font-size: 14px;
+  font-weight: 500;
+  text-shadow: 0 0 8px rgba(255, 176, 0, 0.3);
+}
+
+.section-header h2::before {
+  content: '> ';
+  color: var(--green);
+}
+
+/* Hero section */
+.hero-title-line {
+  margin-bottom: 24px;
+}
+
+#typewriter-text {
+  color: var(--green);
+  font-size: clamp(20px, 4vw, 36px);
+  font-weight: 700;
+  text-shadow: var(--glow-strong);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.cursor {
+  display: inline-block;
+  width: 12px;
+  height: 1.1em;
+  background: var(--green);
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+  box-shadow: var(--glow);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.hero-prompt {
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+
+.hero-images {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.hero-images img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 1px solid #30363d;
+  border-radius: 4px;
+  filter: saturate(0.7) brightness(0.9);
+  transition: filter 0.3s, border-color 0.3s;
+}
+
+.hero-images img:hover {
+  filter: saturate(1) brightness(1);
+  border-color: var(--green);
+  box-shadow: 0 0 12px rgba(0, 255, 65, 0.2);
+}
+
+/* Output text */
+.output {
+  color: var(--green-dim);
+  margin-bottom: 8px;
+}
+
+.output-white {
+  color: var(--white);
+  text-shadow: 0 0 5px rgba(230, 237, 243, 0.15);
+}
+
+/* About section */
+.about-text {
+  color: var(--white);
+  margin: 16px 0;
+  line-height: 1.8;
+  font-size: 14px;
+  text-shadow: 0 0 5px rgba(230, 237, 243, 0.15);
+}
+
+.about-images {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.about-images img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 1px solid #30363d;
+  border-radius: 4px;
+  filter: saturate(0.7) brightness(0.9);
+  transition: filter 0.3s, border-color 0.3s;
+}
+
+.about-images img:hover {
+  filter: saturate(1) brightness(1);
+  border-color: var(--green);
+  box-shadow: 0 0 12px rgba(0, 255, 65, 0.2);
+}
+
+/* Gallery */
+.gallery-category {
+  margin-bottom: 24px;
+}
+
+.category-name {
+  color: var(--amber);
+  font-size: 13px;
+  margin-bottom: 10px;
+  text-shadow: 0 0 8px rgba(255, 176, 0, 0.3);
+}
+
+.category-name::before {
+  content: 'drwxr-xr-x  ';
+  color: var(--gray);
+  text-shadow: none;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.gallery-item {
+  border: 1px solid #30363d;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.gallery-item:hover {
+  border-color: var(--green);
+  box-shadow: 0 0 12px rgba(0, 255, 65, 0.2);
+}
+
+.gallery-item img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.7) brightness(0.9);
+  transition: filter 0.3s;
+}
+
+.gallery-item:hover img {
+  filter: saturate(1) brightness(1);
+}
+
+.gallery-caption {
+  padding: 8px 10px;
+  font-size: 11px;
+  color: var(--gray);
+  background: #161b22;
+  border-top: 1px solid #30363d;
+}
+
+.gallery-caption .filename {
+  color: var(--green);
+  text-shadow: var(--glow);
+}
+
+.gallery-caption .filetype {
+  color: var(--amber);
+  text-shadow: 0 0 6px rgba(255, 176, 0, 0.2);
+  float: right;
+}
+
+/* File listing header */
+.ls-header {
+  color: var(--gray);
+  font-size: 12px;
+  margin-bottom: 10px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #1a2332;
+}
+
+/* Contact */
+.contact-list {
+  list-style: none;
+  margin: 16px 0;
+}
+
+.contact-list li {
+  padding: 4px 0;
+  color: var(--white);
+  font-size: 14px;
+  text-shadow: 0 0 5px rgba(230, 237, 243, 0.15);
+}
+
+.contact-list li::before {
+  content: '  - ';
+  color: var(--green);
+}
+
+.email-link {
+  color: var(--amber);
+  text-decoration: none;
+  text-shadow: 0 0 8px rgba(255, 176, 0, 0.3);
+}
+
+.email-link:hover {
+  color: var(--green);
+  text-shadow: var(--glow);
+}
+
+/* CTA */
+.cta-text {
+  color: var(--green);
+  font-size: 14px;
+  margin: 16px 0;
+  text-shadow: var(--glow);
+  line-height: 1.8;
+}
+
+.closing-images {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.closing-images img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 1px solid #30363d;
+  border-radius: 4px;
+  filter: saturate(0.7) brightness(0.9);
+  transition: filter 0.3s, border-color 0.3s;
+}
+
+.closing-images img:hover {
+  filter: saturate(1) brightness(1);
+  border-color: var(--green);
+  box-shadow: 0 0 12px rgba(0, 255, 65, 0.2);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--gray);
+  font-size: 12px;
+  border-top: 1px dashed #30363d;
+  margin-top: 10px;
+}
+
+/* Divider */
+.divider {
+  border: none;
+  border-top: 1px dashed #30363d;
+  margin: 16px 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .terminal-wrapper {
+    padding: 10px;
+  }
+
+  .terminal-body {
+    padding: 16px;
+  }
+
+  .hero-images {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .hero-images img:last-child {
+    grid-column: 1 / -1;
+    max-height: 250px;
+  }
+
+  .about-images {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .closing-images {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .closing-images img:nth-child(4),
+  .closing-images img:nth-child(5) {
+    grid-column: auto;
+  }
+
+  .nav-list {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  #typewriter-text {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 13px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .closing-images {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .closing-images img:last-child {
+    grid-column: 1 / -1;
+    max-height: 200px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="terminal-wrapper">
+
+  <!-- Navigation Terminal -->
+  <div class="terminal-window">
+    <div class="terminal-titlebar">
+      <div class="terminal-dot red"></div>
+      <div class="terminal-dot yellow"></div>
+      <div class="terminal-dot green"></div>
+      <span class="terminal-title-text">ellie@crochet:~</span>
+    </div>
+    <div class="terminal-body">
+      <nav>
+        <p class="output" style="margin-bottom:8px;"><span class="prompt">></span> <span class="command">ls --navigation</span></p>
+        <ul class="nav-list">
+          <li><a href="#hero">cd /home</a></li>
+          <li><a href="#about">cd /about</a></li>
+          <li><a href="#gallery">cd /gallery</a></li>
+          <li><a href="#contact">cd /contact</a></li>
+          <li><a href="#order">cd /order</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Hero Terminal -->
+  <div class="terminal-window" id="hero">
+    <div class="terminal-titlebar">
+      <div class="terminal-dot red"></div>
+      <div class="terminal-dot yellow"></div>
+      <div class="terminal-dot green"></div>
+      <span class="terminal-title-text">ellie@crochet:~/home</span>
+    </div>
+    <div class="terminal-body">
+      <p class="hero-prompt"><span class="prompt">></span> <span class="command">echo $WELCOME_BANNER</span></p>
+      <div class="hero-title-line">
+        <span id="typewriter-text"></span><span class="cursor" id="cursor"></span>
+      </div>
+      <p class="output"><span class="prompt">></span> <span class="command">cat ./hero/*.jpg</span></p>
+      <div class="hero-images">
+        <img src="images/hero_left.jpg" alt="Crochet hero image left" loading="lazy">
+        <img src="images/hero_center.jpg" alt="Crochet hero image center" loading="lazy">
+        <img src="images/hero_right.jpg" alt="Crochet hero image right" loading="lazy">
+      </div>
+    </div>
+  </div>
+
+  <!-- About Terminal -->
+  <div class="terminal-window" id="about">
+    <div class="terminal-titlebar">
+      <div class="terminal-dot red"></div>
+      <div class="terminal-dot yellow"></div>
+      <div class="terminal-dot green"></div>
+      <span class="terminal-title-text">ellie@crochet:~/about</span>
+    </div>
+    <div class="terminal-body">
+      <div class="section-header">
+        <h2>cat /about/README.txt</h2>
+      </div>
+      <p class="output"><span class="prompt">></span> <span class="command">cat README.txt</span></p>
+      <p class="about-text">I'm a college student with way too much yarn and a desire to create. Whether it's a hat shaped like your favorite character, a funky beanie for festivals, or a cozy hood for everyday wear &mdash; I love bringing creative ideas to life with a crochet hook.</p>
+      <p class="output"><span class="prompt">></span> <span class="command">ls -la ./about/photos/</span></p>
+      <div class="about-images">
+        <img src="images/about1.jpg" alt="About Ellie 1" loading="lazy">
+        <img src="images/about2.jpg" alt="About Ellie 2" loading="lazy">
+        <img src="images/about3.jpg" alt="About Ellie 3" loading="lazy">
+        <img src="images/about4.jpg" alt="About Ellie 4" loading="lazy">
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery Terminal -->
+  <div class="terminal-window" id="gallery">
+    <div class="terminal-titlebar">
+      <div class="terminal-dot red"></div>
+      <div class="terminal-dot yellow"></div>
+      <div class="terminal-dot green"></div>
+      <span class="terminal-title-text">ellie@crochet:~/gallery</span>
+    </div>
+    <div class="terminal-body">
+      <div class="section-header">
+        <h2>ls -R /gallery/</h2>
+      </div>
+      <p class="output"><span class="prompt">></span> <span class="command">find ./gallery -type f -name "*.jpg" | sort</span></p>
+
+      <hr class="divider">
+
+      <!-- Cat Ear Hat -->
+      <div class="gallery-category">
+        <p class="category-name">cat-ear-hat-with-tassle/</p>
+        <div class="ls-header">total 4 &nbsp; -rw-r--r-- ellie staff</div>
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <img src="images/gallery1.jpg" alt="Cat ear hat 1" loading="lazy">
+            <div class="gallery-caption"><span class="filename">gallery1.jpg</span><span class="filetype">CAT_EAR</span></div>
+          </div>
+          <div class="gallery-item">
+            <img src="images/gallery2.jpg" alt="Cat ear hat 2" loading="lazy">
+            <div class="gallery-caption"><span class="filename">gallery2.jpg</span><span class="filetype">CAT_EAR</span></div>
+          </div>
+          <div class="gallery-item">
+            <img src="images/gallery3.jpg" alt="Cat ear hat 3" loading="lazy">
+            <div class="gallery-caption"><span class="filename">gallery3.jpg</span><span class="filetype">CAT_EAR</span></div>
+          </div>
+          <div class="gallery-item">
+            <img src="images/gallery4.jpg" alt="Cat ear hat 4" loading="lazy">
+            <div class="gallery-caption"><span class="filename">gallery4.jpg</span><span class="filetype">CAT_EAR</span></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- Open Hoods -->
+      <div class="gallery-category">
+        <p class="category-name">open-hoods/</p>
+        <div class="ls-header">total 2 &nbsp; -rw-r--r-- ellie staff</div>
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <img src="images/open_hoods1.jpg" alt="Open hood 1" loading="lazy">
+            <div class="gallery-caption"><span class="filename">open_hoods1.jpg</span><span class="filetype">HOOD</span></div>
+          </div>
+          <div class="gallery-item">
+            <img src="images/open_hoods2.jpg" alt="Open hood 2" loading="lazy">
+            <div class="gallery-caption"><span class="filename">open_hoods2.jpg</span><span class="filetype">HOOD</span></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- Jester/Clown -->
+      <div class="gallery-category">
+        <p class="category-name">jester-clown/</p>
+        <div class="ls-header">total 4 &nbsp; -rw-r--r-- ellie staff</div>
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <img src="images/jester1.jpg" alt="Jester hat 1" loading="lazy">
+            <div class="gallery-caption"><span class="filename">jester1.jpg</span><span class="filetype">JESTER</span></div>
+          </div>
+          <div class="gallery-item">
+            <img src="images/jester2.jpg" alt="Jester hat 2" loading="lazy">
+            <div class="gallery-caption"><span class="filename">jester2.jpg</span><span class="filetype">JESTER</span></div>
+          </div>
+          <div class="gallery-item">
+            <img src="images/jester3.jpg" alt="Jester hat 3" loading="lazy">
+            <div class="gallery-caption"><span class="filename">jester3.jpg</span><span class="filetype">JESTER</span></div>
+          </div>
+          <div class="gallery-item">
+            <img src="images/jester4.jpg" alt="Jester hat 4" loading="lazy">
+            <div class="gallery-caption"><span class="filename">jester4.jpg</span><span class="filetype">JESTER</span></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- Funky Hats -->
+      <div class="gallery-category">
+        <p class="category-name">funky-hats/</p>
+        <div class="ls-header">total 3 &nbsp; -rw-r--r-- ellie staff</div>
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <img src="images/funky1.jpg" alt="Funky hat 1" loading="lazy">
+            <div class="gallery-caption"><span class="filename">funky1.jpg</span><span class="filetype">FUNKY</span></div>
+          </div>
+          <div class="gallery-item">
+            <img src="images/funky2.jpg" alt="Funky hat 2" loading="lazy">
+            <div class="gallery-caption"><span class="filename">funky2.jpg</span><span class="filetype">FUNKY</span></div>
+          </div>
+          <div class="gallery-item">
+            <img src="images/funky3.jpg" alt="Funky hat 3" loading="lazy">
+            <div class="gallery-caption"><span class="filename">funky3.jpg</span><span class="filetype">FUNKY</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Contact / Order Terminal -->
+  <div class="terminal-window" id="contact">
+    <div class="terminal-titlebar">
+      <div class="terminal-dot red"></div>
+      <div class="terminal-dot yellow"></div>
+      <div class="terminal-dot green"></div>
+      <span class="terminal-title-text">ellie@crochet:~/contact</span>
+    </div>
+    <div class="terminal-body" id="order">
+      <div class="section-header">
+        <h2>cat /contact/order-info.txt</h2>
+      </div>
+      <p class="output"><span class="prompt">></span> <span class="command">cat order-info.txt</span></p>
+      <p class="output-white" style="margin: 12px 0 8px;">To place an order, please provide:</p>
+      <ul class="contact-list">
+        <li>Your name</li>
+        <li>Character description</li>
+        <li>Hat style preference</li>
+        <li>Budget</li>
+      </ul>
+      <hr class="divider">
+      <p class="output"><span class="prompt">></span> <span class="command">echo $CONTACT_EMAIL</span></p>
+      <p style="margin: 8px 0; font-size: 16px;"><a href="mailto:Eleanor@aughey.com" class="email-link">Eleanor@aughey.com</a></p>
+    </div>
+  </div>
+
+  <!-- CTA / Closing Terminal -->
+  <div class="terminal-window">
+    <div class="terminal-titlebar">
+      <div class="terminal-dot red"></div>
+      <div class="terminal-dot yellow"></div>
+      <div class="terminal-dot green"></div>
+      <span class="terminal-title-text">ellie@crochet:~/closing</span>
+    </div>
+    <div class="terminal-body">
+      <p class="output"><span class="prompt">></span> <span class="command">cat closing-message.txt</span></p>
+      <p class="cta-text">If any of these hat styles interest you, shoot me a message and let's make something awesome together!</p>
+      <p class="output"><span class="prompt">></span> <span class="command">ls -la ./highlights/</span></p>
+      <div class="closing-images">
+        <img src="images/closing1.jpg" alt="Closing showcase 1" loading="lazy">
+        <img src="images/closing2.jpg" alt="Closing showcase 2" loading="lazy">
+        <img src="images/closing3.jpg" alt="Closing showcase 3" loading="lazy">
+        <img src="images/closing4.jpg" alt="Closing showcase 4" loading="lazy">
+        <img src="images/closing5.jpg" alt="Closing showcase 5" loading="lazy">
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p><span class="prompt">></span> <span style="color: var(--gray);">exit 0</span></p>
+    <p style="margin-top: 6px; color: var(--gray);">Ellie Does Crochet and Stuff &copy; 2026 &mdash; Handmade with yarn and love</p>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  const title = "Ellie Does Crochet and Stuff";
+  const el = document.getElementById('typewriter-text');
+  const cursor = document.getElementById('cursor');
+  let i = 0;
+
+  function type() {
+    if (i < title.length) {
+      el.textContent += title.charAt(i);
+      i++;
+      setTimeout(type, 65 + Math.random() * 40);
+    }
+  }
+
+  // Start typewriter after a brief delay
+  setTimeout(type, 600);
+})();
+</script>
+
+</body>
+</html>

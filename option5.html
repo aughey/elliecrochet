@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ellie Does Crochet and Stuff</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Base ──────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: #2b2b2b;
+  background: #0e0e0e;
+}
+img { display: block; max-width: 100%; }
+
+/* ── Full-screen section base ─────────────────────────────── */
+.section {
+  min-height: 100vh;
+  scroll-snap-align: start;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ── Side navigation dots ─────────────────────────────────── */
+.side-nav {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.side-nav a {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.7);
+  background: transparent;
+  transition: background 0.3s, transform 0.3s, border-color 0.3s;
+  position: relative;
+}
+.side-nav a.active {
+  background: #fff;
+  border-color: #fff;
+  transform: scale(1.35);
+}
+.side-nav a .tooltip {
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.75);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.side-nav a:hover .tooltip { opacity: 1; }
+
+/* ── HERO ──────────────────────────────────────────────────── */
+.hero {
+  background: url('images/hero_center.jpg') center center / cover no-repeat fixed;
+  color: #fff;
+  text-align: center;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.55) 100%);
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  padding: 0 24px;
+}
+.hero-content h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+.hero-content p {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 300;
+  opacity: 0.9;
+  margin-bottom: 32px;
+}
+.scroll-hint {
+  display: inline-block;
+  margin-top: 16px;
+  animation: bounce 2s infinite;
+  opacity: 0.7;
+}
+.scroll-hint svg { width: 28px; height: 28px; }
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
+}
+
+/* ── ABOUT ─────────────────────────────────────────────────── */
+.about {
+  background: #faf8f5;
+  padding: 80px 24px;
+}
+.about-inner {
+  max-width: 1100px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.about-text h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 20px;
+  color: #1a1a1a;
+}
+.about-text p {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: #4a4a4a;
+  max-width: 520px;
+}
+.about-photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.about-photos img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.4s;
+}
+.about-photos img:hover { transform: scale(1.03); }
+
+/* ── Gallery sections (full-screen) ───────────────────────── */
+.gallery-section {
+  flex-direction: column;
+  padding: 60px 24px;
+  background: #111;
+  color: #fff;
+}
+.gallery-section.alt-bg {
+  background: #1a1a1a;
+}
+.gallery-section.fixed-bg {
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+}
+/* Fixed background accent behind some gallery sections */
+.gallery-section.bg-accent-1 {
+  background: url('images/hero_left.jpg') center center / cover no-repeat fixed;
+}
+.gallery-section.bg-accent-2 {
+  background: url('images/hero_right.jpg') center center / cover no-repeat fixed;
+}
+.gallery-section.bg-accent-1::before,
+.gallery-section.bg-accent-2::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+}
+.gallery-section .gallery-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  width: 100%;
+}
+.gallery-section h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  text-align: center;
+  margin-bottom: 40px;
+  letter-spacing: -0.01em;
+}
+.gallery-grid {
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+}
+.gallery-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.gallery-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.gallery-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.gallery-grid img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.4s, box-shadow 0.4s;
+  cursor: pointer;
+}
+.gallery-grid img:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+}
+
+/* ── Contact / Order ──────────────────────────────────────── */
+.contact {
+  background: #faf8f5;
+  padding: 80px 24px;
+  text-align: center;
+}
+.contact-inner {
+  max-width: 700px;
+  width: 100%;
+}
+.contact h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 24px;
+  color: #1a1a1a;
+}
+.contact p {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: #4a4a4a;
+  margin-bottom: 16px;
+}
+.order-list {
+  text-align: left;
+  display: inline-block;
+  margin: 20px 0 28px;
+  list-style: none;
+}
+.order-list li {
+  padding: 8px 0;
+  font-size: 1.05rem;
+  color: #3a3a3a;
+  position: relative;
+  padding-left: 28px;
+}
+.order-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 14px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #c78d6a;
+}
+.email-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.35rem;
+  color: #c78d6a;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s;
+}
+.email-link:hover { border-color: #c78d6a; }
+
+/* ── Closing CTA ──────────────────────────────────────────── */
+.closing {
+  background: url('images/hero_right.jpg') center center / cover no-repeat fixed;
+  color: #fff;
+  text-align: center;
+  padding: 80px 24px;
+  flex-direction: column;
+}
+.closing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+}
+.closing-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  width: 100%;
+}
+.closing h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+  max-width: 700px;
+  margin: 0 auto 48px;
+  line-height: 1.35;
+}
+.closing-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+.closing-grid img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.4s;
+}
+.closing-grid img:hover { transform: scale(1.03); }
+
+/* ── Lightbox ─────────────────────────────────────────────── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0,0,0,0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.lightbox.open { opacity: 1; pointer-events: all; }
+.lightbox img {
+  max-width: 90vw;
+  max-height: 88vh;
+  border-radius: 8px;
+  box-shadow: 0 8px 60px rgba(0,0,0,0.6);
+}
+.lightbox-close {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2.4rem;
+  cursor: pointer;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.lightbox-close:hover { opacity: 1; }
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .about-inner { grid-template-columns: 1fr; text-align: center; }
+  .about-text p { max-width: 100%; margin: 0 auto; }
+  .gallery-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+  .gallery-grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
+  .gallery-grid img { height: 240px; }
+  .closing-grid { grid-template-columns: repeat(3, 1fr); }
+  .closing-grid img { height: 200px; }
+}
+@media (max-width: 600px) {
+  .side-nav { right: 12px; gap: 10px; }
+  .side-nav a { width: 10px; height: 10px; }
+  .side-nav a .tooltip { display: none; }
+  .about-photos { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .about-photos img { height: 150px; }
+  .gallery-grid.cols-4,
+  .gallery-grid.cols-3,
+  .gallery-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .gallery-grid img { height: 180px; }
+  .closing-grid { grid-template-columns: repeat(2, 1fr); }
+  .closing-grid img:last-child { grid-column: 1 / -1; height: 180px; }
+  .closing-grid img { height: 160px; }
+  /* Disable fixed attachment on mobile (not well supported) */
+  .hero,
+  .closing,
+  .gallery-section.bg-accent-1,
+  .gallery-section.bg-accent-2 {
+    background-attachment: scroll;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ Side Navigation Dots ═══ -->
+<nav class="side-nav" id="sideNav">
+  <a href="#hero" data-index="0" class="active"><span class="tooltip">Home</span></a>
+  <a href="#about" data-index="1"><span class="tooltip">About</span></a>
+  <a href="#cat-ear" data-index="2"><span class="tooltip">Cat Ear Hats</span></a>
+  <a href="#open-hoods" data-index="3"><span class="tooltip">Open Hoods</span></a>
+  <a href="#jester" data-index="4"><span class="tooltip">Jester / Clown</span></a>
+  <a href="#funky" data-index="5"><span class="tooltip">Funky Hats</span></a>
+  <a href="#contact" data-index="6"><span class="tooltip">Contact</span></a>
+  <a href="#closing" data-index="7"><span class="tooltip">Let's Create</span></a>
+</nav>
+
+<!-- ═══ Hero ═══ -->
+<section class="section hero" id="hero">
+  <div class="hero-content">
+    <h1>Ellie Does Crochet and Stuff</h1>
+    <p>Handmade hats, hoods, and wearable art &mdash; crocheted with love.</p>
+    <span class="scroll-hint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+    </span>
+  </div>
+</section>
+
+<!-- ═══ About ═══ -->
+<section class="section about" id="about">
+  <div class="about-inner">
+    <div class="about-text">
+      <h2>About Me</h2>
+      <p>I'm a college student with way too much yarn and a desire to create. Whether it's a hat shaped like your favorite character, a funky beanie for festivals, or a cozy hood for everyday wear &mdash; I love bringing creative ideas to life with a crochet hook.</p>
+    </div>
+    <div class="about-photos">
+      <img src="images/about1.jpg" alt="About Ellie 1" loading="lazy">
+      <img src="images/about2.jpg" alt="About Ellie 2" loading="lazy">
+      <img src="images/about3.jpg" alt="About Ellie 3" loading="lazy">
+      <img src="images/about4.jpg" alt="About Ellie 4" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Gallery: Cat Ear Hat with Tassle ═══ -->
+<section class="section gallery-section bg-accent-1" id="cat-ear">
+  <div class="gallery-inner">
+    <h2>Cat Ear Hat with Tassle</h2>
+    <div class="gallery-grid cols-4">
+      <img src="images/gallery1.jpg" alt="Cat Ear Hat 1" loading="lazy">
+      <img src="images/gallery2.jpg" alt="Cat Ear Hat 2" loading="lazy">
+      <img src="images/gallery3.jpg" alt="Cat Ear Hat 3" loading="lazy">
+      <img src="images/gallery4.jpg" alt="Cat Ear Hat 4" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Gallery: Open Hoods ═══ -->
+<section class="section gallery-section alt-bg" id="open-hoods">
+  <div class="gallery-inner">
+    <h2>Open Hoods</h2>
+    <div class="gallery-grid cols-2">
+      <img src="images/open_hoods1.jpg" alt="Open Hood 1" loading="lazy">
+      <img src="images/open_hoods2.jpg" alt="Open Hood 2" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Gallery: Jester / Clown ═══ -->
+<section class="section gallery-section bg-accent-2" id="jester">
+  <div class="gallery-inner">
+    <h2>Jester / Clown</h2>
+    <div class="gallery-grid cols-4">
+      <img src="images/jester1.jpg" alt="Jester Hat 1" loading="lazy">
+      <img src="images/jester2.jpg" alt="Jester Hat 2" loading="lazy">
+      <img src="images/jester3.jpg" alt="Jester Hat 3" loading="lazy">
+      <img src="images/jester4.jpg" alt="Jester Hat 4" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Gallery: Funky Hats ═══ -->
+<section class="section gallery-section alt-bg" id="funky">
+  <div class="gallery-inner">
+    <h2>Funky Hats</h2>
+    <div class="gallery-grid cols-3">
+      <img src="images/funky1.jpg" alt="Funky Hat 1" loading="lazy">
+      <img src="images/funky2.jpg" alt="Funky Hat 2" loading="lazy">
+      <img src="images/funky3.jpg" alt="Funky Hat 3" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Contact / Order ═══ -->
+<section class="section contact" id="contact">
+  <div class="contact-inner">
+    <h2>Place an Order</h2>
+    <p>Want a custom crochet creation? Send me the following details and I'll get back to you!</p>
+    <ul class="order-list">
+      <li>Your name</li>
+      <li>Character description</li>
+      <li>Hat style preference</li>
+      <li>Budget</li>
+    </ul>
+    <p>Reach out via email:</p>
+    <a href="mailto:Eleanor@aughey.com" class="email-link">Eleanor@aughey.com</a>
+  </div>
+</section>
+
+<!-- ═══ Closing CTA ═══ -->
+<section class="section closing" id="closing">
+  <div class="closing-inner">
+    <h2>If any of these hat styles interest you, shoot me a message and let's make something awesome together!</h2>
+    <div class="closing-grid">
+      <img src="images/closing1.jpg" alt="Closing 1" loading="lazy">
+      <img src="images/closing2.jpg" alt="Closing 2" loading="lazy">
+      <img src="images/closing3.jpg" alt="Closing 3" loading="lazy">
+      <img src="images/closing4.jpg" alt="Closing 4" loading="lazy">
+      <img src="images/closing5.jpg" alt="Closing 5" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Lightbox ═══ -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" aria-label="Close">&times;</button>
+  <img src="" alt="Enlarged view">
+</div>
+
+<script>
+(function () {
+  /* ── Section / dot tracking ──────────────────────────────── */
+  const sections = document.querySelectorAll('.section');
+  const dots = document.querySelectorAll('.side-nav a');
+
+  function updateActiveDot() {
+    const scrollY = window.scrollY || document.documentElement.scrollTop;
+    const viewH = window.innerHeight;
+    let currentIndex = 0;
+
+    sections.forEach(function (sec, i) {
+      const top = sec.offsetTop;
+      if (scrollY >= top - viewH * 0.45) {
+        currentIndex = i;
+      }
+    });
+
+    dots.forEach(function (dot, i) {
+      dot.classList.toggle('active', i === currentIndex);
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveDot, { passive: true });
+  updateActiveDot();
+
+  /* ── Lightbox ────────────────────────────────────────────── */
+  var lightbox = document.getElementById('lightbox');
+  var lbImg = lightbox.querySelector('img');
+  var lbClose = lightbox.querySelector('.lightbox-close');
+
+  document.querySelectorAll('.gallery-grid img, .closing-grid img, .about-photos img').forEach(function (img) {
+    img.addEventListener('click', function () {
+      lbImg.src = this.src;
+      lbImg.alt = this.alt;
+      lightbox.classList.add('open');
+    });
+  });
+
+  lbClose.addEventListener('click', function () {
+    lightbox.classList.remove('open');
+  });
+
+  lightbox.addEventListener('click', function (e) {
+    if (e.target === lightbox) {
+      lightbox.classList.remove('open');
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && lightbox.classList.contains('open')) {
+      lightbox.classList.remove('open');
+    }
+  });
+
+  /* ── Smooth dot navigation ───────────────────────────────── */
+  dots.forEach(function (dot) {
+    dot.addEventListener('click', function (e) {
+      e.preventDefault();
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

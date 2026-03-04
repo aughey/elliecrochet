@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ellie Does Crochet and Stuff</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #0a0a0a;
+  color: #e0e0e0;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ===== SCANLINE OVERLAY ===== */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.06) 2px,
+    rgba(0, 0, 0, 0.06) 4px
+  );
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #FF00FF;
+  border-radius: 4px;
+  box-shadow: 0 0 6px #FF00FF;
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1, h2, h3, h4 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+a {
+  color: #00FFFF;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: #FF00FF;
+  text-shadow: 0 0 8px #FF00FF;
+}
+
+/* ===== GLITCH ANIMATION ===== */
+@keyframes glitch {
+  0% {
+    clip-path: inset(40% 0 61% 0);
+    transform: translate(-2px, 2px);
+  }
+  10% {
+    clip-path: inset(92% 0 1% 0);
+    transform: translate(1px, -1px);
+  }
+  20% {
+    clip-path: inset(43% 0 1% 0);
+    transform: translate(-1px, 3px);
+  }
+  30% {
+    clip-path: inset(25% 0 58% 0);
+    transform: translate(2px, 1px);
+  }
+  40% {
+    clip-path: inset(54% 0 7% 0);
+    transform: translate(-1px, -2px);
+  }
+  50% {
+    clip-path: inset(58% 0 43% 0);
+    transform: translate(2px, -1px);
+  }
+  60% {
+    clip-path: inset(45% 0 2% 0);
+    transform: translate(-2px, 1px);
+  }
+  70% {
+    clip-path: inset(5% 0 76% 0);
+    transform: translate(1px, 2px);
+  }
+  80% {
+    clip-path: inset(80% 0 5% 0);
+    transform: translate(-1px, -1px);
+  }
+  90% {
+    clip-path: inset(15% 0 60% 0);
+    transform: translate(2px, -2px);
+  }
+  100% {
+    clip-path: inset(67% 0 33% 0);
+    transform: translate(-2px, 1px);
+  }
+}
+
+@keyframes glitch-anim-2 {
+  0% {
+    clip-path: inset(25% 0 58% 0);
+    transform: translate(2px, -1px);
+  }
+  20% {
+    clip-path: inset(80% 0 5% 0);
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    clip-path: inset(15% 0 60% 0);
+    transform: translate(1px, -2px);
+  }
+  60% {
+    clip-path: inset(54% 0 7% 0);
+    transform: translate(-1px, 1px);
+  }
+  80% {
+    clip-path: inset(40% 0 30% 0);
+    transform: translate(2px, 2px);
+  }
+  100% {
+    clip-path: inset(67% 0 10% 0);
+    transform: translate(-1px, -1px);
+  }
+}
+
+@keyframes neon-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow:
+      0 0 7px #FF00FF,
+      0 0 10px #FF00FF,
+      0 0 21px #FF00FF,
+      0 0 42px #FF00FF,
+      0 0 82px #FF00FF;
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes border-glow-cycle {
+  0%, 100% { border-color: #FF00FF; box-shadow: 0 0 15px #FF00FF44; }
+  33% { border-color: #00FFFF; box-shadow: 0 0 15px #00FFFF44; }
+  66% { border-color: #39FF14; box-shadow: 0 0 15px #39FF1444; }
+}
+
+/* ===== NAVIGATION ===== */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(10, 10, 10, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #FF00FF33;
+  padding: 0 2rem;
+  transition: box-shadow 0.3s ease;
+}
+
+nav.scrolled {
+  box-shadow: 0 2px 20px #FF00FF44;
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+}
+
+.nav-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #FF00FF;
+  text-shadow: 0 0 10px #FF00FF88;
+  letter-spacing: 0.1em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #e0e0e0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #00FFFF;
+  box-shadow: 0 0 8px #00FFFF, 0 0 16px #00FFFF;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #00FFFF;
+  text-shadow: 0 0 8px #00FFFF88;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 25px;
+  height: 2px;
+  background: #00FFFF;
+  box-shadow: 0 0 6px #00FFFF;
+  transition: all 0.3s ease;
+}
+
+/* ===== SECTIONS ===== */
+section {
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #00FFFF;
+  text-shadow:
+    0 0 7px #00FFFF,
+    0 0 20px #00FFFF66,
+    0 0 40px #00FFFF33;
+}
+
+.section-divider {
+  width: 120px;
+  height: 2px;
+  margin: 0 auto 3rem;
+  background: linear-gradient(90deg, transparent, #FF00FF, transparent);
+  box-shadow: 0 0 10px #FF00FF;
+}
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 80px;
+  position: relative;
+}
+
+.hero-title-wrapper {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.hero-title {
+  font-size: clamp(2rem, 6vw, 4rem);
+  color: #FF00FF;
+  text-shadow:
+    0 0 7px #FF00FF,
+    0 0 10px #FF00FF,
+    0 0 21px #FF00FF,
+    0 0 42px #FF00FF;
+  animation: neon-flicker 4s infinite alternate;
+  position: relative;
+}
+
+.hero-title::before,
+.hero-title::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero-title::before {
+  color: #00FFFF;
+  z-index: -1;
+  animation: glitch 3s infinite linear alternate-reverse;
+}
+
+.hero-title::after {
+  color: #39FF14;
+  z-index: -2;
+  animation: glitch-anim-2 2.5s infinite linear alternate-reverse;
+}
+
+.hero-subtitle {
+  font-family: 'Exo 2', sans-serif;
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
+  color: #aaa;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+
+.hero-images {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 900px;
+}
+
+.hero-images img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #FF00FF44;
+  box-shadow: 0 0 15px #FF00FF33;
+  transition: all 0.4s ease;
+}
+
+.hero-images img:hover {
+  border-color: #FF00FF;
+  box-shadow: 0 0 30px #FF00FF88, 0 0 60px #FF00FF44;
+  transform: scale(1.03);
+}
+
+.hero-images img:nth-child(2) {
+  border-color: #00FFFF44;
+  box-shadow: 0 0 15px #00FFFF33;
+}
+
+.hero-images img:nth-child(2):hover {
+  border-color: #00FFFF;
+  box-shadow: 0 0 30px #00FFFF88, 0 0 60px #00FFFF44;
+}
+
+.hero-images img:nth-child(3) {
+  border-color: #39FF1444;
+  box-shadow: 0 0 15px #39FF1433;
+}
+
+.hero-images img:nth-child(3):hover {
+  border-color: #39FF14;
+  box-shadow: 0 0 30px #39FF1488, 0 0 60px #39FF1444;
+}
+
+/* ===== ABOUT ===== */
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.about-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #ccc;
+}
+
+.about-text .highlight {
+  color: #FF00FF;
+  text-shadow: 0 0 6px #FF00FF66;
+  font-weight: 600;
+}
+
+.about-images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.about-images img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #00FFFF33;
+  transition: all 0.4s ease;
+  animation: border-glow-cycle 6s infinite;
+}
+
+.about-images img:nth-child(2) { animation-delay: -1.5s; }
+.about-images img:nth-child(3) { animation-delay: -3s; }
+.about-images img:nth-child(4) { animation-delay: -4.5s; }
+
+.about-images img:hover {
+  border-color: #00FFFF;
+  box-shadow: 0 0 25px #00FFFF88;
+  transform: scale(1.05);
+  z-index: 2;
+}
+
+/* ===== GALLERY ===== */
+.gallery-category {
+  margin-bottom: 4rem;
+}
+
+.gallery-category:last-child {
+  margin-bottom: 0;
+}
+
+.category-title {
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  color: #39FF14;
+  text-shadow: 0 0 10px #39FF1466, 0 0 20px #39FF1433;
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+  border-left: 3px solid #39FF14;
+  box-shadow: -3px 0 10px #39FF1444;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.4s ease;
+}
+
+.gallery-item img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease, filter 0.3s ease;
+}
+
+.gallery-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(10, 10, 10, 0.8) 100%);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover::before {
+  opacity: 1;
+}
+
+.gallery-item:hover {
+  border-color: #FF00FF;
+  box-shadow:
+    0 0 15px #FF00FF66,
+    0 0 30px #FF00FF33,
+    inset 0 0 15px #FF00FF11;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.08);
+}
+
+.gallery-item:nth-child(2n):hover {
+  border-color: #00FFFF;
+  box-shadow:
+    0 0 15px #00FFFF66,
+    0 0 30px #00FFFF33,
+    inset 0 0 15px #00FFFF11;
+}
+
+.gallery-item:nth-child(3n):hover {
+  border-color: #39FF14;
+  box-shadow:
+    0 0 15px #39FF1466,
+    0 0 30px #39FF1433,
+    inset 0 0 15px #39FF1411;
+}
+
+/* ===== LIGHTBOX ===== */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.lightbox.active {
+  display: flex;
+}
+
+.lightbox img {
+  max-width: 90%;
+  max-height: 90vh;
+  object-fit: contain;
+  border: 2px solid #FF00FF;
+  box-shadow: 0 0 40px #FF00FF66, 0 0 80px #FF00FF33;
+  border-radius: 8px;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  color: #00FFFF;
+  cursor: pointer;
+  background: none;
+  border: 1px solid #00FFFF44;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  text-shadow: 0 0 8px #00FFFF;
+  transition: all 0.3s ease;
+}
+
+.lightbox-close:hover {
+  background: #00FFFF22;
+  box-shadow: 0 0 15px #00FFFF66;
+}
+
+/* ===== CONTACT ===== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.contact-info {
+  background: linear-gradient(135deg, #0f0f1a, #1a0a1a);
+  border: 1px solid #FF00FF44;
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 0 20px #FF00FF22;
+  transition: box-shadow 0.3s ease;
+}
+
+.contact-info:hover {
+  box-shadow: 0 0 35px #FF00FF44;
+}
+
+.contact-info h3 {
+  font-size: 1.3rem;
+  color: #FF00FF;
+  text-shadow: 0 0 8px #FF00FF88;
+  margin-bottom: 1.5rem;
+}
+
+.contact-info p {
+  margin-bottom: 1rem;
+  color: #bbb;
+  line-height: 1.7;
+}
+
+.contact-info .email-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.6rem 1.5rem;
+  border: 1px solid #00FFFF;
+  border-radius: 6px;
+  color: #00FFFF;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 6px #00FFFF88;
+  box-shadow: 0 0 10px #00FFFF33;
+  transition: all 0.3s ease;
+}
+
+.contact-info .email-link:hover {
+  background: #00FFFF22;
+  box-shadow: 0 0 20px #00FFFF66;
+  color: #00FFFF;
+}
+
+.order-details {
+  background: linear-gradient(135deg, #0a1a1a, #0a0f1a);
+  border: 1px solid #00FFFF44;
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 0 20px #00FFFF22;
+  transition: box-shadow 0.3s ease;
+}
+
+.order-details:hover {
+  box-shadow: 0 0 35px #00FFFF44;
+}
+
+.order-details h3 {
+  font-size: 1.3rem;
+  color: #00FFFF;
+  text-shadow: 0 0 8px #00FFFF88;
+  margin-bottom: 1.5rem;
+}
+
+.order-list {
+  list-style: none;
+}
+
+.order-list li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #ffffff0a;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.order-list li::before {
+  content: '>';
+  color: #39FF14;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  text-shadow: 0 0 6px #39FF1488;
+}
+
+/* ===== CTA / CLOSING ===== */
+.closing {
+  text-align: center;
+}
+
+.cta-text {
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  color: #FF00FF;
+  text-shadow: 0 0 10px #FF00FF66;
+  max-width: 700px;
+  margin: 0 auto 3rem;
+  line-height: 1.8;
+  font-weight: 500;
+}
+
+.closing-images {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.closing-images img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #39FF1433;
+  box-shadow: 0 0 10px #39FF1422;
+  transition: all 0.4s ease;
+}
+
+.closing-images img:hover {
+  border-color: #39FF14;
+  box-shadow: 0 0 25px #39FF1488, 0 0 50px #39FF1444;
+  transform: translateY(-5px);
+}
+
+.closing-images img:nth-child(2n) {
+  border-color: #FF00FF33;
+  box-shadow: 0 0 10px #FF00FF22;
+}
+
+.closing-images img:nth-child(2n):hover {
+  border-color: #FF00FF;
+  box-shadow: 0 0 25px #FF00FF88, 0 0 50px #FF00FF44;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  padding: 2rem;
+  border-top: 1px solid #FF00FF22;
+  color: #555;
+  font-size: 0.85rem;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 0.1em;
+}
+
+footer span {
+  color: #FF00FF;
+  text-shadow: 0 0 6px #FF00FF66;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .about-content {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .closing-images {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .closing-images img:nth-child(4),
+  .closing-images img:nth-child(5) {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    background: rgba(10, 10, 10, 0.97);
+    border-bottom: 1px solid #FF00FF33;
+    padding: 1rem 2rem;
+    gap: 1rem;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  .hero-images {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .hero-images img:nth-child(3) {
+    grid-column: span 2;
+    max-width: 60%;
+    justify-self: center;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+
+  .closing-images {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  section {
+    padding: 4rem 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.6rem;
+  }
+
+  .hero-images {
+    grid-template-columns: 1fr;
+    max-width: 300px;
+  }
+
+  .hero-images img:nth-child(3) {
+    grid-column: span 1;
+    max-width: 100%;
+  }
+
+  .about-images {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .closing-images {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo">EDCAS</div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-title-wrapper">
+    <h1 class="hero-title" data-text="Ellie Does Crochet and Stuff">Ellie Does Crochet and Stuff</h1>
+  </div>
+  <p class="hero-subtitle">Handmade with love, stitched with style</p>
+  <div class="hero-images">
+    <img src="images/hero_left.jpg" alt="Crochet creation showcase" loading="eager">
+    <img src="images/hero_center.jpg" alt="Featured crochet piece" loading="eager">
+    <img src="images/hero_right.jpg" alt="Handmade crochet art" loading="eager">
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <h2 class="section-title">About Me</h2>
+  <div class="section-divider"></div>
+  <div class="about-content">
+    <div class="about-text">
+      <p>I'm a college student with way too much yarn and a desire to create. Whether it's a hat shaped like your favorite character, a funky beanie for festivals, or a cozy hood for everyday wear &mdash; I love bringing creative ideas to life with a crochet hook.</p>
+    </div>
+    <div class="about-images">
+      <img src="images/about1.jpg" alt="About Ellie - crochet process" loading="lazy">
+      <img src="images/about2.jpg" alt="About Ellie - yarn collection" loading="lazy">
+      <img src="images/about3.jpg" alt="About Ellie - finished piece" loading="lazy">
+      <img src="images/about4.jpg" alt="About Ellie - creative workspace" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <h2 class="section-title">Gallery</h2>
+  <div class="section-divider"></div>
+
+  <!-- Cat Ear Hat with Tassle -->
+  <div class="gallery-category">
+    <h3 class="category-title">Cat Ear Hat with Tassle</h3>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="images/gallery1.jpg" alt="Cat Ear Hat with Tassle - View 1" loading="lazy"></div>
+      <div class="gallery-item"><img src="images/gallery2.jpg" alt="Cat Ear Hat with Tassle - View 2" loading="lazy"></div>
+      <div class="gallery-item"><img src="images/gallery3.jpg" alt="Cat Ear Hat with Tassle - View 3" loading="lazy"></div>
+      <div class="gallery-item"><img src="images/gallery4.jpg" alt="Cat Ear Hat with Tassle - View 4" loading="lazy"></div>
+    </div>
+  </div>
+
+  <!-- Open Hoods -->
+  <div class="gallery-category">
+    <h3 class="category-title">Open Hoods</h3>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="images/open_hoods1.jpg" alt="Open Hood - Style 1" loading="lazy"></div>
+      <div class="gallery-item"><img src="images/open_hoods2.jpg" alt="Open Hood - Style 2" loading="lazy"></div>
+    </div>
+  </div>
+
+  <!-- Jester/Clown -->
+  <div class="gallery-category">
+    <h3 class="category-title">Jester / Clown</h3>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="images/jester1.jpg" alt="Jester Hat - View 1" loading="lazy"></div>
+      <div class="gallery-item"><img src="images/jester2.jpg" alt="Jester Hat - View 2" loading="lazy"></div>
+      <div class="gallery-item"><img src="images/jester3.jpg" alt="Jester Hat - View 3" loading="lazy"></div>
+      <div class="gallery-item"><img src="images/jester4.jpg" alt="Jester Hat - View 4" loading="lazy"></div>
+    </div>
+  </div>
+
+  <!-- Funky Hats -->
+  <div class="gallery-category">
+    <h3 class="category-title">Funky Hats</h3>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="images/funky1.jpg" alt="Funky Hat - Style 1" loading="lazy"></div>
+      <div class="gallery-item"><img src="images/funky2.jpg" alt="Funky Hat - Style 2" loading="lazy"></div>
+      <div class="gallery-item"><img src="images/funky3.jpg" alt="Funky Hat - Style 3" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2 class="section-title">Get in Touch</h2>
+  <div class="section-divider"></div>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <h3>Place an Order</h3>
+      <p>Want something custom-made just for you? Send me a message and let's create something amazing together.</p>
+      <a href="mailto:Eleanor@aughey.com" class="email-link">Eleanor@aughey.com</a>
+    </div>
+    <div class="order-details">
+      <h3>What I Need From You</h3>
+      <ul class="order-list">
+        <li>Your name</li>
+        <li>Character description</li>
+        <li>Hat style preference</li>
+        <li>Budget</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING CTA -->
+<section class="closing" id="closing">
+  <p class="cta-text">If any of these hat styles interest you, shoot me a message and let's make something awesome together!</p>
+  <div class="closing-images">
+    <img src="images/closing1.jpg" alt="Closing showcase 1" loading="lazy">
+    <img src="images/closing2.jpg" alt="Closing showcase 2" loading="lazy">
+    <img src="images/closing3.jpg" alt="Closing showcase 3" loading="lazy">
+    <img src="images/closing4.jpg" alt="Closing showcase 4" loading="lazy">
+    <img src="images/closing5.jpg" alt="Closing showcase 5" loading="lazy">
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2026 <span>Ellie Does Crochet and Stuff</span></p>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">X</button>
+  <img src="" alt="Enlarged view" id="lightboxImg">
+</div>
+
+<script>
+(function() {
+  // Navigation scroll effect
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', function() {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Mobile nav toggle
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', function() {
+    links.classList.toggle('open');
+  });
+
+  // Close mobile nav on link click
+  links.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      links.classList.remove('open');
+    });
+  });
+
+  // Lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxClose = document.getElementById('lightboxClose');
+
+  document.querySelectorAll('.gallery-item img, .closing-images img').forEach(function(img) {
+    img.addEventListener('click', function() {
+      lightboxImg.src = this.src;
+      lightboxImg.alt = this.alt;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  lightboxClose.addEventListener('click', function(e) {
+    e.stopPropagation();
+    closeLightbox();
+  });
+
+  lightbox.addEventListener('click', function(e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  // Scroll reveal animation
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.gallery-category, .about-content, .contact-grid, .closing-images, .cta-text').forEach(function(el) {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+    observer.observe(el);
+  });
+})();
+</script>
+</body>
+</html>

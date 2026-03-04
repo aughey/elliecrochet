@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellie Does Crochet and Stuff</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sky: #83D0FB;
+            --lime: #D2FB83;
+            --cream: #FFFBFA;
+            --dark: #2a2a2a;
+            --sky-dark: #5bb8e8;
+            --lime-dark: #b8e060;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            overflow-x: hidden;
+            background: var(--cream);
+        }
+
+        /* ---- Scroll Animation ---- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-60px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.85);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* ---- Navigation ---- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 251, 250, 0.92);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--sky);
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .logo {
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+        nav .logo span {
+            color: var(--sky-dark);
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover {
+            color: var(--sky-dark);
+        }
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .nav-toggle span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            background: var(--dark);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* ---- Hero ---- */
+        .hero {
+            background: var(--sky);
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: var(--cream);
+            clip-path: ellipse(55% 100% at 50% 100%);
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 900;
+            color: var(--dark);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 0 rgba(255,255,255,0.3);
+        }
+        .hero h1 .highlight {
+            color: #fff;
+            -webkit-text-stroke: 2px var(--dark);
+        }
+        .hero p {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            opacity: 0.8;
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+        }
+        .hero-images {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            max-width: 1000px;
+        }
+        .hero-images img {
+            width: 280px;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 5px solid #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: transform 0.4s ease;
+        }
+        .hero-images img:hover {
+            transform: scale(1.04) rotate(-1deg);
+        }
+        .hero-images img:nth-child(2) {
+            transform: translateY(-20px);
+        }
+        .hero-images img:nth-child(2):hover {
+            transform: translateY(-20px) scale(1.04) rotate(1deg);
+        }
+
+        /* ---- Section Base ---- */
+        section {
+            padding: 5rem 2rem;
+            position: relative;
+        }
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.75;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        /* ---- About ---- */
+        .about {
+            background: var(--cream);
+        }
+        .about-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        .about-text p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        .about-text .tag {
+            display: inline-block;
+            background: var(--lime);
+            color: var(--dark);
+            font-weight: 700;
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .about-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .about-images img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 16px;
+            border: 4px solid var(--sky);
+            transition: transform 0.3s;
+        }
+        .about-images img:hover {
+            transform: scale(1.03);
+        }
+        .about-images img:nth-child(2) {
+            border-color: var(--lime);
+        }
+        .about-images img:nth-child(3) {
+            border-color: var(--lime);
+        }
+        .about-images img:nth-child(4) {
+            border-color: var(--sky);
+        }
+
+        /* ---- Gallery ---- */
+        .gallery {
+            background: var(--lime);
+            position: relative;
+        }
+        .gallery::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: var(--cream);
+            clip-path: ellipse(55% 100% at 50% 0%);
+        }
+        .gallery .section-title {
+            padding-top: 2rem;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 2.5rem;
+        }
+        .tab-btn {
+            background: #fff;
+            border: 3px solid var(--dark);
+            padding: 0.6rem 1.5rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--dark);
+        }
+        .tab-btn:hover {
+            background: var(--sky);
+            border-color: var(--sky);
+            color: #fff;
+        }
+        .tab-btn.active {
+            background: var(--dark);
+            color: #fff;
+            border-color: var(--dark);
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 4px solid #fff;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            aspect-ratio: 3/4;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+        .gallery-item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: #fff;
+            padding: 1.5rem 1rem 1rem;
+            font-weight: 700;
+            font-size: 1rem;
+            transform: translateY(100%);
+            transition: transform 0.4s;
+        }
+        .gallery-item:hover .overlay {
+            transform: translateY(0);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: grid;
+        }
+
+        /* ---- Lightbox ---- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .lightbox.open {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 12px;
+            border: 4px solid #fff;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            color: #fff;
+            font-size: 2.5rem;
+            font-weight: 900;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        /* ---- Contact ---- */
+        .contact {
+            background: var(--sky);
+            position: relative;
+        }
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: var(--lime);
+            clip-path: ellipse(55% 100% at 50% 0%);
+        }
+        .contact .section-title {
+            padding-top: 2rem;
+            color: #fff;
+            -webkit-text-stroke: 1.5px var(--dark);
+        }
+        .contact-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 24px;
+            padding: 3rem;
+            border: 4px solid var(--dark);
+            box-shadow: 8px 8px 0 var(--dark);
+        }
+        .contact-card h3 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+        .order-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+        .order-list li {
+            padding: 0.6rem 0;
+            font-size: 1.05rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .order-list li .bullet {
+            width: 32px;
+            height: 32px;
+            background: var(--lime);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            border: 2px solid var(--dark);
+        }
+        .email-link {
+            display: inline-block;
+            background: var(--sky);
+            color: var(--dark);
+            font-weight: 800;
+            font-size: 1.2rem;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            border: 3px solid var(--dark);
+            transition: all 0.3s;
+            box-shadow: 4px 4px 0 var(--dark);
+        }
+        .email-link:hover {
+            background: var(--lime);
+            box-shadow: 2px 2px 0 var(--dark);
+            transform: translate(2px, 2px);
+        }
+
+        /* ---- Closing CTA ---- */
+        .closing {
+            background: var(--cream);
+            text-align: center;
+            position: relative;
+        }
+        .closing::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: var(--sky);
+            clip-path: ellipse(55% 100% at 50% 0%);
+        }
+        .closing .section-title {
+            padding-top: 2rem;
+        }
+        .closing-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            line-height: 1.7;
+        }
+        .closing-images {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .closing-images img {
+            width: 200px;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 16px;
+            border: 4px solid var(--lime);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: transform 0.4s, border-color 0.3s;
+        }
+        .closing-images img:nth-child(even) {
+            border-color: var(--sky);
+        }
+        .closing-images img:hover {
+            transform: translateY(-8px) rotate(1deg);
+        }
+
+        /* ---- Footer ---- */
+        footer {
+            background: var(--dark);
+            color: #fff;
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        footer span {
+            color: var(--sky);
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 900px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            .hero-images img {
+                width: 220px;
+                height: 280px;
+            }
+            .closing-images img {
+                width: 160px;
+                height: 210px;
+            }
+        }
+
+        @media (max-width: 650px) {
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(255,251,250,0.97);
+                flex-direction: column;
+                padding: 1rem 2rem;
+                border-bottom: 3px solid var(--sky);
+            }
+            nav ul.open {
+                display: flex;
+            }
+            .nav-toggle {
+                display: flex;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .hero-images img {
+                width: 80%;
+                max-width: 280px;
+                height: auto;
+                aspect-ratio: 3/4;
+            }
+            .hero-images img:nth-child(2) {
+                transform: none;
+            }
+            .hero-images img:nth-child(2):hover {
+                transform: scale(1.04) rotate(1deg);
+            }
+            .about-images {
+                grid-template-columns: 1fr 1fr;
+            }
+            .gallery-grid, .tab-content.active {
+                grid-template-columns: 1fr 1fr;
+            }
+            .contact-card {
+                padding: 2rem 1.5rem;
+            }
+            .closing-images img {
+                width: 140px;
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .gallery-grid, .tab-content.active {
+                grid-template-columns: 1fr;
+                max-width: 320px;
+            }
+            .about-images {
+                grid-template-columns: 1fr;
+            }
+            .about-images img {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Ellie Does <span>Crochet</span></div>
+        <button class="nav-toggle" aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+        </button>
+        <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#contact">Order</a></li>
+        </ul>
+    </nav>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="Enlarged view" id="lightbox-img">
+    </div>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <h1 class="reveal">Ellie Does<br><span class="highlight">Crochet</span><br>and Stuff</h1>
+        <p class="reveal">Handmade hats, hoods, and all kinds of cozy creations.</p>
+        <div class="hero-images">
+            <img src="images/hero_left.jpg" alt="Crochet creation" class="reveal-left">
+            <img src="images/hero_center.jpg" alt="Featured crochet piece" class="reveal-scale">
+            <img src="images/hero_right.jpg" alt="Crochet creation" class="reveal-right">
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about" id="about">
+        <h2 class="section-title reveal">About Me</h2>
+        <p class="section-subtitle reveal">The person behind the hook.</p>
+        <div class="about-content">
+            <div class="about-text reveal-left">
+                <p>I'm a college student with way too much yarn and a desire to create. Whether it's a hat shaped like your favorite character, a funky beanie for festivals, or a cozy hood for everyday wear &mdash; I love bringing creative ideas to life with a crochet hook.</p>
+                <div>
+                    <span class="tag">Custom Hats</span>
+                    <span class="tag">Character Designs</span>
+                    <span class="tag">Festival Wear</span>
+                    <span class="tag">Cozy Hoods</span>
+                    <span class="tag">Made with Love</span>
+                </div>
+            </div>
+            <div class="about-images reveal-right">
+                <img src="images/about1.jpg" alt="About Ellie 1">
+                <img src="images/about2.jpg" alt="About Ellie 2">
+                <img src="images/about3.jpg" alt="About Ellie 3">
+                <img src="images/about4.jpg" alt="About Ellie 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="gallery" id="gallery">
+        <h2 class="section-title reveal">My Work</h2>
+        <p class="section-subtitle reveal">Browse by category &mdash; click any image for a closer look!</p>
+        <div class="tabs reveal">
+            <button class="tab-btn active" data-tab="cat-ear">Cat Ear Hat</button>
+            <button class="tab-btn" data-tab="open-hoods">Open Hoods</button>
+            <button class="tab-btn" data-tab="jester">Jester / Clown</button>
+            <button class="tab-btn" data-tab="funky">Funky Hats</button>
+        </div>
+
+        <!-- Cat Ear Hat -->
+        <div class="tab-content gallery-grid active" data-tab-content="cat-ear">
+            <div class="gallery-item reveal-scale">
+                <img src="images/gallery1.jpg" alt="Cat Ear Hat 1">
+                <div class="overlay">Cat Ear Hat with Tassle</div>
+            </div>
+            <div class="gallery-item reveal-scale">
+                <img src="images/gallery2.jpg" alt="Cat Ear Hat 2">
+                <div class="overlay">Cat Ear Hat with Tassle</div>
+            </div>
+            <div class="gallery-item reveal-scale">
+                <img src="images/gallery3.jpg" alt="Cat Ear Hat 3">
+                <div class="overlay">Cat Ear Hat with Tassle</div>
+            </div>
+            <div class="gallery-item reveal-scale">
+                <img src="images/gallery4.jpg" alt="Cat Ear Hat 4">
+                <div class="overlay">Cat Ear Hat with Tassle</div>
+            </div>
+        </div>
+
+        <!-- Open Hoods -->
+        <div class="tab-content gallery-grid" data-tab-content="open-hoods">
+            <div class="gallery-item reveal-scale">
+                <img src="images/open_hoods1.jpg" alt="Open Hood 1">
+                <div class="overlay">Open Hood</div>
+            </div>
+            <div class="gallery-item reveal-scale">
+                <img src="images/open_hoods2.jpg" alt="Open Hood 2">
+                <div class="overlay">Open Hood</div>
+            </div>
+        </div>
+
+        <!-- Jester / Clown -->
+        <div class="tab-content gallery-grid" data-tab-content="jester">
+            <div class="gallery-item reveal-scale">
+                <img src="images/jester1.jpg" alt="Jester Hat 1">
+                <div class="overlay">Jester / Clown</div>
+            </div>
+            <div class="gallery-item reveal-scale">
+                <img src="images/jester2.jpg" alt="Jester Hat 2">
+                <div class="overlay">Jester / Clown</div>
+            </div>
+            <div class="gallery-item reveal-scale">
+                <img src="images/jester3.jpg" alt="Jester Hat 3">
+                <div class="overlay">Jester / Clown</div>
+            </div>
+            <div class="gallery-item reveal-scale">
+                <img src="images/jester4.jpg" alt="Jester Hat 4">
+                <div class="overlay">Jester / Clown</div>
+            </div>
+        </div>
+
+        <!-- Funky Hats -->
+        <div class="tab-content gallery-grid" data-tab-content="funky">
+            <div class="gallery-item reveal-scale">
+                <img src="images/funky1.jpg" alt="Funky Hat 1">
+                <div class="overlay">Funky Hat</div>
+            </div>
+            <div class="gallery-item reveal-scale">
+                <img src="images/funky2.jpg" alt="Funky Hat 2">
+                <div class="overlay">Funky Hat</div>
+            </div>
+            <div class="gallery-item reveal-scale">
+                <img src="images/funky3.jpg" alt="Funky Hat 3">
+                <div class="overlay">Funky Hat</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <h2 class="section-title reveal">Place an Order</h2>
+        <p class="section-subtitle reveal" style="color:#fff;">Let's make something custom just for you!</p>
+        <div class="contact-card reveal">
+            <h3>To place an order, send me the following:</h3>
+            <ul class="order-list">
+                <li><span class="bullet">1</span> Your name</li>
+                <li><span class="bullet">2</span> Character description</li>
+                <li><span class="bullet">3</span> Hat style preference</li>
+                <li><span class="bullet">4</span> Your budget</li>
+            </ul>
+            <a href="mailto:Eleanor@aughey.com" class="email-link">Eleanor@aughey.com</a>
+        </div>
+    </section>
+
+    <!-- Closing CTA -->
+    <section class="closing" id="closing">
+        <h2 class="section-title reveal">Let's Make Something Awesome</h2>
+        <p class="closing-text reveal">If any of these hat styles interest you, shoot me a message and let's make something awesome together!</p>
+        <div class="closing-images">
+            <img src="images/closing1.jpg" alt="Closing 1" class="reveal-scale">
+            <img src="images/closing2.jpg" alt="Closing 2" class="reveal-scale">
+            <img src="images/closing3.jpg" alt="Closing 3" class="reveal-scale">
+            <img src="images/closing4.jpg" alt="Closing 4" class="reveal-scale">
+            <img src="images/closing5.jpg" alt="Closing 5" class="reveal-scale">
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 <span>Ellie Does Crochet and Stuff</span>. Handmade with love.</p>
+    </footer>
+
+    <script>
+        // ---- IntersectionObserver for scroll animations ----
+        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    // Stagger animations slightly for items in same section
+                    const delay = entry.target.dataset.delay || 0;
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, delay);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        revealElements.forEach((el, i) => {
+            // Add stagger delay for gallery items
+            if (el.closest('.gallery-grid') || el.closest('.closing-images') || el.closest('.hero-images')) {
+                el.dataset.delay = (i % 6) * 100;
+            }
+            observer.observe(el);
+        });
+
+        // ---- Gallery Tab Switching ----
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.tab;
+
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.dataset.tabContent === target) {
+                        content.classList.add('active');
+                        // Re-trigger animations for newly visible items
+                        content.querySelectorAll('.reveal-scale').forEach(el => {
+                            el.classList.remove('visible');
+                            void el.offsetWidth; // force reflow
+                            setTimeout(() => el.classList.add('visible'), 50);
+                        });
+                    }
+                });
+            });
+        });
+
+        // ---- Lightbox ----
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const img = item.querySelector('img');
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightbox.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        lightbox.addEventListener('click', () => {
+            lightbox.classList.remove('open');
+            document.body.style.overflow = '';
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                lightbox.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // ---- Mobile Nav Toggle ----
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('nav ul');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('open');
+        });
+
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('open');
+            });
+        });
+
+        // ---- Smooth scroll ----
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(anchor.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

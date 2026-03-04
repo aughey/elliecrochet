@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellie Does Crochet and Stuff</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --forest: #2D5016;
+            --forest-light: #3d6b1e;
+            --terracotta: #C67B5C;
+            --terracotta-light: #d4957a;
+            --sand: #E8DCC8;
+            --cream: #FAF6F0;
+            --earth: #3A2E1F;
+            --earth-light: #5a4a36;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Karla', sans-serif;
+            color: var(--earth);
+            background-color: var(--cream);
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(45,80,22,0.03) 1px, transparent 1px),
+                radial-gradient(circle at 80% 20%, rgba(198,123,92,0.03) 1px, transparent 1px),
+                radial-gradient(circle at 50% 80%, rgba(58,46,31,0.04) 1px, transparent 1px);
+            background-size: 17px 17px, 23px 23px, 19px 19px;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Fraunces', serif;
+        }
+
+        /* ---- NAV ---- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(250,246,240,0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(45,80,22,0.1);
+            transition: box-shadow 0.3s;
+        }
+
+        nav.scrolled {
+            box-shadow: 0 2px 20px rgba(58,46,31,0.1);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Fraunces', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--forest);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--earth);
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            padding-bottom: 4px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--forest), var(--terracotta));
+            border-radius: 2px;
+            transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .nav-links a:hover {
+            color: var(--forest);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: var(--earth);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        /* ---- HERO ---- */
+        .hero {
+            padding: 10rem 2rem 6rem;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(180deg, var(--cream) 0%, rgba(232,220,200,0.4) 100%);
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: var(--cream);
+            clip-path: ellipse(55% 100% at 50% 100%);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            color: var(--forest);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-tagline {
+            font-family: 'Fraunces', serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: var(--terracotta);
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+        }
+
+        .hero-images {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr 1fr;
+            gap: 1.2rem;
+            max-width: 900px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .hero-images img {
+            width: 100%;
+            border-radius: 16px;
+            object-fit: cover;
+            box-shadow: 0 8px 30px rgba(58,46,31,0.12), 0 2px 8px rgba(58,46,31,0.08);
+            transition: transform 0.4s, box-shadow 0.4s;
+        }
+
+        .hero-images img:nth-child(1),
+        .hero-images img:nth-child(3) {
+            height: 280px;
+        }
+
+        .hero-images img:nth-child(2) {
+            height: 340px;
+        }
+
+        .hero-images img:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 40px rgba(58,46,31,0.18), 0 4px 12px rgba(58,46,31,0.1);
+        }
+
+        /* ---- SECTIONS ---- */
+        section {
+            padding: 5rem 2rem;
+            position: relative;
+        }
+
+        .section-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            color: var(--forest);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--earth-light);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            font-size: 1.05rem;
+        }
+
+        /* ---- SVG DIVIDERS ---- */
+        .botanical-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem auto 2.5rem;
+            max-width: 300px;
+            gap: 0.8rem;
+        }
+
+        .botanical-divider .line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--forest), transparent);
+            opacity: 0.3;
+        }
+
+        /* ---- ABOUT ---- */
+        .about-section {
+            background: linear-gradient(180deg, var(--cream) 0%, rgba(232,220,200,0.3) 50%, var(--cream) 100%);
+        }
+
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: var(--cream);
+            clip-path: ellipse(55% 100% at 50% 0%);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text {
+            font-size: 1.08rem;
+            line-height: 1.8;
+            color: var(--earth);
+        }
+
+        .about-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        .about-images img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(58,46,31,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .about-images img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 24px rgba(58,46,31,0.15);
+        }
+
+        /* ---- GALLERY ---- */
+        .gallery-section {
+            background: var(--cream);
+        }
+
+        .gallery-section::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: var(--cream);
+            clip-path: ellipse(60% 80% at 50% 100%);
+        }
+
+        .gallery-category {
+            margin-bottom: 3.5rem;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid rgba(45,80,22,0.1);
+        }
+
+        .category-header svg {
+            flex-shrink: 0;
+        }
+
+        .category-header h3 {
+            font-size: 1.4rem;
+            color: var(--forest);
+            font-weight: 600;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(58,46,31,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(58,46,31,0.18);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(58,46,31,0.5) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: flex-end;
+            padding: 1rem;
+        }
+
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .overlay span {
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* ---- LIGHTBOX ---- */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(58,46,31,0.92);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 88vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            cursor: default;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            font-size: 1.6rem;
+            cursor: pointer;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .lightbox-nav:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .lightbox-prev { left: 1.5rem; }
+        .lightbox-next { right: 1.5rem; }
+
+        /* ---- CONTACT ---- */
+        .contact-section {
+            padding-bottom: 3rem;
+        }
+
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: var(--cream);
+            clip-path: ellipse(60% 80% at 50% 100%);
+        }
+
+        .contact-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(45,80,22,0.06) 0%, rgba(232,220,200,0.5) 100%);
+            border: 1px solid rgba(45,80,22,0.12);
+            border-radius: 20px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 120px;
+            height: 120px;
+            opacity: 0.08;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 10 C30 30 10 50 30 80 C40 95 60 95 70 80 C90 50 70 30 50 10Z' fill='%232D5016'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .contact-card h3 {
+            font-size: 1.6rem;
+            color: var(--forest);
+            margin-bottom: 1.2rem;
+        }
+
+        .contact-card p {
+            margin-bottom: 1rem;
+            color: var(--earth);
+            line-height: 1.7;
+        }
+
+        .order-list {
+            list-style: none;
+            margin: 1.2rem 0 1.5rem;
+            padding: 0;
+        }
+
+        .order-list li {
+            padding: 0.4rem 0;
+            padding-left: 1.8rem;
+            position: relative;
+            color: var(--earth);
+        }
+
+        .order-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 14px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 14'%3E%3Cpath d='M5 0 C3 4 0 7 2 12 C3 14 5 13 5 10 C5 13 7 14 8 12 C10 7 7 4 5 0Z' fill='%232D5016' opacity='0.6'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .email-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--forest);
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            background: rgba(45,80,22,0.08);
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .email-link:hover {
+            background: rgba(45,80,22,0.15);
+            transform: translateY(-1px);
+        }
+
+        /* ---- CTA / CLOSING ---- */
+        .closing-section {
+            text-align: center;
+            padding: 4rem 2rem 5rem;
+            background: linear-gradient(180deg, var(--cream) 0%, rgba(232,220,200,0.4) 100%);
+        }
+
+        .closing-section::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: var(--cream);
+            clip-path: ellipse(60% 80% at 50% 100%);
+        }
+
+        .closing-text {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+            color: var(--forest);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        .closing-images {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.8rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .closing-images img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(58,46,31,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .closing-images img:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(58,46,31,0.16);
+        }
+
+        .cta-button {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.9rem 2rem;
+            background: var(--forest);
+            color: var(--cream);
+            text-decoration: none;
+            font-family: 'Fraunces', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 4px 16px rgba(45,80,22,0.25);
+        }
+
+        .cta-button:hover {
+            background: var(--forest-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(45,80,22,0.35);
+        }
+
+        /* ---- FOOTER ---- */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--earth-light);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(45,80,22,0.08);
+        }
+
+        /* ---- ANIMATIONS ---- */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 900px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .closing-images {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .closing-images img:nth-child(4),
+            .closing-images img:nth-child(5) {
+                grid-column: span 1;
+            }
+
+            .hero-images img:nth-child(1),
+            .hero-images img:nth-child(3) {
+                height: 220px;
+            }
+
+            .hero-images img:nth-child(2) {
+                height: 270px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 260px;
+                height: 100vh;
+                background: var(--cream);
+                flex-direction: column;
+                padding: 5rem 2rem 2rem;
+                gap: 1.5rem;
+                box-shadow: -4px 0 20px rgba(58,46,31,0.1);
+                transition: right 0.35s ease;
+                z-index: 999;
+            }
+
+            .nav-links.open {
+                right: 0;
+            }
+
+            .nav-toggle {
+                display: flex;
+                z-index: 1001;
+            }
+
+            .nav-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .nav-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .nav-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+
+            .hero {
+                padding: 8rem 1.5rem 4rem;
+            }
+
+            .hero-images {
+                grid-template-columns: 1fr;
+                max-width: 350px;
+                gap: 0.8rem;
+            }
+
+            .hero-images img:nth-child(1),
+            .hero-images img:nth-child(2),
+            .hero-images img:nth-child(3) {
+                height: 240px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .closing-images {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .contact-card {
+                padding: 2rem 1.5rem;
+            }
+
+            section {
+                padding: 3.5rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 440px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-images {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .about-images img {
+                height: 160px;
+            }
+
+            .closing-images {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav id="navbar">
+    <div class="nav-inner">
+        <a href="#hero" class="nav-logo">Ellie Does Crochet</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#about">About</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#contact">Order</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+    <h1 class="fade-up">Ellie Does Crochet and Stuff</h1>
+    <p class="hero-tagline fade-up">Handmade hats, hoods &amp; happy things</p>
+    <div class="hero-images fade-up">
+        <img src="images/hero_left.jpg" alt="Crochet creation by Ellie" loading="lazy">
+        <img src="images/hero_center.jpg" alt="Featured crochet piece" loading="lazy">
+        <img src="images/hero_right.jpg" alt="Handmade crochet item" loading="lazy">
+    </div>
+</section>
+
+<!-- Botanical Divider SVG -->
+<div class="botanical-divider fade-up">
+    <span class="line"></span>
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 38 C20 38 20 20 20 20" stroke="#2D5016" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M20 28 C14 24 10 18 14 14 C16 12 20 14 20 18" stroke="#2D5016" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <path d="M20 22 C26 18 30 12 26 8 C24 6 20 8 20 12" stroke="#2D5016" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <path d="M20 14 C16 10 14 4 18 2 C19 1 21 1 22 2 C26 4 24 10 20 14" stroke="#2D5016" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    </svg>
+    <span class="line"></span>
+</div>
+
+<!-- About -->
+<section class="about-section" id="about">
+    <div class="section-inner">
+        <h2 class="section-title fade-up">About Me</h2>
+        <div class="botanical-divider fade-up">
+            <span class="line"></span>
+            <svg width="30" height="20" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 18 C6 14 10 8 15 10 C20 12 24 6 28 2" stroke="#2D5016" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M8 12 C6 8 8 4 12 6" stroke="#2D5016" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M22 8 C24 4 22 2 18 4" stroke="#2D5016" stroke-width="1" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span class="line"></span>
+        </div>
+        <div class="about-content">
+            <div class="about-text fade-up">
+                <p>I'm a college student with way too much yarn and a desire to create. Whether it's a hat shaped like your favorite character, a funky beanie for festivals, or a cozy hood for everyday wear &mdash; I love bringing creative ideas to life with a crochet hook.</p>
+            </div>
+            <div class="about-images fade-up">
+                <img src="images/about1.jpg" alt="Ellie crocheting" loading="lazy">
+                <img src="images/about2.jpg" alt="Crochet supplies" loading="lazy">
+                <img src="images/about3.jpg" alt="Work in progress" loading="lazy">
+                <img src="images/about4.jpg" alt="Finished pieces" loading="lazy">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Botanical Divider -->
+<div class="botanical-divider fade-up">
+    <span class="line"></span>
+    <svg width="50" height="24" viewBox="0 0 50 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 12 L50 12" stroke="#2D5016" stroke-width="0.8" opacity="0.3"/>
+        <path d="M18 12 C18 6 22 2 25 2 C28 2 32 6 32 12 C32 18 28 22 25 22 C22 22 18 18 18 12Z" stroke="#2D5016" stroke-width="1" fill="none"/>
+        <path d="M25 2 L25 22" stroke="#2D5016" stroke-width="0.8"/>
+        <path d="M19 8 L31 16" stroke="#2D5016" stroke-width="0.6" opacity="0.5"/>
+        <path d="M19 16 L31 8" stroke="#2D5016" stroke-width="0.6" opacity="0.5"/>
+    </svg>
+    <span class="line"></span>
+</div>
+
+<!-- Gallery -->
+<section class="gallery-section" id="gallery">
+    <div class="section-inner">
+        <h2 class="section-title fade-up">Gallery</h2>
+        <p class="section-subtitle fade-up">Browse through some of my favorite creations</p>
+
+        <!-- Cat Ear Hat with Tassle -->
+        <div class="gallery-category fade-up">
+            <div class="category-header">
+                <svg width="22" height="28" viewBox="0 0 22 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 2 C7 6 2 12 4 20 C5 24 8 26 11 26 C14 26 17 24 18 20 C20 12 15 6 11 2Z" stroke="#2D5016" stroke-width="1.2" fill="rgba(45,80,22,0.08)" stroke-linecap="round"/>
+                    <path d="M11 6 L11 22" stroke="#2D5016" stroke-width="0.8" opacity="0.4"/>
+                    <path d="M11 10 C8 8 6 10 7 13" stroke="#2D5016" stroke-width="0.8" fill="none" opacity="0.5"/>
+                    <path d="M11 14 C14 12 16 14 15 17" stroke="#2D5016" stroke-width="0.8" fill="none" opacity="0.5"/>
+                </svg>
+                <h3>Cat Ear Hat with Tassle</h3>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="images/gallery1.jpg" alt="Cat ear hat with tassle - view 1" loading="lazy"><div class="overlay"><span>Cat Ear Hat</span></div></div>
+                <div class="gallery-item"><img src="images/gallery2.jpg" alt="Cat ear hat with tassle - view 2" loading="lazy"><div class="overlay"><span>Cat Ear Hat</span></div></div>
+                <div class="gallery-item"><img src="images/gallery3.jpg" alt="Cat ear hat with tassle - view 3" loading="lazy"><div class="overlay"><span>Cat Ear Hat</span></div></div>
+                <div class="gallery-item"><img src="images/gallery4.jpg" alt="Cat ear hat with tassle - view 4" loading="lazy"><div class="overlay"><span>Cat Ear Hat</span></div></div>
+            </div>
+        </div>
+
+        <!-- Open Hoods -->
+        <div class="gallery-category fade-up">
+            <div class="category-header">
+                <svg width="22" height="28" viewBox="0 0 22 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 2 C7 6 2 12 4 20 C5 24 8 26 11 26 C14 26 17 24 18 20 C20 12 15 6 11 2Z" stroke="#C67B5C" stroke-width="1.2" fill="rgba(198,123,92,0.08)" stroke-linecap="round"/>
+                    <path d="M11 6 L11 22" stroke="#C67B5C" stroke-width="0.8" opacity="0.4"/>
+                    <path d="M11 10 C8 8 6 10 7 13" stroke="#C67B5C" stroke-width="0.8" fill="none" opacity="0.5"/>
+                    <path d="M11 14 C14 12 16 14 15 17" stroke="#C67B5C" stroke-width="0.8" fill="none" opacity="0.5"/>
+                </svg>
+                <h3>Open Hoods</h3>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="images/open_hoods1.jpg" alt="Open hood - view 1" loading="lazy"><div class="overlay"><span>Open Hood</span></div></div>
+                <div class="gallery-item"><img src="images/open_hoods2.jpg" alt="Open hood - view 2" loading="lazy"><div class="overlay"><span>Open Hood</span></div></div>
+            </div>
+        </div>
+
+        <!-- Jester/Clown -->
+        <div class="gallery-category fade-up">
+            <div class="category-header">
+                <svg width="22" height="28" viewBox="0 0 22 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 2 C7 6 2 12 4 20 C5 24 8 26 11 26 C14 26 17 24 18 20 C20 12 15 6 11 2Z" stroke="#2D5016" stroke-width="1.2" fill="rgba(45,80,22,0.08)" stroke-linecap="round"/>
+                    <path d="M11 6 L11 22" stroke="#2D5016" stroke-width="0.8" opacity="0.4"/>
+                    <path d="M11 10 C8 8 6 10 7 13" stroke="#2D5016" stroke-width="0.8" fill="none" opacity="0.5"/>
+                    <path d="M11 14 C14 12 16 14 15 17" stroke="#2D5016" stroke-width="0.8" fill="none" opacity="0.5"/>
+                </svg>
+                <h3>Jester / Clown</h3>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="images/jester1.jpg" alt="Jester hat - view 1" loading="lazy"><div class="overlay"><span>Jester Hat</span></div></div>
+                <div class="gallery-item"><img src="images/jester2.jpg" alt="Jester hat - view 2" loading="lazy"><div class="overlay"><span>Jester Hat</span></div></div>
+                <div class="gallery-item"><img src="images/jester3.jpg" alt="Jester hat - view 3" loading="lazy"><div class="overlay"><span>Jester Hat</span></div></div>
+                <div class="gallery-item"><img src="images/jester4.jpg" alt="Jester hat - view 4" loading="lazy"><div class="overlay"><span>Jester Hat</span></div></div>
+            </div>
+        </div>
+
+        <!-- Funky Hats -->
+        <div class="gallery-category fade-up">
+            <div class="category-header">
+                <svg width="22" height="28" viewBox="0 0 22 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 2 C7 6 2 12 4 20 C5 24 8 26 11 26 C14 26 17 24 18 20 C20 12 15 6 11 2Z" stroke="#C67B5C" stroke-width="1.2" fill="rgba(198,123,92,0.08)" stroke-linecap="round"/>
+                    <path d="M11 6 L11 22" stroke="#C67B5C" stroke-width="0.8" opacity="0.4"/>
+                    <path d="M11 10 C8 8 6 10 7 13" stroke="#C67B5C" stroke-width="0.8" fill="none" opacity="0.5"/>
+                    <path d="M11 14 C14 12 16 14 15 17" stroke="#C67B5C" stroke-width="0.8" fill="none" opacity="0.5"/>
+                </svg>
+                <h3>Funky Hats</h3>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="images/funky1.jpg" alt="Funky hat - view 1" loading="lazy"><div class="overlay"><span>Funky Hat</span></div></div>
+                <div class="gallery-item"><img src="images/funky2.jpg" alt="Funky hat - view 2" loading="lazy"><div class="overlay"><span>Funky Hat</span></div></div>
+                <div class="gallery-item"><img src="images/funky3.jpg" alt="Funky hat - view 3" loading="lazy"><div class="overlay"><span>Funky Hat</span></div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact -->
+<section class="contact-section" id="contact">
+    <div class="section-inner">
+        <h2 class="section-title fade-up">Place an Order</h2>
+        <div class="botanical-divider fade-up">
+            <span class="line"></span>
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 34 L18 18" stroke="#2D5016" stroke-width="1" stroke-linecap="round"/>
+                <path d="M18 26 C12 22 8 16 12 12 C14 10 18 12 18 16" stroke="#2D5016" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M18 20 C24 16 28 10 24 6 C22 4 18 6 18 10" stroke="#2D5016" stroke-width="1" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span class="line"></span>
+        </div>
+        <div class="contact-card fade-up">
+            <h3>Let's Create Something Together</h3>
+            <p>Ready to get a custom crochet piece? To place an order, just send me the following info:</p>
+            <ul class="order-list">
+                <li>Your name</li>
+                <li>Character description</li>
+                <li>Hat style preference</li>
+                <li>Budget</li>
+            </ul>
+            <p>Send your order details to:</p>
+            <a href="mailto:Eleanor@aughey.com" class="email-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D5016" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"/>
+                    <path d="M22 4 L12 13 L2 4"/>
+                </svg>
+                Eleanor@aughey.com
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Closing CTA -->
+<section class="closing-section">
+    <div class="section-inner">
+        <p class="closing-text fade-up">If any of these hat styles interest you, shoot me a message and let's make something awesome together!</p>
+        <div class="closing-images fade-up">
+            <img src="images/closing1.jpg" alt="Crochet showcase 1" loading="lazy">
+            <img src="images/closing2.jpg" alt="Crochet showcase 2" loading="lazy">
+            <img src="images/closing3.jpg" alt="Crochet showcase 3" loading="lazy">
+            <img src="images/closing4.jpg" alt="Crochet showcase 4" loading="lazy">
+            <img src="images/closing5.jpg" alt="Crochet showcase 5" loading="lazy">
+        </div>
+        <a href="mailto:Eleanor@aughey.com" class="cta-button">Get in Touch</a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2026 Ellie Does Crochet and Stuff. Made with yarn and love.</p>
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+    <button class="lightbox-close" aria-label="Close">&times;</button>
+    <button class="lightbox-nav lightbox-prev" aria-label="Previous">&#8249;</button>
+    <img src="" alt="Enlarged view" id="lightboxImg">
+    <button class="lightbox-nav lightbox-next" aria-label="Next">&#8250;</button>
+</div>
+
+<script>
+    // Nav scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    navToggle.addEventListener('click', () => {
+        navToggle.classList.toggle('active');
+        navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navToggle.classList.remove('active');
+            navLinks.classList.remove('open');
+        });
+    });
+
+    // Fade-up on scroll
+    const fadeEls = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    fadeEls.forEach(el => observer.observe(el));
+
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const galleryItems = document.querySelectorAll('.gallery-item img');
+    const allImages = Array.from(galleryItems);
+    let currentIndex = 0;
+
+    galleryItems.forEach((img, i) => {
+        img.addEventListener('click', () => {
+            currentIndex = i;
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+    });
+
+    document.querySelector('.lightbox-prev').addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentIndex = (currentIndex - 1 + allImages.length) % allImages.length;
+        lightboxImg.src = allImages[currentIndex].src;
+        lightboxImg.alt = allImages[currentIndex].alt;
+    });
+
+    document.querySelector('.lightbox-next').addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentIndex = (currentIndex + 1) % allImages.length;
+        lightboxImg.src = allImages[currentIndex].src;
+        lightboxImg.alt = allImages[currentIndex].alt;
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') document.querySelector('.lightbox-prev').click();
+        if (e.key === 'ArrowRight') document.querySelector('.lightbox-next').click();
+    });
+</script>
+</body>
+</html>

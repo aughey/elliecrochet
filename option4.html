@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ellie Does Crochet and Stuff</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-ink: #1a1a1a;
+  --color-paper: #faf8f5;
+  --color-accent: #c45b3e;
+  --color-muted: #6b6560;
+  --color-rule: #d4cfc9;
+  --color-cream: #f0ebe4;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Montserrat', Helvetica, Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-serif);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ---- Utility ---- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section-rule {
+  border: none;
+  border-top: 1px solid var(--color-rule);
+  margin: 0;
+}
+
+.section-rule--thick {
+  border-top-width: 3px;
+  border-color: var(--color-ink);
+}
+
+/* ---- Top Bar ---- */
+.topbar {
+  text-align: center;
+  padding: 1rem 0 0.5rem;
+  border-bottom: 3px double var(--color-ink);
+}
+
+.topbar__date {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* ---- Masthead ---- */
+.masthead {
+  text-align: center;
+  padding: 2rem 0 1.5rem;
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.masthead__title {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(2.2rem, 6vw, 4.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+
+.masthead__subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-top: 0.5rem;
+}
+
+/* ---- Hero ---- */
+.hero {
+  padding: 2rem 0;
+}
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.hero__img-wrap {
+  overflow: hidden;
+  position: relative;
+}
+
+.hero__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.hero__img-wrap:hover img {
+  transform: scale(1.03);
+}
+
+.hero__img-wrap--center {
+  aspect-ratio: 3/4;
+}
+
+.hero__img-wrap--side {
+  aspect-ratio: 2/3;
+}
+
+.hero__caption {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* ---- About / Editorial ---- */
+.about {
+  padding: 3rem 0;
+}
+
+.about__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.about__text-col {
+  columns: 1;
+}
+
+.about__heading {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 2.4rem;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--color-ink);
+  padding-bottom: 0.75rem;
+}
+
+.about__body {
+  font-size: 1.1rem;
+  color: var(--color-ink);
+  line-height: 1.85;
+}
+
+.about__body p {
+  margin-bottom: 1rem;
+  text-indent: 1.5em;
+}
+
+.about__body p:first-child {
+  text-indent: 0;
+}
+
+.about__body p:first-child::first-letter {
+  font-size: 3.8em;
+  float: left;
+  line-height: 0.8;
+  margin: 0.05em 0.12em 0 0;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.pull-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.6rem;
+  line-height: 1.4;
+  color: var(--color-accent);
+  border-left: 3px solid var(--color-accent);
+  padding: 1rem 0 1rem 1.5rem;
+  margin: 1.5rem 0;
+  text-indent: 0 !important;
+}
+
+.about__images-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.about__img-wrap {
+  overflow: hidden;
+}
+
+.about__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  aspect-ratio: 4/5;
+  transition: transform 0.5s ease;
+}
+
+.about__img-wrap:hover img {
+  transform: scale(1.04);
+}
+
+.about__img-wrap:first-child {
+  grid-column: 1 / -1;
+}
+
+.about__img-wrap:first-child img {
+  aspect-ratio: 16/9;
+}
+
+/* ---- Gallery ---- */
+.gallery {
+  padding: 3rem 0;
+}
+
+.gallery__header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.gallery__title {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: 2.8rem;
+  letter-spacing: -0.01em;
+}
+
+.gallery__subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-top: 0.4rem;
+}
+
+.gallery-category {
+  margin-bottom: 3rem;
+}
+
+.gallery-category__name {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.carousel-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.carousel-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-ink);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  transition: background 0.25s, color 0.25s;
+  color: var(--color-ink);
+}
+
+.carousel-btn:hover {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.carousel-track-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 0.5rem;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-track__item {
+  flex: 0 0 auto;
+  width: 300px;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-track__item img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.carousel-track__item:hover img {
+  transform: scale(1.04);
+}
+
+/* ---- Contact ---- */
+.contact {
+  padding: 3rem 0;
+}
+
+.contact__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.contact__heading {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 2.2rem;
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+}
+
+.contact__body {
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.contact__body p {
+  margin-bottom: 1rem;
+}
+
+.contact__list {
+  list-style: none;
+  margin: 1.25rem 0;
+  padding: 0;
+}
+
+.contact__list li {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--color-rule);
+  letter-spacing: 0.03em;
+}
+
+.contact__list li:first-child {
+  border-top: 1px solid var(--color-rule);
+}
+
+.contact__list li span {
+  font-weight: 600;
+}
+
+.contact__email {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-accent);
+  padding-bottom: 2px;
+  transition: color 0.25s, border-color 0.25s;
+}
+
+.contact__email:hover {
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+}
+
+.contact__img-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.contact__img-grid img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---- CTA / Closing ---- */
+.closing {
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.closing__text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.8rem;
+  line-height: 1.5;
+  max-width: 700px;
+  margin: 0 auto 2.5rem;
+  color: var(--color-ink);
+}
+
+.closing__images {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.closing__images img {
+  flex: 0 0 auto;
+  width: 200px;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.closing__images img:hover {
+  transform: scale(1.03);
+}
+
+/* ---- Footer ---- */
+.footer {
+  text-align: center;
+  padding: 2rem 0;
+  border-top: 3px double var(--color-ink);
+  margin-top: 1rem;
+}
+
+.footer__text {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .hero__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .hero__img-wrap--side:last-child {
+    display: none;
+  }
+  .about__layout,
+  .contact__layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .carousel-track__item {
+    width: 260px;
+  }
+  .closing__images img {
+    width: 160px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 0 1rem;
+  }
+  .hero__grid {
+    grid-template-columns: 1fr;
+  }
+  .hero__img-wrap--side {
+    display: none;
+  }
+  .hero__img-wrap--center img {
+    aspect-ratio: 4/5;
+  }
+  .about__heading {
+    font-size: 1.8rem;
+  }
+  .about__images-col {
+    grid-template-columns: 1fr 1fr;
+  }
+  .gallery__title {
+    font-size: 2rem;
+  }
+  .carousel-track__item {
+    width: 220px;
+  }
+  .pull-quote {
+    font-size: 1.3rem;
+  }
+  .closing__text {
+    font-size: 1.4rem;
+  }
+  .closing__images img {
+    width: 130px;
+  }
+  .contact__img-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="container">
+    <p class="topbar__date">Handmade with love &mdash; One stitch at a time</p>
+  </div>
+</div>
+
+<!-- Masthead -->
+<header class="masthead">
+  <div class="container">
+    <h1 class="masthead__title">Ellie Does Crochet<br>and Stuff</h1>
+    <p class="masthead__subtitle">Custom hats &bull; Character designs &bull; Wearable art</p>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero__grid">
+      <div class="hero__img-wrap hero__img-wrap--side">
+        <img src="images/hero_left.jpg" alt="Crochet creation showcase">
+      </div>
+      <div class="hero__img-wrap hero__img-wrap--center">
+        <img src="images/hero_center.jpg" alt="Featured crochet design">
+      </div>
+      <div class="hero__img-wrap hero__img-wrap--side">
+        <img src="images/hero_right.jpg" alt="Handmade crochet piece">
+      </div>
+    </div>
+    <p class="hero__caption">The latest from the hook &mdash; Custom creations, made to order</p>
+  </div>
+</section>
+
+<div class="container"><hr class="section-rule section-rule--thick"></div>
+
+<!-- About -->
+<section class="about">
+  <div class="container">
+    <div class="about__layout">
+      <div class="about__text-col">
+        <h2 class="about__heading">About Ellie</h2>
+        <div class="about__body">
+          <p>I'm a college student with way too much yarn and a desire to create. Whether it's a hat shaped like your favorite character, a funky beanie for festivals, or a cozy hood for everyday wear &mdash; I love bringing creative ideas to life with a crochet hook.</p>
+          <div class="pull-quote">
+            &ldquo;I love bringing creative ideas to life with a crochet hook.&rdquo;
+          </div>
+          <p>Every piece is made by hand with care and attention to detail. I work with my customers to design something truly one-of-a-kind &mdash; something that reflects your personality and style. From the yarn selection to the final stitch, each project is a labor of love.</p>
+          <p>Whether you have a clear vision or just a spark of an idea, I'm here to help turn it into something you can actually wear. Let's make something awesome together.</p>
+        </div>
+      </div>
+      <div class="about__images-col">
+        <div class="about__img-wrap">
+          <img src="images/about1.jpg" alt="Ellie crocheting">
+        </div>
+        <div class="about__img-wrap">
+          <img src="images/about2.jpg" alt="Crochet work in progress">
+        </div>
+        <div class="about__img-wrap">
+          <img src="images/about3.jpg" alt="Yarn collection">
+        </div>
+        <div class="about__img-wrap">
+          <img src="images/about4.jpg" alt="Finished crochet piece">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container"><hr class="section-rule"></div>
+
+<!-- Gallery -->
+<section class="gallery">
+  <div class="container">
+    <div class="gallery__header">
+      <h2 class="gallery__title">The Collection</h2>
+      <p class="gallery__subtitle">Browse the latest designs &mdash; Scroll or use the arrows</p>
+    </div>
+
+    <!-- Cat Ear Hat with Tassle -->
+    <div class="gallery-category">
+      <div class="gallery-category__name">
+        <span>Cat Ear Hat with Tassle</span>
+        <div class="carousel-controls">
+          <button class="carousel-btn carousel-btn--prev" aria-label="Scroll left">&larr;</button>
+          <button class="carousel-btn carousel-btn--next" aria-label="Scroll right">&rarr;</button>
+        </div>
+      </div>
+      <div class="carousel-track-wrapper">
+        <div class="carousel-track">
+          <div class="carousel-track__item"><img src="images/gallery1.jpg" alt="Cat ear hat with tassle - view 1"></div>
+          <div class="carousel-track__item"><img src="images/gallery2.jpg" alt="Cat ear hat with tassle - view 2"></div>
+          <div class="carousel-track__item"><img src="images/gallery3.jpg" alt="Cat ear hat with tassle - view 3"></div>
+          <div class="carousel-track__item"><img src="images/gallery4.jpg" alt="Cat ear hat with tassle - view 4"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Open Hoods -->
+    <div class="gallery-category">
+      <div class="gallery-category__name">
+        <span>Open Hoods</span>
+        <div class="carousel-controls">
+          <button class="carousel-btn carousel-btn--prev" aria-label="Scroll left">&larr;</button>
+          <button class="carousel-btn carousel-btn--next" aria-label="Scroll right">&rarr;</button>
+        </div>
+      </div>
+      <div class="carousel-track-wrapper">
+        <div class="carousel-track">
+          <div class="carousel-track__item"><img src="images/open_hoods1.jpg" alt="Open hood - view 1"></div>
+          <div class="carousel-track__item"><img src="images/open_hoods2.jpg" alt="Open hood - view 2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Jester/Clown -->
+    <div class="gallery-category">
+      <div class="gallery-category__name">
+        <span>Jester / Clown</span>
+        <div class="carousel-controls">
+          <button class="carousel-btn carousel-btn--prev" aria-label="Scroll left">&larr;</button>
+          <button class="carousel-btn carousel-btn--next" aria-label="Scroll right">&rarr;</button>
+        </div>
+      </div>
+      <div class="carousel-track-wrapper">
+        <div class="carousel-track">
+          <div class="carousel-track__item"><img src="images/jester1.jpg" alt="Jester hat - view 1"></div>
+          <div class="carousel-track__item"><img src="images/jester2.jpg" alt="Jester hat - view 2"></div>
+          <div class="carousel-track__item"><img src="images/jester3.jpg" alt="Jester hat - view 3"></div>
+          <div class="carousel-track__item"><img src="images/jester4.jpg" alt="Jester hat - view 4"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Funky Hats -->
+    <div class="gallery-category">
+      <div class="gallery-category__name">
+        <span>Funky Hats</span>
+        <div class="carousel-controls">
+          <button class="carousel-btn carousel-btn--prev" aria-label="Scroll left">&larr;</button>
+          <button class="carousel-btn carousel-btn--next" aria-label="Scroll right">&rarr;</button>
+        </div>
+      </div>
+      <div class="carousel-track-wrapper">
+        <div class="carousel-track">
+          <div class="carousel-track__item"><img src="images/funky1.jpg" alt="Funky hat - view 1"></div>
+          <div class="carousel-track__item"><img src="images/funky2.jpg" alt="Funky hat - view 2"></div>
+          <div class="carousel-track__item"><img src="images/funky3.jpg" alt="Funky hat - view 3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container"><hr class="section-rule section-rule--thick"></div>
+
+<!-- Contact -->
+<section class="contact">
+  <div class="container">
+    <div class="contact__layout">
+      <div>
+        <h2 class="contact__heading">Place an Order</h2>
+        <div class="contact__body">
+          <p>Ready to get your own custom crochet piece? Send me the following details and I'll get back to you with a quote:</p>
+          <ul class="contact__list">
+            <li><span>Your name</span> &mdash; So I know who I'm working with</li>
+            <li><span>Character description</span> &mdash; Who or what inspires the design</li>
+            <li><span>Hat style preference</span> &mdash; Hood, beanie, cat ears, jester, etc.</li>
+            <li><span>Budget</span> &mdash; So I can tailor the project to fit</li>
+          </ul>
+          <p>Reach out via email:</p>
+          <a href="mailto:Eleanor@aughey.com" class="contact__email">Eleanor@aughey.com</a>
+        </div>
+      </div>
+      <div class="contact__img-grid">
+        <img src="images/about1.jpg" alt="Custom crochet work">
+        <img src="images/about2.jpg" alt="Crochet detail">
+        <img src="images/about3.jpg" alt="Work in progress">
+        <img src="images/about4.jpg" alt="Finished piece">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container"><hr class="section-rule"></div>
+
+<!-- Closing CTA -->
+<section class="closing">
+  <div class="container">
+    <p class="closing__text">&ldquo;If any of these hat styles interest you, shoot me a message and let&rsquo;s make something awesome together!&rdquo;</p>
+    <div class="closing__images">
+      <img src="images/closing1.jpg" alt="Crochet showcase 1">
+      <img src="images/closing2.jpg" alt="Crochet showcase 2">
+      <img src="images/closing3.jpg" alt="Crochet showcase 3">
+      <img src="images/closing4.jpg" alt="Crochet showcase 4">
+      <img src="images/closing5.jpg" alt="Crochet showcase 5">
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <p class="footer__text">Ellie Does Crochet and Stuff &copy; 2026 &mdash; All pieces handmade with love</p>
+  </div>
+</footer>
+
+<script>
+(function() {
+  // Carousel scroll functionality
+  document.querySelectorAll('.gallery-category').forEach(function(category) {
+    var track = category.querySelector('.carousel-track');
+    var prevBtn = category.querySelector('.carousel-btn--prev');
+    var nextBtn = category.querySelector('.carousel-btn--next');
+    var scrollAmount = 320;
+
+    if (!track || !prevBtn || !nextBtn) return;
+
+    prevBtn.addEventListener('click', function() {
+      track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+
+    nextBtn.addEventListener('click', function() {
+      track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

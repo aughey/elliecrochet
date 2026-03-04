@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellie Does Crochet and Stuff</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #F5F5F7;
+            color: #1d1d1f;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .bento-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: auto;
+            grid-template-areas:
+                "hero hero hero hero"
+                "about about gallery1 gallery1"
+                "gallery2 gallery3 gallery3 gallery4"
+                "cta cta cta cta"
+                "contact contact closing closing";
+            gap: 16px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        /* ---- HERO CARD ---- */
+        .card--hero {
+            grid-area: hero;
+            position: relative;
+            min-height: 480px;
+        }
+
+        .hero-images {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr 1fr;
+            height: 100%;
+            min-height: 480px;
+        }
+
+        .hero-images img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.02) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 48px;
+        }
+
+        .hero-overlay h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.1;
+            max-width: 700px;
+        }
+
+        .hero-overlay .tagline {
+            font-size: 1.15rem;
+            font-weight: 400;
+            color: rgba(255,255,255,0.85);
+            margin-top: 12px;
+        }
+
+        .accent-dot {
+            color: #2DD4BF;
+        }
+
+        /* ---- ABOUT CARD ---- */
+        .card--about {
+            grid-area: about;
+            padding: 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #2DD4BF;
+        }
+
+        .card--about h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .card--about p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #555;
+            font-weight: 400;
+        }
+
+        .about-images {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .about-images img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        /* ---- GALLERY CARDS ---- */
+        .card--gallery {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card--gallery1 { grid-area: gallery1; }
+        .card--gallery2 { grid-area: gallery2; }
+        .card--gallery3 { grid-area: gallery3; }
+        .card--gallery4 { grid-area: gallery4; }
+
+        .card--gallery h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .gallery-mini {
+            display: grid;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .gallery-mini--4 {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+        }
+
+        .gallery-mini--2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .gallery-mini--3 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .gallery-mini img {
+            width: 100%;
+            height: 100%;
+            min-height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-mini img:hover {
+            transform: scale(1.03);
+        }
+
+        /* ---- CTA CARD ---- */
+        .card--cta {
+            grid-area: cta;
+            padding: 48px;
+            text-align: center;
+            background: linear-gradient(135deg, #2DD4BF 0%, #14b8a6 100%);
+            color: #fff;
+        }
+
+        .card--cta:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(45, 212, 191, 0.3);
+        }
+
+        .card--cta h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.4;
+        }
+
+        /* ---- CONTACT CARD ---- */
+        .card--contact {
+            grid-area: contact;
+            padding: 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card--contact h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .card--contact p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        .order-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 4px 0;
+        }
+
+        .order-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .order-list li .bullet {
+            width: 8px;
+            height: 8px;
+            background: #2DD4BF;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .email-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #F5F5F7;
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #1d1d1f;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-top: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .email-link:hover {
+            background: #e8e8ea;
+        }
+
+        .email-link svg {
+            width: 18px;
+            height: 18px;
+            fill: #2DD4BF;
+        }
+
+        /* ---- CLOSING CARD ---- */
+        .card--closing {
+            grid-area: closing;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .closing-images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 1fr 1fr;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .closing-images img {
+            width: 100%;
+            height: 100%;
+            min-height: 100px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .closing-images img:hover {
+            transform: scale(1.03);
+        }
+
+        .closing-images img:first-child {
+            grid-column: 1 / 2;
+            grid-row: 1 / 3;
+        }
+
+        /* ---- LIGHTBOX ---- */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 16px;
+            transform: scale(0.92);
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox.active img {
+            transform: scale(1);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            border: none;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            color: #fff;
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-areas:
+                    "hero hero"
+                    "about about"
+                    "gallery1 gallery1"
+                    "gallery2 gallery3"
+                    "gallery4 gallery4"
+                    "cta cta"
+                    "contact contact"
+                    "closing closing";
+            }
+
+            .hero-overlay h1 {
+                font-size: 2.4rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 12px;
+            }
+
+            .bento-grid {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "hero"
+                    "about"
+                    "gallery1"
+                    "gallery2"
+                    "gallery3"
+                    "gallery4"
+                    "cta"
+                    "contact"
+                    "closing";
+                gap: 12px;
+            }
+
+            .card--hero {
+                min-height: 320px;
+            }
+
+            .hero-images {
+                grid-template-columns: 1fr;
+                min-height: 320px;
+            }
+
+            .hero-images img:nth-child(1),
+            .hero-images img:nth-child(3) {
+                display: none;
+            }
+
+            .hero-overlay {
+                padding: 28px;
+            }
+
+            .hero-overlay h1 {
+                font-size: 1.8rem;
+            }
+
+            .about-images {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .card--about {
+                padding: 24px;
+            }
+
+            .card--gallery {
+                padding: 20px;
+            }
+
+            .card--cta {
+                padding: 32px 24px;
+            }
+
+            .card--cta h2 {
+                font-size: 1.3rem;
+            }
+
+            .card--contact {
+                padding: 24px;
+            }
+
+            .card--closing {
+                padding: 20px;
+            }
+
+            .closing-images {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+            }
+
+            .closing-images img:first-child {
+                grid-column: auto;
+                grid-row: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bento-grid">
+
+        <!-- HERO -->
+        <div class="card card--hero">
+            <div class="hero-images">
+                <img src="images/hero_left.jpg" alt="Crochet creation" loading="lazy">
+                <img src="images/hero_center.jpg" alt="Featured crochet piece" loading="lazy">
+                <img src="images/hero_right.jpg" alt="Crochet creation" loading="lazy">
+            </div>
+            <div class="hero-overlay">
+                <h1>Ellie Does Crochet and Stuff<span class="accent-dot">.</span></h1>
+                <p class="tagline">Handmade hats, hoods, and all kinds of cozy creations</p>
+            </div>
+        </div>
+
+        <!-- ABOUT -->
+        <div class="card card--about">
+            <span class="card-label">About</span>
+            <h2>Yarn, hooks, and a whole lot of creativity</h2>
+            <p>I'm a college student with way too much yarn and a desire to create. Whether it's a hat shaped like your favorite character, a funky beanie for festivals, or a cozy hood for everyday wear — I love bringing creative ideas to life with a crochet hook.</p>
+            <div class="about-images">
+                <img src="images/about1.jpg" alt="About Ellie 1" class="clickable-img" loading="lazy">
+                <img src="images/about2.jpg" alt="About Ellie 2" class="clickable-img" loading="lazy">
+                <img src="images/about3.jpg" alt="About Ellie 3" class="clickable-img" loading="lazy">
+                <img src="images/about4.jpg" alt="About Ellie 4" class="clickable-img" loading="lazy">
+            </div>
+        </div>
+
+        <!-- GALLERY: Cat Ear Hat -->
+        <div class="card card--gallery card--gallery1">
+            <span class="card-label">Gallery</span>
+            <h3>Cat Ear Hat with Tassle</h3>
+            <div class="gallery-mini gallery-mini--4">
+                <img src="images/gallery1.jpg" alt="Cat ear hat 1" class="clickable-img" loading="lazy">
+                <img src="images/gallery2.jpg" alt="Cat ear hat 2" class="clickable-img" loading="lazy">
+                <img src="images/gallery3.jpg" alt="Cat ear hat 3" class="clickable-img" loading="lazy">
+                <img src="images/gallery4.jpg" alt="Cat ear hat 4" class="clickable-img" loading="lazy">
+            </div>
+        </div>
+
+        <!-- GALLERY: Open Hoods -->
+        <div class="card card--gallery card--gallery2">
+            <span class="card-label">Gallery</span>
+            <h3>Open Hoods</h3>
+            <div class="gallery-mini gallery-mini--2">
+                <img src="images/open_hoods1.jpg" alt="Open hood 1" class="clickable-img" loading="lazy">
+                <img src="images/open_hoods2.jpg" alt="Open hood 2" class="clickable-img" loading="lazy">
+            </div>
+        </div>
+
+        <!-- GALLERY: Jester/Clown -->
+        <div class="card card--gallery card--gallery3">
+            <span class="card-label">Gallery</span>
+            <h3>Jester / Clown</h3>
+            <div class="gallery-mini gallery-mini--4">
+                <img src="images/jester1.jpg" alt="Jester hat 1" class="clickable-img" loading="lazy">
+                <img src="images/jester2.jpg" alt="Jester hat 2" class="clickable-img" loading="lazy">
+                <img src="images/jester3.jpg" alt="Jester hat 3" class="clickable-img" loading="lazy">
+                <img src="images/jester4.jpg" alt="Jester hat 4" class="clickable-img" loading="lazy">
+            </div>
+        </div>
+
+        <!-- GALLERY: Funky Hats -->
+        <div class="card card--gallery card--gallery4">
+            <span class="card-label">Gallery</span>
+            <h3>Funky Hats</h3>
+            <div class="gallery-mini gallery-mini--3">
+                <img src="images/funky1.jpg" alt="Funky hat 1" class="clickable-img" loading="lazy">
+                <img src="images/funky2.jpg" alt="Funky hat 2" class="clickable-img" loading="lazy">
+                <img src="images/funky3.jpg" alt="Funky hat 3" class="clickable-img" loading="lazy">
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="card card--cta">
+            <h2>If any of these hat styles interest you, shoot me a message and let's make something awesome together!</h2>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="card card--contact">
+            <span class="card-label">Order</span>
+            <h2>Place a Custom Order</h2>
+            <p>Want something made just for you? Send me the following details and I'll get started:</p>
+            <ul class="order-list">
+                <li><span class="bullet"></span>Your name</li>
+                <li><span class="bullet"></span>Character description</li>
+                <li><span class="bullet"></span>Hat style preference</li>
+                <li><span class="bullet"></span>Budget</li>
+            </ul>
+            <a href="mailto:Eleanor@aughey.com" class="email-link">
+                <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+                Eleanor@aughey.com
+            </a>
+        </div>
+
+        <!-- CLOSING -->
+        <div class="card card--closing">
+            <span class="card-label">More Creations</span>
+            <div class="closing-images">
+                <img src="images/closing1.jpg" alt="Closing creation 1" class="clickable-img" loading="lazy">
+                <img src="images/closing2.jpg" alt="Closing creation 2" class="clickable-img" loading="lazy">
+                <img src="images/closing3.jpg" alt="Closing creation 3" class="clickable-img" loading="lazy">
+                <img src="images/closing4.jpg" alt="Closing creation 4" class="clickable-img" loading="lazy">
+                <img src="images/closing5.jpg" alt="Closing creation 5" class="clickable-img" loading="lazy">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+        <img src="" alt="Enlarged view" id="lightbox-img">
+    </div>
+
+    <script>
+        (function() {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxClose = document.getElementById('lightbox-close');
+
+            document.querySelectorAll('.clickable-img').forEach(function(img) {
+                img.style.cursor = 'pointer';
+                img.addEventListener('click', function() {
+                    lightboxImg.src = this.src;
+                    lightboxImg.alt = this.alt;
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) closeLightbox();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeLightbox();
+            });
+        })();
+    </script>
+
+</body>
+</html>

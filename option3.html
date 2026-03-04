@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellie Does Crochet and Stuff</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #111;
+            --bg-card: #1a1a1a;
+            --bg-elevated: #222;
+            --accent: #e8a87c;
+            --accent-light: #f0c4a8;
+            --text-primary: #eee;
+            --text-secondary: #aaa;
+            --text-muted: #777;
+            --serif: 'Playfair Display', Georgia, serif;
+            --sans: 'Raleway', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        /* ---- NAV ---- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.4s, box-shadow 0.4s;
+        }
+
+        nav.scrolled {
+            background: rgba(17, 17, 17, 0.95);
+            box-shadow: 0 2px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        nav .logo {
+            font-family: var(--serif);
+            font-size: 1.25rem;
+            color: var(--accent);
+            letter-spacing: 0.5px;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        nav .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        /* ---- HERO ---- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(232, 168, 124, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-family: var(--serif);
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .hero h1 span {
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        .hero .tagline {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 400;
+            margin-bottom: 3rem;
+        }
+
+        .hero-images {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr 1fr;
+            gap: 1.5rem;
+            max-width: 950px;
+            width: 100%;
+            align-items: end;
+        }
+
+        .hero-images img {
+            width: 100%;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-images img:nth-child(1),
+        .hero-images img:nth-child(3) {
+            height: 280px;
+        }
+
+        .hero-images img:nth-child(2) {
+            height: 340px;
+        }
+
+        .scroll-hint {
+            margin-top: 3rem;
+            animation: bounce 2s infinite;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .scroll-hint::after {
+            content: '';
+            display: block;
+            width: 1px;
+            height: 40px;
+            background: var(--text-muted);
+            margin: 0.8rem auto 0;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+
+        /* ---- SECTIONS ---- */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title {
+            font-family: var(--serif);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+            margin-bottom: 2.5rem;
+        }
+
+        /* ---- ABOUT ---- */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text p {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.9;
+        }
+
+        .about-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .about-images img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 6px;
+            transition: transform 0.4s, box-shadow 0.4s;
+        }
+
+        .about-images img:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ---- GALLERY ---- */
+        .gallery-section {
+            max-width: 1400px;
+        }
+
+        .gallery-filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.5rem;
+            background: transparent;
+            border: 1px solid #333;
+            color: var(--text-secondary);
+            font-family: var(--sans);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-dark);
+        }
+
+        .masonry {
+            columns: 4;
+            column-gap: 1.2rem;
+        }
+
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 1.2rem;
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: opacity 0.4s, transform 0.4s;
+        }
+
+        .gallery-item.hidden {
+            display: none;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            display: block;
+            border-radius: 6px;
+            transition: transform 0.5s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.03);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(17, 17, 17, 0.85) 0%, transparent 50%);
+            display: flex;
+            align-items: flex-end;
+            padding: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.4s;
+            border-radius: 6px;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay .category-name {
+            font-family: var(--serif);
+            font-size: 1rem;
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        /* ---- LIGHTBOX ---- */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 6px;
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.6);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s;
+        }
+
+        .lightbox-close:hover {
+            color: var(--accent);
+        }
+
+        /* ---- CONTACT / ORDER ---- */
+        .contact-section {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 4rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .order-details h3 {
+            font-family: var(--serif);
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .order-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .order-list li {
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #2a2a2a;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .order-list li::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .email-link {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--accent);
+            color: var(--bg-dark);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .email-link:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        .contact-info p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.9;
+        }
+
+        /* ---- CTA / CLOSING ---- */
+        .closing {
+            text-align: center;
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .closing .cta-text {
+            font-family: var(--serif);
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            color: var(--text-primary);
+            max-width: 750px;
+            margin: 0 auto 3rem;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        .closing-images {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+        }
+
+        .closing-images img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 6px;
+            transition: transform 0.4s, box-shadow 0.4s;
+        }
+
+        .closing-images img:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(232, 168, 124, 0.15);
+        }
+
+        /* ---- FOOTER ---- */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid #222;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        /* ---- ANIMATIONS ---- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 1024px) {
+            .masonry {
+                columns: 3;
+            }
+
+            .closing-images {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .closing-images img:nth-child(4),
+            .closing-images img:nth-child(5) {
+                grid-column: span 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: var(--bg-card);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2.5rem;
+                transition: right 0.4s;
+            }
+
+            nav .nav-links.open {
+                right: 0;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero-images {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                max-width: 400px;
+            }
+
+            .hero-images img:nth-child(1),
+            .hero-images img:nth-child(2),
+            .hero-images img:nth-child(3) {
+                height: 250px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .masonry {
+                columns: 2;
+            }
+
+            .contact-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 2.5rem 2rem;
+            }
+
+            .closing-images {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .closing-images img {
+                height: 200px;
+            }
+
+            .closing-images img:last-child {
+                grid-column: span 2;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .masonry {
+                columns: 1;
+            }
+
+            .about-images {
+                grid-template-columns: 1fr;
+            }
+
+            .about-images img {
+                height: 260px;
+            }
+
+            .closing-images {
+                grid-template-columns: 1fr;
+            }
+
+            .closing-images img:last-child {
+                grid-column: span 1;
+            }
+
+            .gallery-filters {
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.78rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav id="navbar">
+        <div class="logo">Ellie Does Crochet</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#about" onclick="closeNav()">About</a></li>
+            <li><a href="#gallery" onclick="closeNav()">Gallery</a></li>
+            <li><a href="#order" onclick="closeNav()">Order</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger" onclick="toggleNav()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Ellie Does Crochet<br><span>and Stuff</span></h1>
+        <p class="tagline">Handmade hats &middot; Custom creations &middot; Made with love</p>
+        <div class="hero-images fade-in">
+            <img src="images/hero_left.jpg" alt="Crochet creation showcase">
+            <img src="images/hero_center.jpg" alt="Featured crochet hat">
+            <img src="images/hero_right.jpg" alt="Handmade crochet work">
+        </div>
+        <div class="scroll-hint">Scroll</div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="about-content">
+            <div class="about-text fade-in">
+                <p class="section-label">About Me</p>
+                <h2 class="section-title">Yarn, Hooks &amp;<br>Imagination</h2>
+                <div class="divider"></div>
+                <p>I'm a college student with way too much yarn and a desire to create. Whether it's a hat shaped like your favorite character, a funky beanie for festivals, or a cozy hood for everyday wear &mdash; I love bringing creative ideas to life with a crochet hook.</p>
+                <p>Every piece is handmade with care, and I love working with people to bring their vision to reality. No two hats are ever exactly the same, and that's what makes it special.</p>
+            </div>
+            <div class="about-images fade-in">
+                <img src="images/about1.jpg" alt="About Ellie's crochet work">
+                <img src="images/about2.jpg" alt="Crochet process">
+                <img src="images/about3.jpg" alt="Finished crochet pieces">
+                <img src="images/about4.jpg" alt="Crochet materials">
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="gallery-section">
+        <div class="fade-in">
+            <p class="section-label">Portfolio</p>
+            <h2 class="section-title">The Gallery</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="gallery-filters fade-in">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="cat-ear">Cat Ear Hat</button>
+            <button class="filter-btn" data-filter="open-hoods">Open Hoods</button>
+            <button class="filter-btn" data-filter="jester">Jester / Clown</button>
+            <button class="filter-btn" data-filter="funky">Funky Hats</button>
+        </div>
+
+        <div class="masonry" id="galleryGrid">
+            <!-- Cat Ear Hat with Tassle -->
+            <div class="gallery-item" data-category="cat-ear">
+                <img src="images/gallery1.jpg" alt="Cat Ear Hat with Tassle">
+                <div class="gallery-overlay">
+                    <span class="category-name">Cat Ear Hat with Tassle</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="cat-ear">
+                <img src="images/gallery2.jpg" alt="Cat Ear Hat with Tassle">
+                <div class="gallery-overlay">
+                    <span class="category-name">Cat Ear Hat with Tassle</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="cat-ear">
+                <img src="images/gallery3.jpg" alt="Cat Ear Hat with Tassle">
+                <div class="gallery-overlay">
+                    <span class="category-name">Cat Ear Hat with Tassle</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="cat-ear">
+                <img src="images/gallery4.jpg" alt="Cat Ear Hat with Tassle">
+                <div class="gallery-overlay">
+                    <span class="category-name">Cat Ear Hat with Tassle</span>
+                </div>
+            </div>
+
+            <!-- Open Hoods -->
+            <div class="gallery-item" data-category="open-hoods">
+                <img src="images/open_hoods1.jpg" alt="Open Hood">
+                <div class="gallery-overlay">
+                    <span class="category-name">Open Hoods</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="open-hoods">
+                <img src="images/open_hoods2.jpg" alt="Open Hood">
+                <div class="gallery-overlay">
+                    <span class="category-name">Open Hoods</span>
+                </div>
+            </div>
+
+            <!-- Jester/Clown -->
+            <div class="gallery-item" data-category="jester">
+                <img src="images/jester1.jpg" alt="Jester Hat">
+                <div class="gallery-overlay">
+                    <span class="category-name">Jester / Clown</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="jester">
+                <img src="images/jester2.jpg" alt="Jester Hat">
+                <div class="gallery-overlay">
+                    <span class="category-name">Jester / Clown</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="jester">
+                <img src="images/jester3.jpg" alt="Jester Hat">
+                <div class="gallery-overlay">
+                    <span class="category-name">Jester / Clown</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="jester">
+                <img src="images/jester4.jpg" alt="Jester Hat">
+                <div class="gallery-overlay">
+                    <span class="category-name">Jester / Clown</span>
+                </div>
+            </div>
+
+            <!-- Funky Hats -->
+            <div class="gallery-item" data-category="funky">
+                <img src="images/funky1.jpg" alt="Funky Hat">
+                <div class="gallery-overlay">
+                    <span class="category-name">Funky Hats</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="funky">
+                <img src="images/funky2.jpg" alt="Funky Hat">
+                <div class="gallery-overlay">
+                    <span class="category-name">Funky Hats</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="funky">
+                <img src="images/funky3.jpg" alt="Funky Hat">
+                <div class="gallery-overlay">
+                    <span class="category-name">Funky Hats</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT / ORDER -->
+    <div id="order">
+        <div class="contact-section fade-in">
+            <div class="order-details">
+                <p class="section-label">Custom Orders</p>
+                <h2 class="section-title">Let's Create<br>Something</h2>
+                <div class="divider"></div>
+                <h3>To place an order, provide:</h3>
+                <ul class="order-list">
+                    <li>Your name</li>
+                    <li>Character description</li>
+                    <li>Hat style preference</li>
+                    <li>Budget</li>
+                </ul>
+                <a href="mailto:Eleanor@aughey.com" class="email-link">Eleanor@aughey.com</a>
+            </div>
+            <div class="contact-info">
+                <p>Every hat starts with a conversation. Tell me about the character or style you have in mind, and I'll work with you to bring it to life. Whether you have a specific design or just a vague idea, I'm happy to help figure out the details.</p>
+                <p style="margin-top: 1.5rem;">Pricing depends on complexity, materials, and turnaround time. Just include your budget and we'll make it work.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CLOSING CTA -->
+    <section class="closing">
+        <div class="fade-in">
+            <p class="section-label">Ready?</p>
+            <p class="cta-text">"If any of these hat styles interest you, shoot me a message and let's make something awesome together!"</p>
+            <a href="mailto:Eleanor@aughey.com" class="email-link" style="margin-bottom: 3rem; display: inline-block;">Get In Touch</a>
+        </div>
+        <div class="closing-images fade-in">
+            <img src="images/closing1.jpg" alt="Crochet showcase">
+            <img src="images/closing2.jpg" alt="Crochet showcase">
+            <img src="images/closing3.jpg" alt="Crochet showcase">
+            <img src="images/closing4.jpg" alt="Crochet showcase">
+            <img src="images/closing5.jpg" alt="Crochet showcase">
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 Ellie Does Crochet and Stuff. All rights reserved.</p>
+    </footer>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">&times;</button>
+        <img src="" alt="Full size image" id="lightboxImg">
+    </div>
+
+    <script>
+        // ---- NAV SCROLL ----
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // ---- MOBILE NAV ----
+        function toggleNav() {
+            document.getElementById('navLinks').classList.toggle('open');
+        }
+        function closeNav() {
+            document.getElementById('navLinks').classList.remove('open');
+        }
+
+        // ---- GALLERY FILTER ----
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.dataset.filter;
+
+                galleryItems.forEach(item => {
+                    if (filter === 'all' || item.dataset.category === filter) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // ---- LIGHTBOX ----
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const src = item.querySelector('img').src;
+                lightboxImg.src = src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ---- FADE IN ON SCROLL ----
+        const fadeEls = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        fadeEls.forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>

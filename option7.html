@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellie Does Crochet and Stuff</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --glass-shadow: rgba(31, 38, 135, 0.15);
+            --text-primary: #1a1a2e;
+            --text-secondary: #3a3a5c;
+            --text-light: #6a6a8a;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated gradient background */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #f8a4c8, #d4a5e5, #a5c4f5, #f8a4c8, #d4a5e5);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            25% { background-position: 50% 100%; }
+            50% { background-position: 100% 50%; }
+            75% { background-position: 50% 0%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glass effect mixin */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px var(--glass-shadow);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.12);
+            border-radius: 50px;
+            padding: 12px 32px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 8px 40px rgba(31, 38, 135, 0.2);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 48px;
+            line-height: 1.6;
+        }
+
+        /* Glass card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.12);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(31, 38, 135, 0.25);
+        }
+
+        /* Hero section */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-top: 100px;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #2d1b4e, #5b2d8e, #1a3a6e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-tagline {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+            font-weight: 400;
+        }
+
+        .hero-images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .hero-images .glass-card {
+            aspect-ratio: 3 / 4;
+        }
+
+        .hero-images .glass-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* About section */
+        #about {
+            padding-top: 80px;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .about-text-card {
+            padding: 40px;
+            border-radius: 24px;
+        }
+
+        .about-text-card p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .about-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .about-images .glass-card {
+            aspect-ratio: 1;
+        }
+
+        .about-images .glass-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Gallery section */
+        #gallery {
+            padding-top: 80px;
+        }
+
+        .gallery-category {
+            margin-bottom: 64px;
+        }
+
+        .category-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            padding-left: 8px;
+            border-left: 4px solid rgba(93, 45, 142, 0.5);
+            color: var(--text-primary);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-grid .glass-card {
+            aspect-ratio: 3 / 4;
+            cursor: pointer;
+        }
+
+        .gallery-grid .glass-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-grid .glass-card:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Contact section */
+        #contact {
+            padding-top: 80px;
+        }
+
+        .contact-card {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 48px;
+            border-radius: 28px;
+            text-align: center;
+        }
+
+        .contact-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .contact-card p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .order-list {
+            list-style: none;
+            display: inline-block;
+            text-align: left;
+            margin: 16px 0 24px;
+        }
+
+        .order-list li {
+            padding: 8px 0;
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 28px;
+        }
+
+        .order-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f8a4c8, #a5c4f5);
+        }
+
+        .email-link {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 14px 36px;
+            background: linear-gradient(135deg, rgba(93, 45, 142, 0.6), rgba(45, 95, 170, 0.6));
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .email-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(93, 45, 142, 0.3);
+            background: linear-gradient(135deg, rgba(93, 45, 142, 0.8), rgba(45, 95, 170, 0.8));
+        }
+
+        /* CTA / Closing section */
+        #cta {
+            padding-top: 60px;
+            padding-bottom: 120px;
+            text-align: center;
+        }
+
+        .cta-text {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            max-width: 700px;
+            margin: 0 auto 48px;
+            line-height: 1.6;
+        }
+
+        .closing-images {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .closing-images .glass-card {
+            aspect-ratio: 3 / 4;
+        }
+
+        .closing-images .glass-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 32px 24px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 16px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 24px;
+            right: 32px;
+            font-size: 2rem;
+            color: #fff;
+            cursor: pointer;
+            background: rgba(255,255,255,0.15);
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Scroll reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .closing-images {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .closing-images .glass-card:nth-child(4),
+            .closing-images .glass-card:nth-child(5) {
+                grid-column: span 1;
+            }
+
+            nav {
+                padding: 10px 16px;
+                gap: 4px;
+            }
+
+            nav a {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-images {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .hero-images .glass-card:nth-child(3) {
+                grid-column: 1 / -1;
+                aspect-ratio: 4 / 3;
+            }
+
+            section {
+                padding: 60px 16px;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .about-text-card {
+                padding: 24px;
+            }
+
+            .about-images {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .contact-card {
+                padding: 28px 20px;
+            }
+
+            .closing-images {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            nav {
+                top: 12px;
+                padding: 8px 12px;
+                gap: 2px;
+            }
+
+            nav a {
+                font-size: 0.75rem;
+                padding: 6px 10px;
+            }
+
+            .cta-text {
+                font-size: 1.15rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-gradient"></div>
+
+<!-- Navigation -->
+<nav id="navbar">
+    <a href="#hero">Home</a>
+    <a href="#about">About</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#contact">Order</a>
+</nav>
+
+<!-- Hero Section -->
+<section id="hero">
+    <h1 class="hero-title reveal">Ellie Does Crochet<br>and Stuff</h1>
+    <p class="hero-tagline reveal">Handmade hats, hoods, and cozy creations</p>
+    <div class="hero-images">
+        <div class="glass-card reveal">
+            <img src="images/hero_left.jpg" alt="Crochet creation by Ellie" loading="lazy">
+        </div>
+        <div class="glass-card reveal">
+            <img src="images/hero_center.jpg" alt="Crochet creation by Ellie" loading="lazy">
+        </div>
+        <div class="glass-card reveal">
+            <img src="images/hero_right.jpg" alt="Crochet creation by Ellie" loading="lazy">
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about">
+    <h2 class="section-title reveal">About Me</h2>
+    <div class="about-content">
+        <div class="about-text-card glass-card reveal" style="aspect-ratio: auto;">
+            <p>I'm a college student with way too much yarn and a desire to create. Whether it's a hat shaped like your favorite character, a funky beanie for festivals, or a cozy hood for everyday wear &mdash; I love bringing creative ideas to life with a crochet hook.</p>
+        </div>
+        <div class="about-images reveal">
+            <div class="glass-card">
+                <img src="images/about1.jpg" alt="About Ellie 1" loading="lazy">
+            </div>
+            <div class="glass-card">
+                <img src="images/about2.jpg" alt="About Ellie 2" loading="lazy">
+            </div>
+            <div class="glass-card">
+                <img src="images/about3.jpg" alt="About Ellie 3" loading="lazy">
+            </div>
+            <div class="glass-card">
+                <img src="images/about4.jpg" alt="About Ellie 4" loading="lazy">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery Section -->
+<section id="gallery">
+    <h2 class="section-title reveal">Gallery</h2>
+    <p class="section-subtitle reveal">A collection of handmade pieces, each one crafted with care and creativity.</p>
+
+    <!-- Cat Ear Hat with Tassle -->
+    <div class="gallery-category reveal">
+        <h3 class="category-title">Cat Ear Hat with Tassle</h3>
+        <div class="gallery-grid">
+            <div class="glass-card" onclick="openLightbox(this)">
+                <img src="images/gallery1.jpg" alt="Cat Ear Hat with Tassle 1" loading="lazy">
+            </div>
+            <div class="glass-card" onclick="openLightbox(this)">
+                <img src="images/gallery2.jpg" alt="Cat Ear Hat with Tassle 2" loading="lazy">
+            </div>
+            <div class="glass-card" onclick="openLightbox(this)">
+                <img src="images/gallery3.jpg" alt="Cat Ear Hat with Tassle 3" loading="lazy">
+            </div>
+            <div class="glass-card" onclick="openLightbox(this)">
+                <img src="images/gallery4.jpg" alt="Cat Ear Hat with Tassle 4" loading="lazy">
+            </div>
+        </div>
+    </div>
+
+    <!-- Open Hoods -->
+    <div class="gallery-category reveal">
+        <h3 class="category-title">Open Hoods</h3>
+        <div class="gallery-grid">
+            <div class="glass-card" onclick="openLightbox(this)">
+                <img src="images/open_hoods1.jpg" alt="Open Hood 1" loading="lazy">
+            </div>
+            <div class="glass-card" onclick="openLightbox(this)">
+                <img src="images/open_hoods2.jpg" alt="Open Hood 2" loading="lazy">
+            </div>
+        </div>
+    </div>
+
+    <!-- Jester/Clown -->
+    <div class="gallery-category reveal">
+        <h3 class="category-title">Jester / Clown</h3>
+        <div class="gallery-grid">
+            <div class="glass-card" onclick="openLightbox(this)">
+                <img src="images/jester1.jpg" alt="Jester Clown Hat 1" loading="lazy">
+            </div>
+            <div class="glass-card" onclick="openLightbox(this)">
+                <img src="images/jester2.jpg" alt="Jester Clown Hat 2" loading="lazy">
+            </div>
+            <div class="glass-card" onclick="openLightbox(this)">
+                <img src="images/jester3.jpg" alt="Jester Clown Hat 3" loading="lazy">
+            </div>
+            <div class="glass-card" onclick="openLightbox(this)">
+                <img src="images/jester4.jpg" alt="Jester Clown Hat 4" loading="lazy">
+            </div>
+        </div>
+    </div>
+
+    <!-- Funky Hats -->
+    <div class="gallery-category reveal">
+        <h3 class="category-title">Funky Hats</h3>
+        <div class="gallery-grid">
+            <div class="glass-card" onclick="openLightbox(this)">
+                <img src="images/funky1.jpg" alt="Funky Hat 1" loading="lazy">
+            </div>
+            <div class="glass-card" onclick="openLightbox(this)">
+                <img src="images/funky2.jpg" alt="Funky Hat 2" loading="lazy">
+            </div>
+            <div class="glass-card" onclick="openLightbox(this)">
+                <img src="images/funky3.jpg" alt="Funky Hat 3" loading="lazy">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact">
+    <h2 class="section-title reveal">Place an Order</h2>
+    <div class="contact-card glass-card reveal" style="aspect-ratio: auto;">
+        <h3>What I Need From You</h3>
+        <p>To place an order, just send me the following info:</p>
+        <ul class="order-list">
+            <li>Your name</li>
+            <li>Character description</li>
+            <li>Hat style preference</li>
+            <li>Budget</li>
+        </ul>
+        <p>Send it all over to:</p>
+        <a href="mailto:Eleanor@aughey.com" class="email-link">Eleanor@aughey.com</a>
+    </div>
+</section>
+
+<!-- CTA / Closing Section -->
+<section id="cta">
+    <p class="cta-text reveal">If any of these hat styles interest you, shoot me a message and let's make something awesome together!</p>
+    <div class="closing-images">
+        <div class="glass-card reveal">
+            <img src="images/closing1.jpg" alt="Closing showcase 1" loading="lazy">
+        </div>
+        <div class="glass-card reveal">
+            <img src="images/closing2.jpg" alt="Closing showcase 2" loading="lazy">
+        </div>
+        <div class="glass-card reveal">
+            <img src="images/closing3.jpg" alt="Closing showcase 3" loading="lazy">
+        </div>
+        <div class="glass-card reveal">
+            <img src="images/closing4.jpg" alt="Closing showcase 4" loading="lazy">
+        </div>
+        <div class="glass-card reveal">
+            <img src="images/closing5.jpg" alt="Closing showcase 5" loading="lazy">
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2026 Ellie Does Crochet and Stuff. Made with yarn and love.</p>
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" aria-label="Close">&times;</button>
+    <img id="lightbox-img" src="" alt="Enlarged view">
+</div>
+
+<script>
+    // Scroll reveal
+    function revealOnScroll() {
+        const reveals = document.querySelectorAll('.reveal');
+        const windowHeight = window.innerHeight;
+        reveals.forEach(function(el) {
+            const top = el.getBoundingClientRect().top;
+            if (top < windowHeight - 80) {
+                el.classList.add('visible');
+            }
+        });
+    }
+
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('load', revealOnScroll);
+
+    // Nav scroll effect
+    var navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 60) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    // Lightbox
+    var lightbox = document.getElementById('lightbox');
+    var lightboxImg = document.getElementById('lightbox-img');
+
+    function openLightbox(card) {
+        var img = card.querySelector('img');
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeLightbox();
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ellie Does Crochet and Stuff</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============ RESET & BASE ============ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Comic Neue', cursive, sans-serif;
+  font-weight: 700;
+  color: #111;
+  background: #FFCC00;
+  overflow-x: hidden;
+}
+
+/* ============ HALFTONE OVERLAY ============ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(circle, rgba(0,0,0,0.08) 1px, transparent 1px);
+  background-size: 6px 6px;
+}
+
+/* ============ TYPOGRAPHY ============ */
+h1, h2, h3, .comic-heading {
+  font-family: 'Bangers', cursive;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ============ UTILITY ============ */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============ NAV ============ */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #111;
+  border-bottom: 4px solid #FF3333;
+  padding: 0 20px;
+}
+nav .nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+nav .logo {
+  font-family: 'Bangers', cursive;
+  font-size: 1.4rem;
+  color: #FFCC00;
+  text-decoration: none;
+  letter-spacing: 2px;
+}
+nav .nav-links { display: flex; gap: 24px; list-style: none; }
+nav .nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Bangers', cursive;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  transition: color 0.2s;
+}
+nav .nav-links a:hover { color: #FFCC00; }
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+.hamburger span {
+  display: block;
+  width: 28px;
+  height: 3px;
+  background: #FFCC00;
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+/* ============ HERO SECTION ============ */
+.hero {
+  margin-top: 60px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: #3366FF;
+  overflow: hidden;
+  padding: 60px 20px;
+}
+
+/* Action lines behind title */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  transform: translate(-50%, -50%);
+  background: repeating-conic-gradient(
+    #3366FF 0deg,
+    #3366FF 5deg,
+    #2255DD 5deg,
+    #2255DD 10deg
+  );
+  opacity: 0.5;
+  z-index: 0;
+}
+
+/* Halftone on hero */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(0,0,0,0.1) 1px, transparent 1px);
+  background-size: 8px 8px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  color: #FFCC00;
+  text-shadow: 4px 4px 0 #111, -2px -2px 0 #111, 2px -2px 0 #111, -2px 2px 0 #111;
+  line-height: 1.1;
+  margin-bottom: 10px;
+  transform: rotate(-2deg);
+}
+
+.hero-subtitle {
+  font-family: 'Comic Neue', cursive;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  color: #fff;
+  margin-bottom: 40px;
+  text-shadow: 2px 2px 0 #111;
+}
+
+.hero-images {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.comic-panel {
+  border: 5px solid #111;
+  background: #fff;
+  padding: 6px;
+  box-shadow: 6px 6px 0 #111;
+  display: inline-block;
+  transition: transform 0.3s;
+}
+.comic-panel:hover { transform: scale(1.04) rotate(0deg) !important; }
+.comic-panel img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-images .comic-panel {
+  width: 240px;
+  height: 300px;
+}
+.hero-images .comic-panel:nth-child(1) { transform: rotate(-4deg); }
+.hero-images .comic-panel:nth-child(2) { transform: rotate(1deg); z-index: 1; }
+.hero-images .comic-panel:nth-child(3) { transform: rotate(3deg); }
+
+/* ============ STARBURST / BURST ============ */
+.burst {
+  display: inline-block;
+  font-family: 'Bangers', cursive;
+  font-size: 1.6rem;
+  color: #111;
+  background: #FFCC00;
+  padding: 18px 26px;
+  clip-path: polygon(
+    50% 0%, 61% 11%, 75% 2%, 73% 18%, 90% 16%, 82% 30%,
+    98% 35%, 86% 46%, 100% 56%, 84% 60%, 93% 75%, 76% 72%,
+    78% 90%, 64% 80%, 56% 98%, 48% 82%, 35% 95%, 36% 78%,
+    20% 85%, 26% 70%, 8% 70%, 20% 56%, 2% 50%, 18% 40%,
+    4% 30%, 22% 26%, 12% 14%, 30% 18%, 35% 2%, 42% 16%
+  );
+  letter-spacing: 2px;
+  position: absolute;
+  z-index: 3;
+  text-transform: uppercase;
+  transform: rotate(-12deg);
+  animation: burstPulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes burstPulse {
+  0% { transform: rotate(-12deg) scale(1); }
+  100% { transform: rotate(-12deg) scale(1.08); }
+}
+
+.burst.burst-stitch {
+  top: 12%;
+  right: 8%;
+  background: #FF3333;
+  color: #fff;
+  font-size: 1.8rem;
+  transform: rotate(10deg);
+  animation: burstPulse2 1.5s ease-in-out infinite alternate;
+}
+@keyframes burstPulse2 {
+  0% { transform: rotate(10deg) scale(1); }
+  100% { transform: rotate(10deg) scale(1.08); }
+}
+
+.burst.burst-pow {
+  bottom: 15%;
+  left: 5%;
+  background: #FF3333;
+  color: #FFCC00;
+  font-size: 2rem;
+  transform: rotate(-8deg);
+  animation: burstPulse3 1.8s ease-in-out infinite alternate;
+}
+@keyframes burstPulse3 {
+  0% { transform: rotate(-8deg) scale(1); }
+  100% { transform: rotate(-8deg) scale(1.1); }
+}
+
+/* ============ SPEECH BUBBLE ============ */
+.speech-bubble {
+  position: relative;
+  background: #fff;
+  border: 4px solid #111;
+  border-radius: 30px;
+  padding: 24px 32px;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  display: inline-block;
+  box-shadow: 4px 4px 0 #111;
+}
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -24px;
+  left: 40px;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 24px solid #111;
+}
+.speech-bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -18px;
+  left: 43px;
+  width: 0;
+  height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 20px solid #fff;
+  z-index: 1;
+}
+
+/* ============ SECTIONS ============ */
+section {
+  position: relative;
+  z-index: 1;
+  padding: 80px 0;
+}
+
+.section-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  margin-bottom: 50px;
+  color: #111;
+  text-shadow: 3px 3px 0 #FFCC00;
+  position: relative;
+}
+.section-title::after {
+  content: '';
+  display: block;
+  width: 120px;
+  height: 5px;
+  background: #FF3333;
+  margin: 12px auto 0;
+}
+
+/* ============ ABOUT ============ */
+.about {
+  background: #fff;
+  border-top: 6px solid #111;
+  border-bottom: 6px solid #111;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.about-text .speech-bubble {
+  max-width: 100%;
+}
+
+.about-images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.about-images .comic-panel {
+  width: 100%;
+  height: 200px;
+}
+.about-images .comic-panel:nth-child(1) { transform: rotate(-2deg); }
+.about-images .comic-panel:nth-child(2) { transform: rotate(2deg); }
+.about-images .comic-panel:nth-child(3) { transform: rotate(1deg); }
+.about-images .comic-panel:nth-child(4) { transform: rotate(-1.5deg); }
+
+/* ============ GALLERY ============ */
+.gallery {
+  background: #FFCC00;
+  position: relative;
+}
+.gallery::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(0,0,0,0.06) 1.5px, transparent 1.5px);
+  background-size: 10px 10px;
+  pointer-events: none;
+}
+
+.gallery-category {
+  margin-bottom: 60px;
+  position: relative;
+  z-index: 1;
+}
+.gallery-category:last-child { margin-bottom: 0; }
+
+.category-title {
+  font-family: 'Bangers', cursive;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  color: #fff;
+  background: #FF3333;
+  display: inline-block;
+  padding: 8px 24px;
+  border: 4px solid #111;
+  box-shadow: 4px 4px 0 #111;
+  margin-bottom: 24px;
+  transform: rotate(-1deg);
+  letter-spacing: 2px;
+}
+
+.comic-grid {
+  display: grid;
+  gap: 16px;
+}
+
+/* 4-image grid */
+.comic-grid.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+}
+.comic-grid.grid-4 .comic-panel:nth-child(1) { grid-column: span 2; height: 320px; transform: rotate(-1deg); }
+.comic-grid.grid-4 .comic-panel:nth-child(2) { height: 320px; transform: rotate(1.5deg); }
+.comic-grid.grid-4 .comic-panel:nth-child(3) { height: 320px; transform: rotate(-0.5deg); }
+.comic-grid.grid-4 .comic-panel:nth-child(4) { grid-column: span 2; height: 280px; transform: rotate(0.8deg); display: none; }
+
+/* 2-image grid */
+.comic-grid.grid-2 {
+  grid-template-columns: 1fr 1fr;
+}
+.comic-grid.grid-2 .comic-panel { height: 360px; }
+.comic-grid.grid-2 .comic-panel:nth-child(1) { transform: rotate(-1.5deg); }
+.comic-grid.grid-2 .comic-panel:nth-child(2) { transform: rotate(2deg); }
+
+/* 3-image grid */
+.comic-grid.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.comic-grid.grid-3 .comic-panel { height: 320px; }
+.comic-grid.grid-3 .comic-panel:nth-child(1) { transform: rotate(1deg); }
+.comic-grid.grid-3 .comic-panel:nth-child(2) { transform: rotate(-1.5deg); }
+.comic-grid.grid-3 .comic-panel:nth-child(3) { transform: rotate(0.8deg); }
+
+/* 4-image jester grid */
+.comic-grid.grid-jester {
+  grid-template-columns: repeat(4, 1fr);
+}
+.comic-grid.grid-jester .comic-panel { height: 300px; }
+.comic-grid.grid-jester .comic-panel:nth-child(1) { transform: rotate(-2deg); }
+.comic-grid.grid-jester .comic-panel:nth-child(2) { transform: rotate(1deg); }
+.comic-grid.grid-jester .comic-panel:nth-child(3) { transform: rotate(-0.5deg); }
+.comic-grid.grid-jester .comic-panel:nth-child(4) { transform: rotate(2deg); }
+
+/* ============ CONTACT / ORDER ============ */
+.contact {
+  background: #3366FF;
+  border-top: 6px solid #111;
+  border-bottom: 6px solid #111;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.contact::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+  background-size: 8px 8px;
+  pointer-events: none;
+}
+
+.contact .section-title {
+  color: #FFCC00;
+  text-shadow: 3px 3px 0 #111;
+}
+.contact .section-title::after { background: #FFCC00; }
+
+.contact-content {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.order-info {
+  background: #fff;
+  color: #111;
+  border: 5px solid #111;
+  border-radius: 12px;
+  padding: 30px 36px;
+  box-shadow: 6px 6px 0 #111;
+  text-align: left;
+  margin-bottom: 30px;
+}
+.order-info h3 {
+  font-size: 1.6rem;
+  margin-bottom: 16px;
+  color: #FF3333;
+}
+.order-info ul {
+  list-style: none;
+  margin-bottom: 20px;
+}
+.order-info ul li {
+  padding: 6px 0;
+  font-size: 1.1rem;
+  position: relative;
+  padding-left: 28px;
+}
+.order-info ul li::before {
+  content: '\2605';
+  position: absolute;
+  left: 0;
+  color: #FF3333;
+  font-size: 1.2rem;
+}
+.order-email {
+  font-family: 'Bangers', cursive;
+  font-size: 1.5rem;
+  color: #3366FF;
+  letter-spacing: 1px;
+}
+.order-email a {
+  color: #3366FF;
+  text-decoration: none;
+  border-bottom: 3px solid #FFCC00;
+  transition: color 0.2s;
+}
+.order-email a:hover { color: #FF3333; }
+
+/* ============ CTA / CLOSING ============ */
+.closing {
+  background: #FF3333;
+  position: relative;
+  overflow: hidden;
+}
+.closing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(0,0,0,0.08) 1.5px, transparent 1.5px);
+  background-size: 8px 8px;
+  pointer-events: none;
+}
+
+.closing .section-title {
+  color: #fff;
+  text-shadow: 3px 3px 0 #111;
+}
+.closing .section-title::after { background: #FFCC00; }
+
+.cta-bubble {
+  position: relative;
+  background: #FFCC00;
+  border: 5px solid #111;
+  border-radius: 40px;
+  padding: 30px 40px;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  line-height: 1.6;
+  max-width: 750px;
+  margin: 0 auto 50px;
+  box-shadow: 6px 6px 0 #111;
+  text-align: center;
+  z-index: 1;
+}
+.cta-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 24px solid transparent;
+  border-right: 24px solid transparent;
+  border-top: 28px solid #111;
+}
+.cta-bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -21px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 19px solid transparent;
+  border-right: 19px solid transparent;
+  border-top: 22px solid #FFCC00;
+  z-index: 1;
+}
+
+.closing-images {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+  margin-top: 40px;
+}
+.closing-images .comic-panel {
+  width: 190px;
+  height: 240px;
+}
+.closing-images .comic-panel:nth-child(1) { transform: rotate(-3deg); }
+.closing-images .comic-panel:nth-child(2) { transform: rotate(2deg); }
+.closing-images .comic-panel:nth-child(3) { transform: rotate(-1deg); }
+.closing-images .comic-panel:nth-child(4) { transform: rotate(3deg); }
+.closing-images .comic-panel:nth-child(5) { transform: rotate(-2deg); }
+
+/* ============ FOOTER ============ */
+footer {
+  background: #111;
+  color: #FFCC00;
+  text-align: center;
+  padding: 30px 20px;
+  font-family: 'Bangers', cursive;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  border-top: 4px solid #FF3333;
+  position: relative;
+  z-index: 1;
+}
+footer a { color: #FFCC00; text-decoration: none; }
+
+/* ============ LIGHTBOX ============ */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.lightbox.active { display: flex; }
+.lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border: 6px solid #fff;
+  box-shadow: 0 0 60px rgba(255,204,0,0.3);
+}
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-family: 'Bangers', cursive;
+  font-size: 2.5rem;
+  color: #FFCC00;
+  cursor: pointer;
+  text-shadow: 2px 2px 0 #111;
+  z-index: 10000;
+  background: none;
+  border: none;
+}
+
+/* ============ SCROLL ANIMATIONS ============ */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  .about-content {
+    grid-template-columns: 1fr;
+  }
+  .comic-grid.grid-4 {
+    grid-template-columns: 1fr 1fr;
+  }
+  .comic-grid.grid-4 .comic-panel:nth-child(1) { grid-column: span 1; height: 260px; }
+  .comic-grid.grid-jester {
+    grid-template-columns: 1fr 1fr;
+  }
+  .comic-grid.grid-jester .comic-panel { height: 260px; }
+  .hero-images .comic-panel {
+    width: 200px;
+    height: 250px;
+  }
+  .closing-images .comic-panel {
+    width: 160px;
+    height: 200px;
+  }
+  .burst { font-size: 1.2rem; padding: 14px 20px; }
+  .burst.burst-stitch { font-size: 1.4rem; }
+  .burst.burst-pow { font-size: 1.5rem; }
+}
+
+@media (max-width: 650px) {
+  nav .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: #111;
+    border-bottom: 4px solid #FF3333;
+    padding: 20px;
+    gap: 16px;
+  }
+  nav .nav-links.open { display: flex; }
+  .hamburger { display: flex; }
+
+  .hero-images .comic-panel {
+    width: 160px;
+    height: 200px;
+  }
+
+  .comic-grid.grid-4,
+  .comic-grid.grid-3,
+  .comic-grid.grid-2,
+  .comic-grid.grid-jester {
+    grid-template-columns: 1fr;
+  }
+  .comic-grid .comic-panel {
+    height: 280px !important;
+    transform: rotate(0deg) !important;
+  }
+
+  .about-images {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .closing-images .comic-panel {
+    width: 140px;
+    height: 180px;
+  }
+
+  .burst.burst-stitch,
+  .burst.burst-pow {
+    display: none;
+  }
+
+  .cta-bubble { padding: 20px 24px; }
+  .order-info { padding: 20px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">Ellie Does Crochet</a>
+    <button class="hamburger" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open'); this.classList.toggle('active');">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#about" onclick="closeMenu()">About</a></li>
+      <li><a href="#gallery" onclick="closeMenu()">Gallery</a></li>
+      <li><a href="#contact" onclick="closeMenu()">Order</a></li>
+      <li><a href="#closing" onclick="closeMenu()">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="burst burst-stitch">STITCH!</div>
+  <div class="burst burst-pow">POW!</div>
+  <div class="hero-content">
+    <h1 class="hero-title">Ellie Does Crochet<br>and Stuff</h1>
+    <p class="hero-subtitle">Handmade hats, hoods & creative crochet creations</p>
+    <div class="hero-images">
+      <div class="comic-panel">
+        <img src="images/hero_left.jpg" alt="Crochet creation" loading="lazy">
+      </div>
+      <div class="comic-panel">
+        <img src="images/hero_center.jpg" alt="Featured crochet piece" loading="lazy">
+      </div>
+      <div class="comic-panel">
+        <img src="images/hero_right.jpg" alt="Crochet work" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <h2 class="section-title fade-in">About Me</h2>
+    <div class="about-content">
+      <div class="about-text fade-in">
+        <div class="speech-bubble">
+          I'm a college student with way too much yarn and a desire to create. Whether it's a hat shaped like your favorite character, a funky beanie for festivals, or a cozy hood for everyday wear &mdash; I love bringing creative ideas to life with a crochet hook.
+        </div>
+      </div>
+      <div class="about-images fade-in">
+        <div class="comic-panel">
+          <img src="images/about1.jpg" alt="About Ellie 1" loading="lazy">
+        </div>
+        <div class="comic-panel">
+          <img src="images/about2.jpg" alt="About Ellie 2" loading="lazy">
+        </div>
+        <div class="comic-panel">
+          <img src="images/about3.jpg" alt="About Ellie 3" loading="lazy">
+        </div>
+        <div class="comic-panel">
+          <img src="images/about4.jpg" alt="About Ellie 4" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="container">
+    <h2 class="section-title fade-in">The Gallery</h2>
+
+    <!-- Cat Ear Hat with Tassle -->
+    <div class="gallery-category fade-in">
+      <div class="category-title">Cat Ear Hat with Tassle</div>
+      <div class="comic-grid grid-4">
+        <div class="comic-panel" onclick="openLightbox(this)">
+          <img src="images/gallery1.jpg" alt="Cat Ear Hat 1" loading="lazy">
+        </div>
+        <div class="comic-panel" onclick="openLightbox(this)">
+          <img src="images/gallery2.jpg" alt="Cat Ear Hat 2" loading="lazy">
+        </div>
+        <div class="comic-panel" onclick="openLightbox(this)">
+          <img src="images/gallery3.jpg" alt="Cat Ear Hat 3" loading="lazy">
+        </div>
+        <div class="comic-panel" onclick="openLightbox(this)">
+          <img src="images/gallery4.jpg" alt="Cat Ear Hat 4" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <!-- Open Hoods -->
+    <div class="gallery-category fade-in">
+      <div class="category-title">Open Hoods</div>
+      <div class="comic-grid grid-2">
+        <div class="comic-panel" onclick="openLightbox(this)">
+          <img src="images/open_hoods1.jpg" alt="Open Hood 1" loading="lazy">
+        </div>
+        <div class="comic-panel" onclick="openLightbox(this)">
+          <img src="images/open_hoods2.jpg" alt="Open Hood 2" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <!-- Jester/Clown -->
+    <div class="gallery-category fade-in">
+      <div class="category-title">Jester / Clown</div>
+      <div class="comic-grid grid-jester">
+        <div class="comic-panel" onclick="openLightbox(this)">
+          <img src="images/jester1.jpg" alt="Jester Hat 1" loading="lazy">
+        </div>
+        <div class="comic-panel" onclick="openLightbox(this)">
+          <img src="images/jester2.jpg" alt="Jester Hat 2" loading="lazy">
+        </div>
+        <div class="comic-panel" onclick="openLightbox(this)">
+          <img src="images/jester3.jpg" alt="Jester Hat 3" loading="lazy">
+        </div>
+        <div class="comic-panel" onclick="openLightbox(this)">
+          <img src="images/jester4.jpg" alt="Jester Hat 4" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <!-- Funky Hats -->
+    <div class="gallery-category fade-in">
+      <div class="category-title">Funky Hats</div>
+      <div class="comic-grid grid-3">
+        <div class="comic-panel" onclick="openLightbox(this)">
+          <img src="images/funky1.jpg" alt="Funky Hat 1" loading="lazy">
+        </div>
+        <div class="comic-panel" onclick="openLightbox(this)">
+          <img src="images/funky2.jpg" alt="Funky Hat 2" loading="lazy">
+        </div>
+        <div class="comic-panel" onclick="openLightbox(this)">
+          <img src="images/funky3.jpg" alt="Funky Hat 3" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <h2 class="section-title fade-in">Place an Order</h2>
+    <div class="contact-content fade-in">
+      <div class="order-info">
+        <h3>To Place an Order, Provide:</h3>
+        <ul>
+          <li>Your name</li>
+          <li>Character description</li>
+          <li>Hat style preference</li>
+          <li>Budget</li>
+        </ul>
+        <p class="order-email">Email: <a href="mailto:Eleanor@aughey.com">Eleanor@aughey.com</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING / CTA -->
+<section class="closing" id="closing">
+  <div class="container">
+    <h2 class="section-title fade-in">Let's Make Something Awesome</h2>
+    <div class="cta-bubble fade-in">
+      If any of these hat styles interest you, shoot me a message and let's make something awesome together!
+    </div>
+    <div class="closing-images fade-in">
+      <div class="comic-panel" onclick="openLightbox(this)">
+        <img src="images/closing1.jpg" alt="Closing showcase 1" loading="lazy">
+      </div>
+      <div class="comic-panel" onclick="openLightbox(this)">
+        <img src="images/closing2.jpg" alt="Closing showcase 2" loading="lazy">
+      </div>
+      <div class="comic-panel" onclick="openLightbox(this)">
+        <img src="images/closing3.jpg" alt="Closing showcase 3" loading="lazy">
+      </div>
+      <div class="comic-panel" onclick="openLightbox(this)">
+        <img src="images/closing4.jpg" alt="Closing showcase 4" loading="lazy">
+      </div>
+      <div class="comic-panel" onclick="openLightbox(this)">
+        <img src="images/closing5.jpg" alt="Closing showcase 5" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2026 Ellie Does Crochet and Stuff &bull; Handmade with Love</p>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" aria-label="Close">&times;</button>
+  <img src="" alt="Enlarged view" id="lightbox-img">
+</div>
+
+<script>
+/* Mobile menu */
+function closeMenu() {
+  document.querySelector('.nav-links').classList.remove('open');
+  document.querySelector('.hamburger').classList.remove('active');
+}
+
+/* Lightbox */
+function openLightbox(panel) {
+  var img = panel.querySelector('img');
+  if (!img) return;
+  var lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = img.src;
+  lb.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeLightbox();
+});
+
+/* Scroll-triggered fade-in */
+(function() {
+  var els = document.querySelectorAll('.fade-in');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  els.forEach(function(el) { observer.observe(el); });
+})();
+</script>
+</body>
+</html>

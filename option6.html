@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellie Does Crochet and Stuff</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ========== RESET & BASE ========== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --brown: #8B6914;
+            --burnt-orange: #D4763C;
+            --cream: #FDF5E6;
+            --dark-brown: #3E2723;
+            --kraft: #D2B48C;
+            --kraft-dark: #C4A06A;
+            --shadow: rgba(62, 39, 35, 0.15);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            color: var(--dark-brown);
+            line-height: 1.7;
+            /* Kraft paper texture via CSS gradients */
+            background-color: var(--cream);
+            background-image:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 50px,
+                    rgba(139, 105, 20, 0.03) 50px,
+                    rgba(139, 105, 20, 0.03) 51px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 50px,
+                    rgba(139, 105, 20, 0.03) 50px,
+                    rgba(139, 105, 20, 0.03) 51px
+                ),
+                linear-gradient(
+                    135deg,
+                    rgba(210, 180, 140, 0.15) 0%,
+                    rgba(253, 245, 230, 0) 50%,
+                    rgba(210, 180, 140, 0.1) 100%
+                );
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Caveat', cursive;
+            color: var(--dark-brown);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            color: var(--burnt-orange);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--brown);
+        }
+
+        /* ========== YARN STITCH BORDER ========== */
+        .yarn-border-top,
+        .yarn-border-bottom {
+            width: 100%;
+            height: 18px;
+            background-image:
+                radial-gradient(circle, var(--burnt-orange) 3px, transparent 3px),
+                radial-gradient(circle, var(--brown) 2px, transparent 2px);
+            background-size: 24px 18px, 24px 18px;
+            background-position: 0 0, 12px 9px;
+            opacity: 0.6;
+        }
+
+        .yarn-divider {
+            width: 80%;
+            max-width: 600px;
+            margin: 0 auto;
+            height: 12px;
+            background-image: repeating-linear-gradient(
+                90deg,
+                var(--burnt-orange) 0px,
+                var(--burnt-orange) 8px,
+                transparent 8px,
+                transparent 14px,
+                var(--brown) 14px,
+                var(--brown) 22px,
+                transparent 22px,
+                transparent 28px
+            );
+            opacity: 0.5;
+            border-radius: 6px;
+        }
+
+        /* ========== NAVIGATION ========== */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(180deg, rgba(253, 245, 230, 0.97) 0%, rgba(253, 245, 230, 0.92) 100%);
+            backdrop-filter: blur(6px);
+            border-bottom: 2px dashed var(--kraft-dark);
+            padding: 12px 0;
+        }
+
+        .nav-strip {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 4px 20px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--kraft-dark) transparent;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-strip::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .nav-strip::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .nav-strip::-webkit-scrollbar-thumb {
+            background: var(--kraft-dark);
+            border-radius: 2px;
+        }
+
+        .nav-tag {
+            flex-shrink: 0;
+            display: inline-block;
+            padding: 6px 18px;
+            background: var(--cream);
+            border: 2px dashed var(--brown);
+            border-radius: 20px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-brown);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+
+        .nav-tag:hover,
+        .nav-tag.active {
+            background: var(--burnt-orange);
+            color: var(--cream);
+            border-color: var(--burnt-orange);
+            transform: scale(1.05);
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            padding: 60px 20px 40px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 700;
+            color: var(--dark-brown);
+            margin-bottom: 10px;
+            line-height: 1.1;
+            text-shadow: 2px 2px 0 rgba(139, 105, 20, 0.15);
+        }
+
+        .hero .subtitle {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--burnt-orange);
+            margin-bottom: 40px;
+        }
+
+        .hero-images {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .hero-img-wrap {
+            background: white;
+            padding: 10px 10px 35px;
+            box-shadow: 3px 4px 12px var(--shadow);
+            border-radius: 3px;
+            transition: transform 0.3s ease;
+            max-width: 300px;
+            flex: 1 1 250px;
+        }
+
+        .hero-img-wrap:nth-child(1) { transform: rotate(-3deg); }
+        .hero-img-wrap:nth-child(2) { transform: rotate(1deg); }
+        .hero-img-wrap:nth-child(3) { transform: rotate(-2deg); }
+
+        .hero-img-wrap:hover {
+            transform: rotate(0deg) scale(1.03);
+            z-index: 2;
+        }
+
+        .hero-img-wrap img {
+            width: 100%;
+            aspect-ratio: 4/5;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        /* ========== SECTIONS ========== */
+        section {
+            padding: 50px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            text-align: center;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.05rem;
+            color: var(--brown);
+            margin-bottom: 40px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ========== ABOUT ========== */
+        .about-content {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .about-text {
+            flex: 1 1 350px;
+            font-size: 1.1rem;
+            border: 2px dashed var(--kraft-dark);
+            border-radius: 16px;
+            padding: 30px;
+            background: rgba(253, 245, 230, 0.7);
+            box-shadow: 2px 3px 10px var(--shadow);
+        }
+
+        .about-images {
+            flex: 1 1 350px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .about-img-wrap {
+            background: white;
+            padding: 8px 8px 28px;
+            box-shadow: 2px 3px 10px var(--shadow);
+            border-radius: 3px;
+            transition: transform 0.3s ease;
+        }
+
+        .about-img-wrap:nth-child(1) { transform: rotate(-2deg); }
+        .about-img-wrap:nth-child(2) { transform: rotate(2.5deg); }
+        .about-img-wrap:nth-child(3) { transform: rotate(1.5deg); }
+        .about-img-wrap:nth-child(4) { transform: rotate(-3deg); }
+
+        .about-img-wrap:hover {
+            transform: rotate(0deg) scale(1.04);
+            z-index: 2;
+        }
+
+        .about-img-wrap img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        /* ========== GALLERY ========== */
+        .gallery-filter {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 36px;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            background: transparent;
+            border: 2px dotted var(--brown);
+            border-radius: 24px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--dark-brown);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--burnt-orange);
+            color: var(--cream);
+            border-color: var(--burnt-orange);
+            border-style: solid;
+        }
+
+        .gallery-category {
+            margin-bottom: 50px;
+        }
+
+        .gallery-category h3 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--burnt-orange);
+        }
+
+        .gallery-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 12px 12px 45px;
+            box-shadow: 3px 5px 15px var(--shadow);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            width: 220px;
+            flex-shrink: 0;
+        }
+
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.06) !important;
+            box-shadow: 5px 8px 25px rgba(62, 39, 35, 0.25);
+            z-index: 3;
+        }
+
+        .polaroid img {
+            width: 100%;
+            aspect-ratio: 4/5;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        .polaroid .caption {
+            font-family: 'Caveat', cursive;
+            font-size: 1rem;
+            color: var(--dark-brown);
+            text-align: center;
+            margin-top: 8px;
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
+        }
+
+        .polaroid {
+            position: relative;
+        }
+
+        /* Random rotations applied via JS, but default CSS fallback */
+        .polaroid:nth-child(4n+1) { transform: rotate(-3deg); }
+        .polaroid:nth-child(4n+2) { transform: rotate(2deg); }
+        .polaroid:nth-child(4n+3) { transform: rotate(-1.5deg); }
+        .polaroid:nth-child(4n+4) { transform: rotate(3.5deg); }
+
+        /* ========== CONTACT ========== */
+        .contact-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.75);
+            border: 3px dashed var(--brown);
+            border-radius: 20px;
+            padding: 40px 35px;
+            box-shadow: 3px 5px 15px var(--shadow);
+            text-align: center;
+        }
+
+        .contact-card h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--burnt-orange);
+        }
+
+        .contact-card p {
+            font-size: 1.05rem;
+            margin-bottom: 14px;
+        }
+
+        .order-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px auto;
+            max-width: 350px;
+            text-align: left;
+        }
+
+        .order-list li {
+            padding: 8px 0;
+            border-bottom: 1px dotted var(--kraft-dark);
+            font-size: 1.05rem;
+        }
+
+        .order-list li::before {
+            content: "\1F9F6 ";
+            margin-right: 6px;
+        }
+
+        .email-link {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 12px 32px;
+            background: var(--burnt-orange);
+            color: var(--cream);
+            border-radius: 30px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border: 2px dashed var(--cream);
+            transition: all 0.25s ease;
+        }
+
+        .email-link:hover {
+            background: var(--dark-brown);
+            color: var(--cream);
+            transform: scale(1.05);
+        }
+
+        /* ========== CTA / CLOSING ========== */
+        .closing {
+            text-align: center;
+            padding: 50px 20px 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .closing-text {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.5rem, 4vw, 2.4rem);
+            color: var(--dark-brown);
+            margin-bottom: 36px;
+            max-width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.3;
+        }
+
+        .closing-images {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .closing-img-wrap {
+            background: white;
+            padding: 8px 8px 30px;
+            box-shadow: 3px 4px 12px var(--shadow);
+            border-radius: 3px;
+            transition: transform 0.3s ease;
+            width: 180px;
+            flex-shrink: 0;
+        }
+
+        .closing-img-wrap:nth-child(1) { transform: rotate(-4deg); }
+        .closing-img-wrap:nth-child(2) { transform: rotate(2deg); }
+        .closing-img-wrap:nth-child(3) { transform: rotate(-1deg); }
+        .closing-img-wrap:nth-child(4) { transform: rotate(3deg); }
+        .closing-img-wrap:nth-child(5) { transform: rotate(-2.5deg); }
+
+        .closing-img-wrap:hover {
+            transform: rotate(0deg) scale(1.06);
+            z-index: 2;
+        }
+
+        .closing-img-wrap img {
+            width: 100%;
+            aspect-ratio: 4/5;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            text-align: center;
+            padding: 30px 20px 40px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.2rem;
+            color: var(--brown);
+            border-top: 2px dashed var(--kraft-dark);
+            margin-top: 20px;
+        }
+
+        /* ========== LIGHTBOX ========== */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(62, 39, 35, 0.88);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            padding: 20px;
+        }
+
+        .lightbox-overlay.active {
+            display: flex;
+        }
+
+        .lightbox-overlay img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 6px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            background: white;
+            padding: 10px;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .hero-images {
+                gap: 14px;
+            }
+
+            .hero-img-wrap {
+                max-width: 250px;
+                flex: 1 1 200px;
+            }
+
+            .about-content {
+                gap: 24px;
+            }
+
+            .about-text {
+                padding: 20px;
+            }
+
+            .polaroid {
+                width: 160px;
+                padding: 8px 8px 36px;
+            }
+
+            .closing-img-wrap {
+                width: 140px;
+            }
+
+            .contact-card {
+                padding: 28px 20px;
+            }
+
+            section {
+                padding: 36px 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-img-wrap {
+                max-width: 220px;
+                flex: 0 0 80%;
+            }
+
+            .hero-img-wrap:nth-child(1),
+            .hero-img-wrap:nth-child(2),
+            .hero-img-wrap:nth-child(3) {
+                transform: rotate(0deg);
+            }
+
+            .polaroid {
+                width: 140px;
+                padding: 6px 6px 30px;
+            }
+
+            .closing-img-wrap {
+                width: 120px;
+            }
+
+            .gallery-grid {
+                gap: 14px;
+            }
+
+            .about-images {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-strip">
+            <a href="#home" class="nav-tag active">Home</a>
+            <a href="#about" class="nav-tag">About Me</a>
+            <a href="#gallery" class="nav-tag">Gallery</a>
+            <a href="#cat-ear" class="nav-tag">Cat Ear Hats</a>
+            <a href="#open-hoods" class="nav-tag">Open Hoods</a>
+            <a href="#jester" class="nav-tag">Jester/Clown</a>
+            <a href="#funky" class="nav-tag">Funky Hats</a>
+            <a href="#contact" class="nav-tag">Order Info</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1>Ellie Does Crochet<br>and Stuff</h1>
+        <p class="subtitle">Handmade hats, hoods, and happy vibes ~ one stitch at a time</p>
+        <div class="hero-images">
+            <div class="hero-img-wrap">
+                <img src="images/hero_left.jpg" alt="Handmade crochet creation" loading="lazy">
+            </div>
+            <div class="hero-img-wrap">
+                <img src="images/hero_center.jpg" alt="Featured crochet piece" loading="lazy">
+            </div>
+            <div class="hero-img-wrap">
+                <img src="images/hero_right.jpg" alt="Crochet hat design" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <div class="yarn-divider"></div>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2 class="section-title">A Little About Me</h2>
+        <p class="section-subtitle">The person behind the yarn</p>
+        <div class="about-content">
+            <div class="about-text">
+                <p>I'm a college student with way too much yarn and a desire to create. Whether it's a hat shaped like your favorite character, a funky beanie for festivals, or a cozy hood for everyday wear &mdash; I love bringing creative ideas to life with a crochet hook.</p>
+            </div>
+            <div class="about-images">
+                <div class="about-img-wrap">
+                    <img src="images/about1.jpg" alt="About Ellie 1" loading="lazy">
+                </div>
+                <div class="about-img-wrap">
+                    <img src="images/about2.jpg" alt="About Ellie 2" loading="lazy">
+                </div>
+                <div class="about-img-wrap">
+                    <img src="images/about3.jpg" alt="About Ellie 3" loading="lazy">
+                </div>
+                <div class="about-img-wrap">
+                    <img src="images/about4.jpg" alt="About Ellie 4" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="yarn-border-top"></div>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <h2 class="section-title">The Gallery</h2>
+        <p class="section-subtitle">Click on any photo for a closer look</p>
+
+        <div class="gallery-filter">
+            <button class="filter-btn active" data-filter="all">Show All</button>
+            <button class="filter-btn" data-filter="cat-ear">Cat Ear Hats</button>
+            <button class="filter-btn" data-filter="open-hoods">Open Hoods</button>
+            <button class="filter-btn" data-filter="jester">Jester/Clown</button>
+            <button class="filter-btn" data-filter="funky">Funky Hats</button>
+        </div>
+
+        <!-- Cat Ear Hat with Tassle -->
+        <div class="gallery-category" id="cat-ear" data-category="cat-ear">
+            <h3>Cat Ear Hat with Tassle</h3>
+            <div class="gallery-grid">
+                <div class="polaroid">
+                    <img src="images/gallery1.jpg" alt="Cat ear hat 1" loading="lazy">
+                    <span class="caption">Cat Ear Hat</span>
+                </div>
+                <div class="polaroid">
+                    <img src="images/gallery2.jpg" alt="Cat ear hat 2" loading="lazy">
+                    <span class="caption">Cat Ear Hat</span>
+                </div>
+                <div class="polaroid">
+                    <img src="images/gallery3.jpg" alt="Cat ear hat 3" loading="lazy">
+                    <span class="caption">Cat Ear Hat</span>
+                </div>
+                <div class="polaroid">
+                    <img src="images/gallery4.jpg" alt="Cat ear hat 4" loading="lazy">
+                    <span class="caption">Cat Ear Hat</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Open Hoods -->
+        <div class="gallery-category" id="open-hoods" data-category="open-hoods">
+            <h3>Open Hoods</h3>
+            <div class="gallery-grid">
+                <div class="polaroid">
+                    <img src="images/open_hoods1.jpg" alt="Open hood 1" loading="lazy">
+                    <span class="caption">Open Hood</span>
+                </div>
+                <div class="polaroid">
+                    <img src="images/open_hoods2.jpg" alt="Open hood 2" loading="lazy">
+                    <span class="caption">Open Hood</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jester/Clown -->
+        <div class="gallery-category" id="jester" data-category="jester">
+            <h3>Jester / Clown</h3>
+            <div class="gallery-grid">
+                <div class="polaroid">
+                    <img src="images/jester1.jpg" alt="Jester hat 1" loading="lazy">
+                    <span class="caption">Jester Hat</span>
+                </div>
+                <div class="polaroid">
+                    <img src="images/jester2.jpg" alt="Jester hat 2" loading="lazy">
+                    <span class="caption">Jester Hat</span>
+                </div>
+                <div class="polaroid">
+                    <img src="images/jester3.jpg" alt="Jester hat 3" loading="lazy">
+                    <span class="caption">Jester Hat</span>
+                </div>
+                <div class="polaroid">
+                    <img src="images/jester4.jpg" alt="Jester hat 4" loading="lazy">
+                    <span class="caption">Jester Hat</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Funky Hats -->
+        <div class="gallery-category" id="funky" data-category="funky">
+            <h3>Funky Hats</h3>
+            <div class="gallery-grid">
+                <div class="polaroid">
+                    <img src="images/funky1.jpg" alt="Funky hat 1" loading="lazy">
+                    <span class="caption">Funky Hat</span>
+                </div>
+                <div class="polaroid">
+                    <img src="images/funky2.jpg" alt="Funky hat 2" loading="lazy">
+                    <span class="caption">Funky Hat</span>
+                </div>
+                <div class="polaroid">
+                    <img src="images/funky3.jpg" alt="Funky hat 3" loading="lazy">
+                    <span class="caption">Funky Hat</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="yarn-border-bottom"></div>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="contact-card">
+            <h2>Place an Order</h2>
+            <p>Want something custom? Send me a message with the following info:</p>
+            <ul class="order-list">
+                <li>Your name</li>
+                <li>Character description</li>
+                <li>Hat style preference</li>
+                <li>Budget</li>
+            </ul>
+            <a href="mailto:Eleanor@aughey.com" class="email-link">Eleanor@aughey.com</a>
+        </div>
+    </section>
+
+    <div class="yarn-divider"></div>
+
+    <!-- Closing CTA -->
+    <div class="closing" id="closing">
+        <p class="closing-text">If any of these hat styles interest you, shoot me a message and let's make something awesome together!</p>
+        <div class="closing-images">
+            <div class="closing-img-wrap">
+                <img src="images/closing1.jpg" alt="Closing showcase 1" loading="lazy">
+            </div>
+            <div class="closing-img-wrap">
+                <img src="images/closing2.jpg" alt="Closing showcase 2" loading="lazy">
+            </div>
+            <div class="closing-img-wrap">
+                <img src="images/closing3.jpg" alt="Closing showcase 3" loading="lazy">
+            </div>
+            <div class="closing-img-wrap">
+                <img src="images/closing4.jpg" alt="Closing showcase 4" loading="lazy">
+            </div>
+            <div class="closing-img-wrap">
+                <img src="images/closing5.jpg" alt="Closing showcase 5" loading="lazy">
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Made with yarn, love, and a little bit of chaos &hearts;</p>
+        <p>Ellie Does Crochet and Stuff &copy; 2026</p>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox-overlay" id="lightbox">
+        <img src="" alt="Enlarged view" id="lightbox-img">
+    </div>
+
+    <script>
+        (function() {
+            // ========== RANDOM POLAROID ROTATIONS ==========
+            const polaroids = document.querySelectorAll('.polaroid');
+            polaroids.forEach(function(card) {
+                const rotation = (Math.random() - 0.5) * 8; // -4 to +4 degrees
+                card.style.transform = 'rotate(' + rotation + 'deg)';
+                card.dataset.rotation = rotation;
+            });
+
+            // ========== GALLERY FILTER ==========
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const categories = document.querySelectorAll('.gallery-category');
+
+            filterBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(function(b) { b.classList.remove('active'); });
+                    btn.classList.add('active');
+
+                    var filter = btn.dataset.filter;
+                    categories.forEach(function(cat) {
+                        if (filter === 'all' || cat.dataset.category === filter) {
+                            cat.style.display = '';
+                        } else {
+                            cat.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // ========== NAV ACTIVE STATE ==========
+            const navTags = document.querySelectorAll('.nav-tag');
+
+            function updateActiveNav() {
+                var scrollPos = window.scrollY + 100;
+                var current = '';
+                var sections = document.querySelectorAll('section, .closing');
+
+                sections.forEach(function(sec) {
+                    if (sec.offsetTop <= scrollPos) {
+                        current = sec.getAttribute('id') || '';
+                    }
+                });
+
+                navTags.forEach(function(tag) {
+                    tag.classList.remove('active');
+                    var href = tag.getAttribute('href');
+                    if (href && href.substring(1) === current) {
+                        tag.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', updateActiveNav, { passive: true });
+
+            // ========== LIGHTBOX ==========
+            var lightbox = document.getElementById('lightbox');
+            var lightboxImg = document.getElementById('lightbox-img');
+
+            document.querySelectorAll('.polaroid img, .hero-img-wrap img, .about-img-wrap img, .closing-img-wrap img').forEach(function(img) {
+                img.style.cursor = 'pointer';
+                img.addEventListener('click', function() {
+                    lightboxImg.src = img.src;
+                    lightboxImg.alt = img.alt;
+                    lightbox.classList.add('active');
+                });
+            });
+
+            lightbox.addEventListener('click', function() {
+                lightbox.classList.remove('active');
+                lightboxImg.src = '';
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                    lightbox.classList.remove('active');
+                    lightboxImg.src = '';
+                }
+            });
+
+            // ========== SMOOTH SCROLL FOR NAV ==========
+            navTags.forEach(function(tag) {
+                tag.addEventListener('click', function(e) {
+                    var href = tag.getAttribute('href');
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+                        var target = document.querySelector(href);
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellie Does Crochet and Stuff</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --wc-pink: rgba(255, 182, 193, 0.3);
+            --wc-pink-solid: rgba(255, 182, 193, 0.6);
+            --wc-blue: rgba(135, 206, 235, 0.3);
+            --wc-blue-solid: rgba(135, 206, 235, 0.5);
+            --wc-yellow: rgba(255, 255, 200, 0.3);
+            --wc-yellow-solid: rgba(255, 255, 200, 0.6);
+            --text-dark: #3a3a3a;
+            --text-medium: #5a5a5a;
+            --text-light: #7a7a7a;
+        }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            color: var(--text-dark);
+            background: #fefefe;
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Libre Baskerville', serif;
+            font-weight: 700;
+        }
+
+        /* Watercolor background blobs */
+        .wc-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            pointer-events: none;
+            z-index: 0;
+            will-change: transform;
+        }
+
+        /* Section base */
+        section {
+            position: relative;
+            padding: 80px 20px;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Watercolor divider */
+        .wc-divider {
+            height: 8px;
+            border: none;
+            border-radius: 4px;
+            background: linear-gradient(90deg,
+                rgba(255, 182, 193, 0.0),
+                rgba(255, 182, 193, 0.5) 15%,
+                rgba(135, 206, 235, 0.5) 40%,
+                rgba(255, 255, 200, 0.5) 65%,
+                rgba(255, 182, 193, 0.4) 85%,
+                rgba(255, 182, 193, 0.0)
+            );
+            margin: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .wc-divider.alt {
+            background: linear-gradient(90deg,
+                rgba(135, 206, 235, 0.0),
+                rgba(255, 255, 200, 0.5) 20%,
+                rgba(255, 182, 193, 0.5) 50%,
+                rgba(135, 206, 235, 0.5) 80%,
+                rgba(135, 206, 235, 0.0)
+            );
+        }
+
+        /* ==================== HERO ==================== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(255, 182, 193, 0.35) 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 60%, rgba(135, 206, 235, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 90%, rgba(255, 255, 200, 0.35) 0%, transparent 40%),
+                #fefefe;
+        }
+
+        .hero .wc-blob-1 {
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 182, 193, 0.2);
+            top: -100px;
+            left: -150px;
+        }
+
+        .hero .wc-blob-2 {
+            width: 400px;
+            height: 400px;
+            background: rgba(135, 206, 235, 0.2);
+            bottom: -50px;
+            right: -100px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            display: block;
+            font-family: 'Libre Baskerville', serif;
+            font-style: italic;
+            font-weight: 400;
+            font-size: 0.5em;
+            color: var(--text-medium);
+            margin-top: 8px;
+        }
+
+        .hero-images {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .hero-images img {
+            width: 280px;
+            height: 350px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .hero-images img:nth-child(1) {
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        }
+
+        .hero-images img:nth-child(2) {
+            border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%;
+            margin-top: 30px;
+        }
+
+        .hero-images img:nth-child(3) {
+            border-radius: 40% 60% 50% 50% / 70% 30% 70% 30%;
+        }
+
+        .hero-images img:hover {
+            transform: scale(1.03) rotate(1deg);
+        }
+
+        /* ==================== ABOUT ==================== */
+        .about {
+            background:
+                radial-gradient(ellipse at 80% 20%, rgba(255, 255, 200, 0.35) 0%, transparent 45%),
+                radial-gradient(ellipse at 10% 70%, rgba(135, 206, 235, 0.25) 0%, transparent 45%),
+                #fefefe;
+        }
+
+        .about .wc-blob-1 {
+            width: 350px;
+            height: 350px;
+            background: rgba(255, 255, 200, 0.25);
+            top: 50px;
+            right: -80px;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            margin-bottom: 24px;
+            color: var(--text-dark);
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            color: var(--text-medium);
+            line-height: 1.85;
+        }
+
+        .about-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .about-images img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .about-images img:nth-child(1) {
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        }
+
+        .about-images img:nth-child(2) {
+            border-radius: 70% 30% 30% 70% / 60% 40% 60% 40%;
+            margin-top: 20px;
+        }
+
+        .about-images img:nth-child(3) {
+            border-radius: 50% 50% 30% 70% / 40% 70% 30% 60%;
+            margin-top: -10px;
+        }
+
+        .about-images img:nth-child(4) {
+            border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%;
+            margin-top: 10px;
+        }
+
+        .about-images img:hover {
+            transform: scale(1.04) rotate(-1deg);
+        }
+
+        /* ==================== GALLERY ==================== */
+        .gallery {
+            background:
+                radial-gradient(ellipse at 30% 40%, rgba(255, 182, 193, 0.25) 0%, transparent 45%),
+                radial-gradient(ellipse at 70% 80%, rgba(135, 206, 235, 0.3) 0%, transparent 40%),
+                radial-gradient(ellipse at 90% 10%, rgba(255, 255, 200, 0.25) 0%, transparent 35%),
+                #fefefe;
+        }
+
+        .gallery .wc-blob-1 {
+            width: 450px;
+            height: 450px;
+            background: rgba(255, 182, 193, 0.15);
+            top: 200px;
+            left: -150px;
+        }
+
+        .gallery .wc-blob-2 {
+            width: 350px;
+            height: 350px;
+            background: rgba(135, 206, 235, 0.15);
+            bottom: 300px;
+            right: -120px;
+        }
+
+        .gallery > .container > h2 {
+            text-align: center;
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            margin-bottom: 60px;
+        }
+
+        .gallery-category {
+            margin-bottom: 60px;
+        }
+
+        .gallery-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .gallery-category h3 {
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid rgba(255, 182, 193, 0.4);
+            display: inline-block;
+        }
+
+        .gallery-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .gallery-grid img {
+            height: 260px;
+            flex: 1 1 220px;
+            max-width: 280px;
+            object-fit: cover;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+        }
+
+        /* Organic blob borders for gallery items - each slightly different */
+        .gallery-grid img:nth-child(4n+1) {
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        }
+
+        .gallery-grid img:nth-child(4n+2) {
+            border-radius: 70% 30% 50% 50% / 40% 60% 40% 60%;
+        }
+
+        .gallery-grid img:nth-child(4n+3) {
+            border-radius: 50% 50% 30% 70% / 60% 40% 70% 30%;
+        }
+
+        .gallery-grid img:nth-child(4n) {
+            border-radius: 40% 60% 60% 40% / 50% 50% 40% 60%;
+        }
+
+        .gallery-grid img:hover {
+            transform: scale(1.05) rotate(1.5deg);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ==================== CONTACT ==================== */
+        .contact {
+            background:
+                radial-gradient(ellipse at 50% 30%, rgba(255, 255, 200, 0.35) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(255, 182, 193, 0.3) 0%, transparent 40%),
+                radial-gradient(ellipse at 85% 60%, rgba(135, 206, 235, 0.25) 0%, transparent 40%),
+                #fefefe;
+        }
+
+        .contact .wc-blob-1 {
+            width: 380px;
+            height: 380px;
+            background: rgba(255, 255, 200, 0.2);
+            top: -80px;
+            left: 30%;
+        }
+
+        .contact-inner {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .contact h2 {
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            margin-bottom: 16px;
+        }
+
+        .contact-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-medium);
+            margin-bottom: 40px;
+        }
+
+        .order-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 30% 70% 70% 30% / 92% 92% 8% 8%;
+            padding: 44px 40px;
+            text-align: left;
+            border: 1px solid rgba(255, 182, 193, 0.3);
+        }
+
+        .order-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .order-card ul {
+            list-style: none;
+            margin-bottom: 28px;
+        }
+
+        .order-card ul li {
+            padding: 8px 0;
+            padding-left: 28px;
+            position: relative;
+            font-size: 1.05rem;
+            color: var(--text-medium);
+        }
+
+        .order-card ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255,182,193,0.6), rgba(135,206,235,0.5));
+        }
+
+        .email-link {
+            display: inline-block;
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            padding: 14px 36px;
+            background: linear-gradient(135deg, rgba(255,182,193,0.35), rgba(135,206,235,0.3), rgba(255,255,200,0.35));
+            border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .email-link:hover {
+            background: linear-gradient(135deg, rgba(255,182,193,0.55), rgba(135,206,235,0.5), rgba(255,255,200,0.55));
+            transform: scale(1.04);
+        }
+
+        /* ==================== CLOSING CTA ==================== */
+        .closing {
+            background:
+                radial-gradient(ellipse at 40% 50%, rgba(255, 182, 193, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 30%, rgba(135, 206, 235, 0.25) 0%, transparent 45%),
+                #fefefe;
+            text-align: center;
+        }
+
+        .closing .wc-blob-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 182, 193, 0.15);
+            bottom: -100px;
+            left: -100px;
+        }
+
+        .closing h2 {
+            font-size: clamp(1.4rem, 2.5vw, 2rem);
+            max-width: 750px;
+            margin: 0 auto 50px;
+            line-height: 1.5;
+            font-style: italic;
+            font-weight: 400;
+            color: var(--text-medium);
+        }
+
+        .closing-images {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        .closing-images img {
+            width: 180px;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .closing-images img:nth-child(1) {
+            border-radius: 30% 70% 60% 40% / 50% 40% 60% 50%;
+        }
+
+        .closing-images img:nth-child(2) {
+            border-radius: 60% 40% 40% 60% / 30% 70% 30% 70%;
+            margin-top: 25px;
+        }
+
+        .closing-images img:nth-child(3) {
+            border-radius: 45% 55% 70% 30% / 60% 35% 65% 40%;
+        }
+
+        .closing-images img:nth-child(4) {
+            border-radius: 55% 45% 35% 65% / 45% 60% 40% 55%;
+            margin-top: 25px;
+        }
+
+        .closing-images img:nth-child(5) {
+            border-radius: 35% 65% 55% 45% / 65% 40% 60% 35%;
+        }
+
+        .closing-images img:hover {
+            transform: scale(1.06) rotate(-1.5deg);
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(180deg,
+                #fefefe,
+                rgba(255, 182, 193, 0.15) 40%,
+                rgba(135, 206, 235, 0.1)
+            );
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* ==================== LIGHTBOX ==================== */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-overlay img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .lightbox-close {
+            position: fixed;
+            top: 24px;
+            right: 32px;
+            font-size: 2.2rem;
+            color: #fff;
+            cursor: pointer;
+            z-index: 1001;
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 300;
+            line-height: 1;
+            transition: transform 0.2s ease;
+        }
+
+        .lightbox-close:hover {
+            transform: scale(1.2);
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 900px) {
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+
+            .hero-images img {
+                width: 220px;
+                height: 280px;
+            }
+
+            .hero-images img:nth-child(2) {
+                margin-top: 0;
+            }
+
+            .gallery-grid img {
+                max-width: 100%;
+                flex: 1 1 160px;
+                height: 220px;
+            }
+
+            .closing-images img {
+                width: 140px;
+                height: 180px;
+            }
+
+            section {
+                padding: 60px 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-images {
+                flex-direction: column;
+                align-items: center;
+                gap: 16px;
+            }
+
+            .hero-images img {
+                width: 85%;
+                max-width: 320px;
+                height: 300px;
+            }
+
+            .about-images {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .about-images img {
+                height: 170px;
+            }
+
+            .about-images img:nth-child(2) {
+                margin-top: 0;
+            }
+
+            .about-images img:nth-child(3) {
+                margin-top: 0;
+            }
+
+            .gallery-grid {
+                gap: 14px;
+            }
+
+            .gallery-grid img {
+                height: 200px;
+                flex: 1 1 140px;
+            }
+
+            .order-card {
+                padding: 30px 24px;
+                border-radius: 20px;
+            }
+
+            .closing-images img {
+                width: 120px;
+                height: 155px;
+            }
+
+            .closing-images img:nth-child(2),
+            .closing-images img:nth-child(4) {
+                margin-top: 0;
+            }
+
+            .gallery-category h3 {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Fade in animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="wc-blob wc-blob-1" data-parallax="0.03"></div>
+        <div class="wc-blob wc-blob-2" data-parallax="-0.02"></div>
+        <div class="container">
+            <h1>Ellie Does Crochet and Stuff<span>handmade with love & a little yarn chaos</span></h1>
+            <div class="hero-images">
+                <img src="images/hero_left.jpg" alt="Crochet creation by Ellie">
+                <img src="images/hero_center.jpg" alt="Crochet creation by Ellie">
+                <img src="images/hero_right.jpg" alt="Crochet creation by Ellie">
+            </div>
+        </div>
+    </section>
+
+    <hr class="wc-divider">
+
+    <!-- ABOUT -->
+    <section class="about">
+        <div class="wc-blob wc-blob-1" data-parallax="0.025"></div>
+        <div class="container">
+            <div class="about-content fade-in">
+                <div class="about-text">
+                    <h2>About Me</h2>
+                    <p>I'm a college student with way too much yarn and a desire to create. Whether it's a hat shaped like your favorite character, a funky beanie for festivals, or a cozy hood for everyday wear &mdash; I love bringing creative ideas to life with a crochet hook.</p>
+                </div>
+                <div class="about-images">
+                    <img src="images/about1.jpg" alt="Ellie crocheting">
+                    <img src="images/about2.jpg" alt="Crochet work in progress">
+                    <img src="images/about3.jpg" alt="Finished crochet piece">
+                    <img src="images/about4.jpg" alt="Yarn and supplies">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="wc-divider alt">
+
+    <!-- GALLERY -->
+    <section class="gallery">
+        <div class="wc-blob wc-blob-1" data-parallax="0.02"></div>
+        <div class="wc-blob wc-blob-2" data-parallax="-0.03"></div>
+        <div class="container">
+            <h2 class="fade-in">Gallery</h2>
+
+            <div class="gallery-category fade-in">
+                <h3>Cat Ear Hat with Tassle</h3>
+                <div class="gallery-grid">
+                    <img src="images/gallery1.jpg" alt="Cat ear hat with tassle" data-lightbox>
+                    <img src="images/gallery2.jpg" alt="Cat ear hat with tassle" data-lightbox>
+                    <img src="images/gallery3.jpg" alt="Cat ear hat with tassle" data-lightbox>
+                    <img src="images/gallery4.jpg" alt="Cat ear hat with tassle" data-lightbox>
+                </div>
+            </div>
+
+            <div class="gallery-category fade-in">
+                <h3>Open Hoods</h3>
+                <div class="gallery-grid">
+                    <img src="images/open_hoods1.jpg" alt="Open hood crochet" data-lightbox>
+                    <img src="images/open_hoods2.jpg" alt="Open hood crochet" data-lightbox>
+                </div>
+            </div>
+
+            <div class="gallery-category fade-in">
+                <h3>Jester / Clown</h3>
+                <div class="gallery-grid">
+                    <img src="images/jester1.jpg" alt="Jester hat crochet" data-lightbox>
+                    <img src="images/jester2.jpg" alt="Jester hat crochet" data-lightbox>
+                    <img src="images/jester3.jpg" alt="Jester hat crochet" data-lightbox>
+                    <img src="images/jester4.jpg" alt="Jester hat crochet" data-lightbox>
+                </div>
+            </div>
+
+            <div class="gallery-category fade-in">
+                <h3>Funky Hats</h3>
+                <div class="gallery-grid">
+                    <img src="images/funky1.jpg" alt="Funky hat crochet" data-lightbox>
+                    <img src="images/funky2.jpg" alt="Funky hat crochet" data-lightbox>
+                    <img src="images/funky3.jpg" alt="Funky hat crochet" data-lightbox>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="wc-divider">
+
+    <!-- CONTACT -->
+    <section class="contact">
+        <div class="wc-blob wc-blob-1" data-parallax="0.02"></div>
+        <div class="container">
+            <div class="contact-inner fade-in">
+                <h2>Place an Order</h2>
+                <p class="contact-subtitle">Want something custom made just for you? Let me know what you have in mind!</p>
+                <div class="order-card">
+                    <h3>To place an order, please provide:</h3>
+                    <ul>
+                        <li>Your name</li>
+                        <li>Character description</li>
+                        <li>Hat style preference</li>
+                        <li>Budget</li>
+                    </ul>
+                    <div style="text-align:center;">
+                        <a href="mailto:Eleanor@aughey.com" class="email-link">Eleanor@aughey.com</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="wc-divider alt">
+
+    <!-- CLOSING CTA -->
+    <section class="closing">
+        <div class="wc-blob wc-blob-1" data-parallax="-0.02"></div>
+        <div class="container fade-in">
+            <h2>If any of these hat styles interest you, shoot me a message and let's make something awesome together!</h2>
+            <div class="closing-images">
+                <img src="images/closing1.jpg" alt="Crochet showcase">
+                <img src="images/closing2.jpg" alt="Crochet showcase">
+                <img src="images/closing3.jpg" alt="Crochet showcase">
+                <img src="images/closing4.jpg" alt="Crochet showcase">
+                <img src="images/closing5.jpg" alt="Crochet showcase">
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Ellie Does Crochet and Stuff &copy; 2026</p>
+    </footer>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox-overlay" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="Gallery image enlarged" id="lightbox-img">
+    </div>
+
+    <script>
+        // Parallax on watercolor blobs
+        (function() {
+            var blobs = document.querySelectorAll('[data-parallax]');
+            var ticking = false;
+
+            function updateParallax() {
+                var scrollY = window.pageYOffset;
+                for (var i = 0; i < blobs.length; i++) {
+                    var rate = parseFloat(blobs[i].getAttribute('data-parallax'));
+                    blobs[i].style.transform = 'translateY(' + (scrollY * rate) + 'px)';
+                }
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    requestAnimationFrame(updateParallax);
+                    ticking = true;
+                }
+            });
+        })();
+
+        // Fade-in on scroll (Intersection Observer)
+        (function() {
+            var targets = document.querySelectorAll('.fade-in');
+            if ('IntersectionObserver' in window) {
+                var observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.15 });
+
+                targets.forEach(function(t) { observer.observe(t); });
+            } else {
+                targets.forEach(function(t) { t.classList.add('visible'); });
+            }
+        })();
+
+        // Lightbox
+        (function() {
+            var overlay = document.getElementById('lightbox');
+            var lbImg = document.getElementById('lightbox-img');
+            var images = document.querySelectorAll('[data-lightbox]');
+
+            images.forEach(function(img) {
+                img.addEventListener('click', function() {
+                    lbImg.src = img.src;
+                    lbImg.alt = img.alt;
+                    overlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+
+            overlay.addEventListener('click', function(e) {
+                if (e.target !== lbImg) {
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && overlay.classList.contains('active')) {
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellie Does Crochet and Stuff</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ========== RESET & BASE ========== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --pink: #FF6B9D;
+            --yellow: #FFE66D;
+            --cyan: #4ECDC4;
+            --black: #1a1a1a;
+            --white: #ffffff;
+            --border: 3.5px solid var(--black);
+            --shadow: 5px 5px 0px var(--black);
+            --shadow-sm: 3px 3px 0px var(--black);
+            --shadow-hover: 7px 7px 0px var(--black);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: var(--white);
+            color: var(--black);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* ========== NAV ========== */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--yellow);
+            border-bottom: var(--border);
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        nav .logo {
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        nav .nav-links a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--black);
+            background: var(--white);
+            border: var(--border);
+            padding: 6px 14px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.15s ease;
+            text-transform: uppercase;
+        }
+
+        nav .nav-links a:hover {
+            box-shadow: var(--shadow);
+            transform: translate(-2px, -2px);
+            background: var(--pink);
+            color: var(--white);
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            padding: 60px 24px 50px;
+            text-align: center;
+            background: var(--white);
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 6vw, 4.5rem);
+            text-transform: uppercase;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero h1 .accent {
+            color: var(--pink);
+            position: relative;
+        }
+
+        .hero h1 .accent::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: var(--yellow);
+            z-index: -1;
+            transform: rotate(-1deg);
+        }
+
+        .hero .subtitle {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(0.85rem, 2vw, 1.1rem);
+            margin-top: 12px;
+            color: #555;
+            transform: rotate(-0.5deg);
+        }
+
+        .hero-images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin: 40px auto 0;
+        }
+
+        .hero-img-wrapper {
+            border: var(--border);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hero-img-wrapper:nth-child(1) { transform: rotate(-2deg); background: var(--pink); }
+        .hero-img-wrapper:nth-child(2) { transform: rotate(0.5deg); background: var(--yellow); }
+        .hero-img-wrapper:nth-child(3) { transform: rotate(1.5deg); background: var(--cyan); }
+
+        .hero-img-wrapper:hover {
+            transform: rotate(0deg) scale(1.03);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .hero-img-wrapper img {
+            width: 100%;
+            aspect-ratio: 4/5;
+            object-fit: cover;
+        }
+
+        /* ========== SECTIONS ========== */
+        section {
+            padding: 60px 24px;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin-bottom: 30px;
+            display: inline-block;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            z-index: -1;
+        }
+
+        .title-pink::after { background: var(--pink); }
+        .title-yellow::after { background: var(--yellow); }
+        .title-cyan::after { background: var(--cyan); }
+
+        /* ========== ABOUT ========== */
+        .about {
+            background: var(--cyan);
+            border-top: var(--border);
+            border-bottom: var(--border);
+        }
+
+        .about-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .about-text {
+            background: var(--white);
+            border: var(--border);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            transform: rotate(-0.5deg);
+        }
+
+        .about-text p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .about-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .about-images .about-img {
+            border: var(--border);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+
+        .about-images .about-img:nth-child(1) { transform: rotate(1deg); }
+        .about-images .about-img:nth-child(2) { transform: rotate(-1.5deg); }
+        .about-images .about-img:nth-child(3) { transform: rotate(-0.5deg); }
+        .about-images .about-img:nth-child(4) { transform: rotate(2deg); }
+
+        .about-images .about-img:hover { transform: rotate(0deg) scale(1.04); }
+
+        .about-images .about-img img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+
+        /* ========== GALLERY ========== */
+        .gallery {
+            background: var(--white);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-category {
+            margin-bottom: 50px;
+        }
+
+        .gallery-category h3 {
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: inline-block;
+            padding: 8px 18px;
+            border: var(--border);
+            box-shadow: var(--shadow-sm);
+            letter-spacing: -0.5px;
+        }
+
+        .gallery-category:nth-child(odd) h3 { background: var(--pink); color: var(--white); }
+        .gallery-category:nth-child(even) h3 { background: var(--yellow); }
+
+        .gallery-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .gallery-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+        .gallery-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .gallery-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+        .gallery-card {
+            border: var(--border);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .gallery-card::after {
+            content: 'CLICK TO EXPAND';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--black);
+            color: var(--white);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            text-align: center;
+            padding: 5px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .gallery-card:hover::after { opacity: 1; }
+
+        .gallery-card:nth-child(4n+1) { background: var(--pink); transform: rotate(-0.5deg); }
+        .gallery-card:nth-child(4n+2) { background: var(--yellow); transform: rotate(0.8deg); }
+        .gallery-card:nth-child(4n+3) { background: var(--cyan); transform: rotate(-0.3deg); }
+        .gallery-card:nth-child(4n+4) { background: var(--white); transform: rotate(0.6deg); }
+
+        .gallery-card:hover {
+            transform: rotate(0deg) translate(-3px, -3px);
+            box-shadow: var(--shadow-hover);
+            z-index: 2;
+        }
+
+        .gallery-card img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+        }
+
+        /* ========== CONTACT ========== */
+        .contact {
+            background: var(--yellow);
+            border-top: var(--border);
+            border-bottom: var(--border);
+        }
+
+        .contact-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .contact-card {
+            background: var(--white);
+            border: var(--border);
+            box-shadow: var(--shadow);
+            padding: 30px;
+        }
+
+        .contact-card:first-child { transform: rotate(-1deg); }
+        .contact-card:last-child { transform: rotate(0.8deg); }
+
+        .contact-card h3 {
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .contact-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contact-card ul li {
+            padding: 6px 0;
+            font-size: 1rem;
+            border-bottom: 2px dashed #ccc;
+            font-weight: 500;
+        }
+
+        .contact-card ul li:last-child { border-bottom: none; }
+
+        .contact-card ul li::before {
+            content: '// ';
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            color: var(--pink);
+        }
+
+        .email-link {
+            display: inline-block;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--black);
+            background: var(--cyan);
+            border: var(--border);
+            box-shadow: var(--shadow-sm);
+            padding: 12px 22px;
+            text-decoration: none;
+            margin-top: 14px;
+            transition: all 0.15s ease;
+            text-transform: uppercase;
+        }
+
+        .email-link:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translate(-3px, -3px);
+            background: var(--pink);
+            color: var(--white);
+        }
+
+        /* ========== CTA / CLOSING ========== */
+        .closing {
+            text-align: center;
+            background: var(--white);
+        }
+
+        .closing .cta-text {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            font-weight: 600;
+            line-height: 1.6;
+            background: var(--pink);
+            color: var(--white);
+            border: var(--border);
+            box-shadow: var(--shadow);
+            padding: 28px 34px;
+            transform: rotate(-0.5deg);
+        }
+
+        .closing-images {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .closing-img {
+            border: var(--border);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .closing-img:nth-child(1) { transform: rotate(-2deg); background: var(--cyan); }
+        .closing-img:nth-child(2) { transform: rotate(1.5deg); background: var(--yellow); }
+        .closing-img:nth-child(3) { transform: rotate(-1deg); background: var(--pink); }
+        .closing-img:nth-child(4) { transform: rotate(2deg); background: var(--cyan); }
+        .closing-img:nth-child(5) { transform: rotate(-0.5deg); background: var(--yellow); }
+
+        .closing-img:hover {
+            transform: rotate(0deg) scale(1.05);
+            box-shadow: var(--shadow-hover);
+            z-index: 2;
+        }
+
+        .closing-img img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            background: var(--black);
+            color: var(--white);
+            text-align: center;
+            padding: 30px 24px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        footer span { color: var(--pink); }
+
+        /* ========== LIGHTBOX ========== */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border: 4px solid var(--white);
+            box-shadow: 0 0 60px rgba(255,107,157,0.3);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-family: 'Space Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            background: var(--pink);
+            border: 3px solid var(--white);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .lightbox-close:hover { background: var(--cyan); }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 900px) {
+            .hero-images {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+            }
+
+            .about-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-card:first-child,
+            .contact-card:last-child { transform: rotate(0deg); }
+
+            .gallery-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+            .gallery-grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
+
+            .closing-images {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .closing-img:nth-child(4),
+            .closing-img:nth-child(5) {
+                grid-column: span 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                justify-content: center;
+            }
+
+            nav .nav-links {
+                justify-content: center;
+            }
+
+            .hero h1 {
+                letter-spacing: -1px;
+            }
+
+            .hero-images {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .hero-img-wrapper:nth-child(3) {
+                grid-column: span 2;
+                max-width: 60%;
+                margin: 0 auto;
+            }
+
+            .about-images {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .gallery-grid.cols-4,
+            .gallery-grid.cols-3,
+            .gallery-grid.cols-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .closing-images {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .closing-img:nth-child(5) {
+                grid-column: span 2;
+                max-width: 50%;
+                margin: 0 auto;
+            }
+
+            section { padding: 40px 16px; }
+        }
+
+        /* ========== MARQUEE STRIP ========== */
+        .marquee-strip {
+            background: var(--black);
+            color: var(--white);
+            border-top: var(--border);
+            border-bottom: var(--border);
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 10px 0;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .marquee-strip .marquee-inner {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+
+        .marquee-strip .marquee-inner span {
+            color: var(--pink);
+            margin: 0 16px;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="logo">Ellie Does Crochet</div>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#contact">Order</a>
+        </div>
+    </nav>
+
+    <!-- MARQUEE -->
+    <div class="marquee-strip">
+        <div class="marquee-inner">
+            HANDMADE WITH LOVE <span>*</span> CROCHET HATS <span>*</span> CUSTOM ORDERS <span>*</span> ONE OF A KIND <span>*</span> FUNKY AND FRESH <span>*</span> YARN MAGIC <span>*</span> HANDMADE WITH LOVE <span>*</span> CROCHET HATS <span>*</span> CUSTOM ORDERS <span>*</span> ONE OF A KIND <span>*</span> FUNKY AND FRESH <span>*</span> YARN MAGIC <span>*</span>
+        </div>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Ellie Does<br><span class="accent">Crochet</span><br>and Stuff</h1>
+        <p class="subtitle">// handmade hats, hoods, and whatever else I feel like making</p>
+        <div class="hero-images">
+            <div class="hero-img-wrapper">
+                <img src="images/hero_left.jpg" alt="Crochet creation by Ellie" loading="lazy">
+            </div>
+            <div class="hero-img-wrapper">
+                <img src="images/hero_center.jpg" alt="Crochet creation by Ellie" loading="lazy">
+            </div>
+            <div class="hero-img-wrapper">
+                <img src="images/hero_right.jpg" alt="Crochet creation by Ellie" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+        <div class="about-inner">
+            <div>
+                <h2 class="section-title title-yellow">About Me</h2>
+                <div class="about-text">
+                    <p>I'm a college student with way too much yarn and a desire to create. Whether it's a hat shaped like your favorite character, a funky beanie for festivals, or a cozy hood for everyday wear &mdash; I love bringing creative ideas to life with a crochet hook.</p>
+                </div>
+            </div>
+            <div class="about-images">
+                <div class="about-img">
+                    <img src="images/about1.jpg" alt="About Ellie 1" loading="lazy">
+                </div>
+                <div class="about-img">
+                    <img src="images/about2.jpg" alt="About Ellie 2" loading="lazy">
+                </div>
+                <div class="about-img">
+                    <img src="images/about3.jpg" alt="About Ellie 3" loading="lazy">
+                </div>
+                <div class="about-img">
+                    <img src="images/about4.jpg" alt="About Ellie 4" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="gallery" id="gallery">
+        <h2 class="section-title title-pink">The Gallery</h2>
+
+        <!-- Cat Ear Hat with Tassle -->
+        <div class="gallery-category">
+            <h3>Cat Ear Hat with Tassle</h3>
+            <div class="gallery-grid cols-4">
+                <div class="gallery-card" onclick="openLightbox(this)">
+                    <img src="images/gallery1.jpg" alt="Cat Ear Hat 1" loading="lazy">
+                </div>
+                <div class="gallery-card" onclick="openLightbox(this)">
+                    <img src="images/gallery2.jpg" alt="Cat Ear Hat 2" loading="lazy">
+                </div>
+                <div class="gallery-card" onclick="openLightbox(this)">
+                    <img src="images/gallery3.jpg" alt="Cat Ear Hat 3" loading="lazy">
+                </div>
+                <div class="gallery-card" onclick="openLightbox(this)">
+                    <img src="images/gallery4.jpg" alt="Cat Ear Hat 4" loading="lazy">
+                </div>
+            </div>
+        </div>
+
+        <!-- Open Hoods -->
+        <div class="gallery-category">
+            <h3>Open Hoods</h3>
+            <div class="gallery-grid cols-2">
+                <div class="gallery-card" onclick="openLightbox(this)">
+                    <img src="images/open_hoods1.jpg" alt="Open Hood 1" loading="lazy">
+                </div>
+                <div class="gallery-card" onclick="openLightbox(this)">
+                    <img src="images/open_hoods2.jpg" alt="Open Hood 2" loading="lazy">
+                </div>
+            </div>
+        </div>
+
+        <!-- Jester/Clown -->
+        <div class="gallery-category">
+            <h3>Jester / Clown</h3>
+            <div class="gallery-grid cols-4">
+                <div class="gallery-card" onclick="openLightbox(this)">
+                    <img src="images/jester1.jpg" alt="Jester Hat 1" loading="lazy">
+                </div>
+                <div class="gallery-card" onclick="openLightbox(this)">
+                    <img src="images/jester2.jpg" alt="Jester Hat 2" loading="lazy">
+                </div>
+                <div class="gallery-card" onclick="openLightbox(this)">
+                    <img src="images/jester3.jpg" alt="Jester Hat 3" loading="lazy">
+                </div>
+                <div class="gallery-card" onclick="openLightbox(this)">
+                    <img src="images/jester4.jpg" alt="Jester Hat 4" loading="lazy">
+                </div>
+            </div>
+        </div>
+
+        <!-- Funky Hats -->
+        <div class="gallery-category">
+            <h3>Funky Hats</h3>
+            <div class="gallery-grid cols-3">
+                <div class="gallery-card" onclick="openLightbox(this)">
+                    <img src="images/funky1.jpg" alt="Funky Hat 1" loading="lazy">
+                </div>
+                <div class="gallery-card" onclick="openLightbox(this)">
+                    <img src="images/funky2.jpg" alt="Funky Hat 2" loading="lazy">
+                </div>
+                <div class="gallery-card" onclick="openLightbox(this)">
+                    <img src="images/funky3.jpg" alt="Funky Hat 3" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MARQUEE 2 -->
+    <div class="marquee-strip">
+        <div class="marquee-inner">
+            CUSTOM ORDERS OPEN <span>*</span> DM OR EMAIL <span>*</span> MADE TO ORDER <span>*</span> EVERY PIECE UNIQUE <span>*</span> YARN IS LIFE <span>*</span> CROCHET FOREVER <span>*</span> CUSTOM ORDERS OPEN <span>*</span> DM OR EMAIL <span>*</span> MADE TO ORDER <span>*</span> EVERY PIECE UNIQUE <span>*</span> YARN IS LIFE <span>*</span> CROCHET FOREVER <span>*</span>
+        </div>
+    </div>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+        <div style="max-width: 900px; margin: 0 auto;">
+            <h2 class="section-title title-cyan">Place an Order</h2>
+            <div class="contact-inner">
+                <div class="contact-card">
+                    <h3>What I Need from You</h3>
+                    <ul>
+                        <li>Your name</li>
+                        <li>Character description</li>
+                        <li>Hat style preference</li>
+                        <li>Budget</li>
+                    </ul>
+                </div>
+                <div class="contact-card">
+                    <h3>Get in Touch</h3>
+                    <p style="margin-bottom: 10px; line-height: 1.6;">Send me all the details and I'll get back to you with a quote and timeline!</p>
+                    <a href="mailto:Eleanor@aughey.com" class="email-link">Eleanor@aughey.com</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLOSING CTA -->
+    <section class="closing">
+        <h2 class="section-title title-yellow">Let's Make Something</h2>
+        <div class="cta-text">
+            If any of these hat styles interest you, shoot me a message and let's make something awesome together!
+        </div>
+        <div class="closing-images">
+            <div class="closing-img">
+                <img src="images/closing1.jpg" alt="Closing showcase 1" loading="lazy">
+            </div>
+            <div class="closing-img">
+                <img src="images/closing2.jpg" alt="Closing showcase 2" loading="lazy">
+            </div>
+            <div class="closing-img">
+                <img src="images/closing3.jpg" alt="Closing showcase 3" loading="lazy">
+            </div>
+            <div class="closing-img">
+                <img src="images/closing4.jpg" alt="Closing showcase 4" loading="lazy">
+            </div>
+            <div class="closing-img">
+                <img src="images/closing5.jpg" alt="Closing showcase 5" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p><span>Ellie Does Crochet and Stuff</span> // handmade with love + yarn</p>
+    </footer>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+        <button class="lightbox-close" onclick="closeLightbox(event)">X</button>
+        <img id="lightbox-img" src="" alt="Enlarged view">
+    </div>
+
+    <script>
+        // Lightbox
+        function openLightbox(card) {
+            var img = card.querySelector('img');
+            var lightbox = document.getElementById('lightbox');
+            var lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox(e) {
+            if (e.target === document.getElementById('lightbox') || e.target.classList.contains('lightbox-close')) {
+                document.getElementById('lightbox').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('lightbox').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('nav a[href^="#"]').forEach(function(anchor) {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                var target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

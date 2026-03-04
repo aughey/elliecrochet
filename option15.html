@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ellie Does Crochet and Stuff</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --dark: #1B2838;
+  --dark-lighter: #243447;
+  --coral: #FF6B6B;
+  --coral-hover: #ff5252;
+  --white: #ffffff;
+  --light-bg: #f8f9fa;
+  --text-dark: #2d3436;
+  --text-muted: #636e72;
+  --left-width: 380px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-dark);
+  line-height: 1.6;
+  background: var(--light-bg);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Sora', sans-serif;
+}
+
+/* LEFT PANEL */
+.left-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--left-width);
+  height: 100vh;
+  background: var(--dark);
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.left-panel .brand {
+  margin-bottom: 2.5rem;
+}
+
+.left-panel .brand h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+  color: var(--white);
+}
+
+.left-panel .brand h1 span {
+  color: var(--coral);
+}
+
+.left-panel .tagline {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.6);
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+.left-panel nav {
+  margin-bottom: 2.5rem;
+}
+
+.left-panel nav ul {
+  list-style: none;
+}
+
+.left-panel nav ul li {
+  margin-bottom: 0.25rem;
+}
+
+.left-panel nav ul li a {
+  display: block;
+  padding: 0.6rem 1rem;
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-left: 3px solid transparent;
+  transition: all 0.3s ease;
+  border-radius: 0 6px 6px 0;
+}
+
+.left-panel nav ul li a:hover,
+.left-panel nav ul li a.active {
+  color: var(--white);
+  background: rgba(255,255,255,0.06);
+  border-left-color: var(--coral);
+}
+
+.left-panel .contact-info {
+  margin-top: auto;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.left-panel .contact-info p {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.left-panel .contact-info a {
+  color: var(--coral);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.left-panel .contact-info a:hover {
+  color: var(--coral-hover);
+}
+
+/* RIGHT PANEL */
+.right-panel {
+  margin-left: var(--left-width);
+  min-height: 100vh;
+}
+
+/* HERO SECTION */
+.hero {
+  padding: 4rem 3rem 3rem;
+  background: var(--white);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.hero-grid img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+.hero-grid img:hover {
+  transform: scale(1.03);
+  filter: brightness(1.05);
+}
+
+.hero-title-bar {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.hero-title-bar h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  letter-spacing: -0.5px;
+}
+
+.hero-title-bar h2 span {
+  color: var(--coral);
+}
+
+/* SECTION STYLES */
+.section {
+  padding: 4rem 3rem;
+}
+
+.section:nth-child(odd) {
+  background: var(--white);
+}
+
+.section:nth-child(even) {
+  background: var(--light-bg);
+}
+
+.section-label {
+  display: inline-block;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--coral);
+  margin-bottom: 0.75rem;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.5px;
+}
+
+/* ABOUT */
+.about-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-muted);
+  max-width: 640px;
+  margin-bottom: 2rem;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.about-grid img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.about-grid img:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+}
+
+/* GALLERY */
+.gallery-category {
+  margin-bottom: 3rem;
+}
+
+.gallery-category:last-child {
+  margin-bottom: 0;
+}
+
+.category-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--coral);
+  display: inline-block;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.gallery-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(27,40,56,0.4) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.06);
+}
+
+.gallery-item:hover::after {
+  opacity: 1;
+}
+
+/* ORDER SECTION */
+.order-card {
+  background: var(--dark);
+  border-radius: 16px;
+  padding: 2.5rem;
+  color: var(--white);
+  max-width: 600px;
+}
+
+.order-card h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  color: var(--white);
+}
+
+.order-list {
+  list-style: none;
+  margin-bottom: 1.5rem;
+}
+
+.order-list li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.95rem;
+}
+
+.order-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--coral);
+}
+
+.order-email {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--coral);
+  color: var(--white);
+  text-decoration: none;
+  border-radius: 8px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.order-email:hover {
+  background: var(--coral-hover);
+  transform: translateY(-2px);
+}
+
+/* CLOSING */
+.closing-text {
+  font-size: 1.3rem;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  color: var(--text-dark);
+  max-width: 600px;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.closing-text span {
+  color: var(--coral);
+}
+
+.closing-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.closing-grid img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.closing-grid img:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+}
+
+/* LIGHTBOX */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.lightbox.open {
+  display: flex;
+}
+
+.lightbox img {
+  max-width: 90%;
+  max-height: 90vh;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 44px;
+  height: 44px;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.lightbox-close:hover {
+  background: var(--coral);
+}
+
+/* MOBILE HEADER (hidden on desktop) */
+.mobile-header {
+  display: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .about-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .closing-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .left-panel {
+    display: none;
+  }
+
+  .mobile-header {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--dark);
+    color: var(--white);
+    padding: 1rem 1.5rem;
+  }
+
+  .mobile-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .mobile-header h1 {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .mobile-header h1 span {
+    color: var(--coral);
+  }
+
+  .mobile-menu-btn {
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+  }
+
+  .mobile-nav {
+    display: none;
+    padding: 0.75rem 0;
+  }
+
+  .mobile-nav.open {
+    display: block;
+  }
+
+  .mobile-nav a {
+    display: block;
+    padding: 0.5rem 0;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+
+  .mobile-nav a:hover,
+  .mobile-nav a.active {
+    color: var(--coral);
+  }
+
+  .right-panel {
+    margin-left: 0;
+  }
+
+  .section, .hero {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .hero-grid img {
+    height: 200px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gallery-item img {
+    height: 220px;
+  }
+
+  .closing-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-grid img {
+    height: 240px;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .about-grid img {
+    height: 170px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .gallery-item img {
+    height: 180px;
+  }
+
+  .closing-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .closing-grid img {
+    height: 150px;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .closing-text {
+    font-size: 1.1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE HEADER -->
+<header class="mobile-header">
+  <div class="mobile-header-inner">
+    <h1>Ellie Does Crochet <span>&</span> Stuff</h1>
+    <button class="mobile-menu-btn" aria-label="Toggle menu" onclick="toggleMobileMenu()">&#9776;</button>
+  </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="#hero" data-section="hero">Home</a>
+    <a href="#about" data-section="about">About</a>
+    <a href="#gallery" data-section="gallery">Gallery</a>
+    <a href="#order" data-section="order">Order</a>
+    <a href="#closing" data-section="closing">Connect</a>
+  </nav>
+</header>
+
+<!-- LEFT PANEL -->
+<aside class="left-panel">
+  <div class="brand">
+    <h1>Ellie Does<br>Crochet <span>&amp;</span> Stuff</h1>
+    <p class="tagline">Handmade hats, hoods, and creative crochet brought to life one stitch at a time.</p>
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="#hero" data-section="hero" class="active">Home</a></li>
+      <li><a href="#about" data-section="about">About</a></li>
+      <li><a href="#gallery" data-section="gallery">Gallery</a></li>
+      <li><a href="#order" data-section="order">Order</a></li>
+      <li><a href="#closing" data-section="closing">Connect</a></li>
+    </ul>
+  </nav>
+
+  <div class="contact-info">
+    <p>Get in touch</p>
+    <a href="mailto:Eleanor@aughey.com">Eleanor@aughey.com</a>
+  </div>
+</aside>
+
+<!-- RIGHT PANEL -->
+<main class="right-panel">
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-grid">
+      <img src="images/hero_left.jpg" alt="Crochet creation showcase" loading="eager">
+      <img src="images/hero_center.jpg" alt="Handmade crochet hat" loading="eager">
+      <img src="images/hero_right.jpg" alt="Custom crochet work" loading="eager">
+    </div>
+    <div class="hero-title-bar">
+      <h2>Handcrafted with love, one stitch at a <span>time</span>.</h2>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <span class="section-label">About Me</span>
+    <h2 class="section-title">The Maker Behind the Hook</h2>
+    <p class="about-text">
+      I'm a college student with way too much yarn and a desire to create. Whether it's a hat shaped like your favorite character, a funky beanie for festivals, or a cozy hood for everyday wear &mdash; I love bringing creative ideas to life with a crochet hook.
+    </p>
+    <div class="about-grid">
+      <img src="images/about1.jpg" alt="About Ellie 1" loading="lazy">
+      <img src="images/about2.jpg" alt="About Ellie 2" loading="lazy">
+      <img src="images/about3.jpg" alt="About Ellie 3" loading="lazy">
+      <img src="images/about4.jpg" alt="About Ellie 4" loading="lazy">
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="section" id="gallery">
+    <span class="section-label">Portfolio</span>
+    <h2 class="section-title">Gallery</h2>
+
+    <div class="gallery-category">
+      <h3 class="category-title">Cat Ear Hat with Tassle</h3>
+      <div class="gallery-grid">
+        <div class="gallery-item" onclick="openLightbox(this)"><img src="images/gallery1.jpg" alt="Cat Ear Hat 1" loading="lazy"></div>
+        <div class="gallery-item" onclick="openLightbox(this)"><img src="images/gallery2.jpg" alt="Cat Ear Hat 2" loading="lazy"></div>
+        <div class="gallery-item" onclick="openLightbox(this)"><img src="images/gallery3.jpg" alt="Cat Ear Hat 3" loading="lazy"></div>
+        <div class="gallery-item" onclick="openLightbox(this)"><img src="images/gallery4.jpg" alt="Cat Ear Hat 4" loading="lazy"></div>
+      </div>
+    </div>
+
+    <div class="gallery-category">
+      <h3 class="category-title">Open Hoods</h3>
+      <div class="gallery-grid">
+        <div class="gallery-item" onclick="openLightbox(this)"><img src="images/open_hoods1.jpg" alt="Open Hood 1" loading="lazy"></div>
+        <div class="gallery-item" onclick="openLightbox(this)"><img src="images/open_hoods2.jpg" alt="Open Hood 2" loading="lazy"></div>
+      </div>
+    </div>
+
+    <div class="gallery-category">
+      <h3 class="category-title">Jester / Clown</h3>
+      <div class="gallery-grid">
+        <div class="gallery-item" onclick="openLightbox(this)"><img src="images/jester1.jpg" alt="Jester Hat 1" loading="lazy"></div>
+        <div class="gallery-item" onclick="openLightbox(this)"><img src="images/jester2.jpg" alt="Jester Hat 2" loading="lazy"></div>
+        <div class="gallery-item" onclick="openLightbox(this)"><img src="images/jester3.jpg" alt="Jester Hat 3" loading="lazy"></div>
+        <div class="gallery-item" onclick="openLightbox(this)"><img src="images/jester4.jpg" alt="Jester Hat 4" loading="lazy"></div>
+      </div>
+    </div>
+
+    <div class="gallery-category">
+      <h3 class="category-title">Funky Hats</h3>
+      <div class="gallery-grid">
+        <div class="gallery-item" onclick="openLightbox(this)"><img src="images/funky1.jpg" alt="Funky Hat 1" loading="lazy"></div>
+        <div class="gallery-item" onclick="openLightbox(this)"><img src="images/funky2.jpg" alt="Funky Hat 2" loading="lazy"></div>
+        <div class="gallery-item" onclick="openLightbox(this)"><img src="images/funky3.jpg" alt="Funky Hat 3" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORDER -->
+  <section class="section" id="order">
+    <span class="section-label">Custom Orders</span>
+    <h2 class="section-title">Place an Order</h2>
+    <div class="order-card">
+      <h3>To place an order, please provide:</h3>
+      <ul class="order-list">
+        <li>Your name</li>
+        <li>Character description</li>
+        <li>Hat style preference</li>
+        <li>Budget</li>
+      </ul>
+      <a href="mailto:Eleanor@aughey.com" class="order-email">Eleanor@aughey.com</a>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="section" id="closing">
+    <span class="section-label">Let's Connect</span>
+    <p class="closing-text">
+      If any of these hat styles interest you, shoot me a message and let's make something <span>awesome</span> together!
+    </p>
+    <div class="closing-grid">
+      <img src="images/closing1.jpg" alt="Closing showcase 1" loading="lazy">
+      <img src="images/closing2.jpg" alt="Closing showcase 2" loading="lazy">
+      <img src="images/closing3.jpg" alt="Closing showcase 3" loading="lazy">
+      <img src="images/closing4.jpg" alt="Closing showcase 4" loading="lazy">
+      <img src="images/closing5.jpg" alt="Closing showcase 5" loading="lazy">
+    </div>
+  </section>
+
+</main>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" aria-label="Close">&times;</button>
+  <img src="" alt="Enlarged view" id="lightboxImg">
+</div>
+
+<script>
+(function() {
+  // --- Lightbox ---
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+
+  window.openLightbox = function(el) {
+    const img = el.querySelector('img');
+    if (!img) return;
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeLightbox = function(e) {
+    if (e.target === lightboxImg) return;
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && lightbox.classList.contains('open')) {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // --- Mobile menu toggle ---
+  window.toggleMobileMenu = function() {
+    document.getElementById('mobileNav').classList.toggle('open');
+  };
+
+  // Close mobile menu on link click
+  document.querySelectorAll('.mobile-nav a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      document.getElementById('mobileNav').classList.remove('open');
+    });
+  });
+
+  // --- Scroll spy for active nav ---
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.left-panel nav a[data-section], .mobile-nav a[data-section]');
+
+  function updateActiveNav() {
+    const scrollContainer = window;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const windowHeight = window.innerHeight;
+    let currentSection = '';
+
+    sections.forEach(function(section) {
+      const rect = section.getBoundingClientRect();
+      // Section is "active" when its top is within the top 40% of viewport
+      if (rect.top <= windowHeight * 0.4) {
+        currentSection = section.getAttribute('id');
+      }
+    });
+
+    if (!currentSection && sections.length) {
+      currentSection = sections[0].getAttribute('id');
+    }
+
+    navLinks.forEach(function(link) {
+      if (link.getAttribute('data-section') === currentSection) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  updateActiveNav();
+})();
+</script>
+</body>
+</html>
