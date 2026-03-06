@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  /* === RESET & BASE === */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    color: #3a2e28;
+    line-height: 1.6;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 28px,
+        rgba(180, 160, 130, 0.06) 28px,
+        rgba(180, 160, 130, 0.06) 29px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 28px,
+        rgba(180, 160, 130, 0.04) 28px,
+        rgba(180, 160, 130, 0.04) 29px
+      ),
+      linear-gradient(135deg, #f5efe6 0%, #efe3d0 30%, #f7f0e4 50%, #eee4d3 70%, #f5efe6 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* === PAPER TEXTURE OVERLAY === */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(200, 180, 150, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(210, 190, 160, 0.06) 0%, transparent 40%),
+      radial-gradient(ellipse at 50% 80%, rgba(190, 170, 140, 0.07) 0%, transparent 45%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* === TYPOGRAPHY === */
+  h1, h2, h3, h4 {
+    font-family: 'Patrick Hand', cursive;
+    font-weight: 400;
+  }
+
+  /* === LAYOUT CONTAINER === */
+  .scrapbook-page {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* === DECORATIVE DOODLE LINES === */
+  .doodle-divider {
+    width: 80%;
+    max-width: 500px;
+    margin: 40px auto;
+    height: 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .doodle-divider::before {
+    content: '';
+    flex: 1;
+    height: 0;
+    border-top: 3px dotted #c4a882;
+  }
+  .doodle-divider::after {
+    content: '';
+    flex: 1;
+    height: 0;
+    border-top: 3px dotted #c4a882;
+  }
+  .doodle-divider .doodle-star {
+    color: #d4889a;
+    font-size: 22px;
+  }
+
+  /* === CSS SHAPES: STARS & HEARTS === */
+  .deco-heart {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .deco-heart::before,
+  .deco-heart::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 30px;
+    border-radius: 20px 20px 0 0;
+    background: #e8a0b0;
+  }
+  .deco-heart::before {
+    left: -8px;
+    transform: rotate(-45deg);
+    transform-origin: bottom right;
+  }
+  .deco-heart::after {
+    left: 8px;
+    transform: rotate(45deg);
+    transform-origin: bottom left;
+  }
+
+  .deco-star {
+    position: absolute;
+    pointer-events: none;
+    z-index: 5;
+    font-size: 28px;
+    color: #f0c040;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  }
+
+  /* === WASHI TAPE PHOTO STYLE === */
+  .taped-photo {
+    position: relative;
+    display: inline-block;
+    background: #fff;
+    padding: 8px;
+    box-shadow: 2px 3px 12px rgba(60, 40, 20, 0.18), 0 1px 3px rgba(60, 40, 20, 0.1);
+  }
+  .taped-photo img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+  /* Washi tape strips */
+  .taped-photo::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 60px;
+    height: 22px;
+    background: rgba(255, 182, 193, 0.7);
+    z-index: 10;
+    border-radius: 1px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+  .taped-photo.tape-green::before { background: rgba(144, 210, 160, 0.7); }
+  .taped-photo.tape-blue::before { background: rgba(150, 190, 230, 0.7); }
+  .taped-photo.tape-yellow::before { background: rgba(255, 230, 130, 0.7); }
+  .taped-photo.tape-purple::before { background: rgba(200, 170, 220, 0.7); }
+  .taped-photo.tape-orange::before { background: rgba(255, 200, 140, 0.7); }
+
+  /* Double tape variant */
+  .taped-photo.tape-double::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%) rotate(1deg);
+    width: 55px;
+    height: 20px;
+    background: rgba(180, 220, 255, 0.6);
+    z-index: 10;
+    border-radius: 1px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+
+  /* === HERO SECTION === */
+  .hero {
+    text-align: center;
+    padding: 60px 20px 40px;
+    position: relative;
+  }
+  .hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    color: #6b4c3b;
+    text-shadow: 2px 2px 0 rgba(255, 200, 170, 0.5);
+    margin-bottom: 10px;
+    transform: rotate(-1deg);
+    line-height: 1.2;
+  }
+  .hero .subtitle {
+    font-family: 'Patrick Hand', cursive;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: #9b7a65;
+    margin-bottom: 40px;
+    transform: rotate(0.5deg);
+  }
+
+  .hero-images {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 20px 0;
+  }
+  .hero-images .taped-photo {
+    width: clamp(160px, 25vw, 280px);
+    transition: transform 0.3s ease;
+  }
+  .hero-images .taped-photo:nth-child(1) { transform: rotate(-5deg); }
+  .hero-images .taped-photo:nth-child(2) { transform: rotate(2deg) scale(1.05); z-index: 2; }
+  .hero-images .taped-photo:nth-child(3) { transform: rotate(4deg); }
+  .hero-images .taped-photo:hover {
+    transform: rotate(0deg) scale(1.08);
+    z-index: 10;
+  }
+
+  /* === ABOUT SECTION === */
+  .about {
+    position: relative;
+    padding: 40px 0;
+  }
+  .about-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 30px;
+    justify-content: center;
+  }
+  .about-text {
+    flex: 1 1 320px;
+    max-width: 500px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 2px;
+    box-shadow: 2px 3px 15px rgba(60, 40, 20, 0.12);
+    transform: rotate(-0.5deg);
+    position: relative;
+    font-size: 1.05rem;
+    line-height: 1.8;
+  }
+  .about-text h2 {
+    font-size: 2.2rem;
+    color: #7b5a48;
+    margin-bottom: 15px;
+  }
+  .about-text::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    right: 30px;
+    width: 70px;
+    height: 24px;
+    background: rgba(255, 230, 130, 0.75);
+    transform: rotate(3deg);
+    border-radius: 1px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .about-photos {
+    flex: 1 1 320px;
+    max-width: 480px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    position: relative;
+  }
+  .about-photos .taped-photo:nth-child(1) { transform: rotate(-3deg); z-index: 1; }
+  .about-photos .taped-photo:nth-child(2) { transform: rotate(2deg) translateY(15px); z-index: 2; }
+  .about-photos .taped-photo:nth-child(3) { transform: rotate(1deg) translateY(-10px); z-index: 2; }
+  .about-photos .taped-photo:nth-child(4) { transform: rotate(-2deg); z-index: 1; }
+  .about-photos .taped-photo {
+    transition: transform 0.3s ease, z-index 0s;
+  }
+  .about-photos .taped-photo:hover {
+    transform: rotate(0deg) scale(1.05);
+    z-index: 10;
+  }
+
+  /* === GALLERY SECTION === */
+  .gallery {
+    padding: 40px 0;
+  }
+  .gallery > h2 {
+    text-align: center;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: #6b4c3b;
+    margin-bottom: 40px;
+    transform: rotate(-1deg);
+  }
+
+  /* Sticky note category labels */
+  .category {
+    margin-bottom: 60px;
+    position: relative;
+  }
+  .sticky-label {
+    display: inline-block;
+    padding: 10px 24px;
+    font-family: 'Patrick Hand', cursive;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    color: #4a3728;
+    box-shadow: 2px 3px 8px rgba(60, 40, 20, 0.15);
+    margin-bottom: 25px;
+    position: relative;
+    line-height: 1.3;
+  }
+  .sticky-label.sticky-pink {
+    background: #ffd6e0;
+    transform: rotate(-2deg);
+  }
+  .sticky-label.sticky-green {
+    background: #c8ecc8;
+    transform: rotate(1.5deg);
+  }
+  .sticky-label.sticky-blue {
+    background: #c8ddf0;
+    transform: rotate(-1deg);
+  }
+  .sticky-label.sticky-yellow {
+    background: #fff3b0;
+    transform: rotate(2deg);
+  }
+
+  /* Gallery image grid - scattered look */
+  .gallery-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+  }
+  .gallery-grid .taped-photo {
+    width: clamp(140px, 22vw, 240px);
+    transition: transform 0.3s ease, z-index 0s;
+  }
+  .gallery-grid .taped-photo:nth-child(odd) { transform: rotate(-3deg); }
+  .gallery-grid .taped-photo:nth-child(even) { transform: rotate(2.5deg); }
+  .gallery-grid .taped-photo:nth-child(3n) { transform: rotate(-1deg) translateY(8px); }
+  .gallery-grid .taped-photo:nth-child(4n) { transform: rotate(4deg) translateY(-5px); }
+  .gallery-grid .taped-photo:hover {
+    transform: rotate(0deg) scale(1.12);
+    z-index: 10;
+  }
+
+  /* === CONTACT SECTION - TORN EDGE NOTE CARD === */
+  .contact {
+    padding: 40px 0;
+    display: flex;
+    justify-content: center;
+  }
+  .note-card {
+    background: #fff;
+    max-width: 550px;
+    width: 100%;
+    padding: 40px 35px;
+    position: relative;
+    box-shadow: 3px 4px 18px rgba(60, 40, 20, 0.15);
+    transform: rotate(0.8deg);
+  }
+  /* Torn top edge */
+  .note-card::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 0;
+    right: 0;
+    height: 14px;
+    background: #fff;
+    clip-path: polygon(
+      0% 100%, 0% 40%, 2% 55%, 4% 35%, 6% 60%, 8% 30%, 10% 50%, 12% 25%,
+      14% 55%, 16% 35%, 18% 60%, 20% 25%, 22% 50%, 24% 30%, 26% 55%,
+      28% 20%, 30% 50%, 32% 35%, 34% 60%, 36% 25%, 38% 55%, 40% 30%,
+      42% 50%, 44% 20%, 46% 55%, 48% 35%, 50% 60%, 52% 25%, 54% 50%,
+      56% 30%, 58% 55%, 60% 20%, 62% 50%, 64% 35%, 66% 60%, 68% 25%,
+      70% 55%, 72% 30%, 74% 50%, 76% 20%, 78% 55%, 80% 35%, 82% 60%,
+      84% 25%, 86% 50%, 88% 30%, 90% 55%, 92% 20%, 94% 50%, 96% 35%,
+      98% 55%, 100% 30%, 100% 100%
+    );
+  }
+  /* Torn bottom edge */
+  .note-card::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+    right: 0;
+    height: 14px;
+    background: #fff;
+    clip-path: polygon(
+      0% 0%, 0% 60%, 2% 45%, 4% 65%, 6% 40%, 8% 70%, 10% 50%, 12% 75%,
+      14% 45%, 16% 65%, 18% 40%, 20% 75%, 22% 50%, 24% 70%, 26% 45%,
+      28% 80%, 30% 50%, 32% 65%, 34% 40%, 36% 75%, 38% 45%, 40% 70%,
+      42% 50%, 44% 80%, 46% 45%, 48% 65%, 50% 40%, 52% 75%, 54% 50%,
+      56% 70%, 58% 45%, 60% 80%, 62% 50%, 64% 65%, 66% 40%, 68% 75%,
+      70% 45%, 72% 70%, 74% 50%, 76% 80%, 78% 45%, 80% 65%, 82% 40%,
+      84% 75%, 86% 50%, 88% 70%, 90% 45%, 92% 80%, 94% 50%, 96% 65%,
+      98% 45%, 100% 70%, 100% 0%
+    );
+  }
+  .note-card h2 {
+    font-size: 2rem;
+    color: #7b5a48;
+    margin-bottom: 18px;
+  }
+  .note-card p {
+    margin-bottom: 14px;
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+  .note-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 18px;
+  }
+  .note-card ul li {
+    padding: 4px 0 4px 22px;
+    position: relative;
+    font-size: 1.05rem;
+  }
+  .note-card ul li::before {
+    content: '\2727';
+    position: absolute;
+    left: 0;
+    color: #d4889a;
+    font-size: 1.1rem;
+  }
+  .note-card .email-link {
+    color: #7b5a48;
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 2px dotted #c4a882;
+    transition: color 0.2s;
+  }
+  .note-card .email-link:hover {
+    color: #d4889a;
+  }
+
+  /* === CTA / CLOSING SECTION === */
+  .closing {
+    padding: 40px 0 60px;
+    text-align: center;
+  }
+  .closing-message {
+    font-family: 'Patrick Hand', cursive;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: #6b4c3b;
+    max-width: 700px;
+    margin: 0 auto 40px;
+    transform: rotate(-0.5deg);
+    line-height: 1.5;
+  }
+  .closing-images {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+  }
+  .closing-images .taped-photo {
+    width: clamp(120px, 18vw, 200px);
+    transition: transform 0.3s ease;
+  }
+  .closing-images .taped-photo:nth-child(1) { transform: rotate(-4deg); }
+  .closing-images .taped-photo:nth-child(2) { transform: rotate(2deg) translateY(10px); }
+  .closing-images .taped-photo:nth-child(3) { transform: rotate(-1deg) translateY(-5px); }
+  .closing-images .taped-photo:nth-child(4) { transform: rotate(3deg) translateY(8px); }
+  .closing-images .taped-photo:nth-child(5) { transform: rotate(-2deg); }
+  .closing-images .taped-photo:hover {
+    transform: rotate(0deg) scale(1.1);
+    z-index: 10;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    text-align: center;
+    padding: 30px 20px;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 1.1rem;
+    color: #9b7a65;
+  }
+
+  /* === FLOATING DECORATIONS === */
+  .floating-deco {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+    font-size: 24px;
+  }
+
+  /* === NAVIGATION === */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(245, 239, 230, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 2px dotted #c4a882;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    transition: transform 0.3s ease;
+  }
+  .nav a {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 1.15rem;
+    color: #6b4c3b;
+    text-decoration: none;
+    padding: 4px 12px;
+    border-radius: 2px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav a:hover {
+    background: #ffd6e0;
+    color: #4a3728;
+  }
+  .nav-spacer { height: 55px; }
+
+  /* === LIGHTBOX === */
+  .lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(30, 20, 15, 0.85);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  .lightbox-overlay.active {
+    display: flex;
+  }
+  .lightbox-overlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 768px) {
+    .hero-images .taped-photo {
+      transform: rotate(0deg) !important;
+      width: 80%;
+      max-width: 280px;
+    }
+    .hero-images .taped-photo:nth-child(2) {
+      transform: rotate(0deg) scale(1) !important;
+    }
+    .hero-images {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .about-photos .taped-photo {
+      transform: rotate(0deg) translateY(0) !important;
+    }
+
+    .gallery-grid .taped-photo {
+      transform: rotate(0deg) translateY(0) !important;
+      width: 45%;
+    }
+    .gallery-grid .taped-photo:nth-child(odd),
+    .gallery-grid .taped-photo:nth-child(even),
+    .gallery-grid .taped-photo:nth-child(3n),
+    .gallery-grid .taped-photo:nth-child(4n) {
+      transform: rotate(0deg) translateY(0) !important;
+    }
+
+    .closing-images .taped-photo {
+      transform: rotate(0deg) translateY(0) !important;
+      width: 42%;
+    }
+
+    .about-content {
+      flex-direction: column;
+      align-items: center;
+    }
+    .about-text {
+      transform: rotate(0deg);
+    }
+
+    .sticky-label {
+      transform: rotate(0deg) !important;
+    }
+
+    .note-card {
+      transform: rotate(0deg);
+      margin: 0 10px;
+    }
+
+    .nav {
+      gap: 10px;
+      padding: 8px 10px;
+    }
+    .nav a { font-size: 1rem; padding: 3px 8px; }
+  }
+
+  @media (max-width: 480px) {
+    .gallery-grid .taped-photo {
+      width: 90%;
+      max-width: 260px;
+    }
+    .closing-images .taped-photo {
+      width: 80%;
+      max-width: 200px;
+    }
+    .about-photos {
+      grid-template-columns: 1fr;
+      max-width: 260px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav" id="navbar">
+  <a href="#hero">Home</a>
+  <a href="#about">About</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#contact">Contact</a>
+</nav>
+<div class="nav-spacer"></div>
+
+<div class="scrapbook-page">
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="hero">
+    <h1>{{ title | replace(' and ', '<br>and ') }}</h1>
+    <div class="hero-images">
+      {% set tape_colors = ['tape-green', 'tape-double', 'tape-purple'] %}
+      {% for image in sections.hero.images %}
+      <div class="taped-photo {{ tape_colors[loop.index0 % tape_colors|length] }}">
+        <img src="{{ image.path }}" alt="{{ image.alt }}" loading="lazy">
+      </div>
+      {% endfor %}
+    </div>
+    <!-- Decorative elements -->
+    <span class="deco-star" style="top: 20px; left: 8%; transform: rotate(15deg);">&#9733;</span>
+    <span class="deco-star" style="top: 60px; right: 5%; transform: rotate(-10deg); color: #e8a0b0; font-size: 20px;">&#9829;</span>
+  </section>
+
+  <!-- Doodle divider -->
+  <div class="doodle-divider"><span class="doodle-star">&#10022;</span></div>
+
+  <!-- ===== ABOUT ===== -->
+  <section class="about" id="about">
+    <div class="about-content">
+      <div class="about-text">
+        <h2>About</h2>
+        {{ sections.about.html }}
+      </div>
+      <div class="about-photos">
+        {% set about_tapes = ['tape-yellow', 'tape-blue', 'tape-orange', 'tape-green'] %}
+        {% for image in sections.about.images %}
+        <div class="taped-photo {{ about_tapes[loop.index0 % about_tapes|length] }}">
+          <img src="{{ image.path }}" alt="{{ image.alt }}" loading="lazy">
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <span class="deco-star" style="position: absolute; bottom: -10px; left: 15%; color: #f0c040;">&#9733;</span>
+  </section>
+
+  <!-- Doodle divider -->
+  <div class="doodle-divider"><span class="doodle-star">&#9829;</span></div>
+
+  <!-- ===== GALLERY ===== -->
+  <section class="gallery" id="gallery">
+    <h2>Gallery</h2>
+    {% if sections.gallery.html %}
+    <p style="text-align: center; font-size: 1.05rem; color: #9b7a65; margin-top: -25px; margin-bottom: 30px;">{{ sections.gallery.description }}</p>
+    {% endif %}
+
+    {% set sticky_colors = ['sticky-pink', 'sticky-green', 'sticky-blue', 'sticky-yellow'] %}
+    {% set gallery_tapes = ['tape-blue', 'tape-yellow', 'tape-green', 'tape-purple', 'tape-orange', 'tape-double'] %}
+    {% for category in sections.gallery.categories %}
+    <div class="category">
+      <div class="sticky-label {{ sticky_colors[loop.index0 % sticky_colors|length] }}">{{ category.name }}</div>
+      <div class="gallery-grid">
+        {% for image in category.images %}
+        <div class="taped-photo {{ gallery_tapes[loop.index0 % gallery_tapes|length] }}">
+          <img src="{{ image.path }}" alt="{{ image.alt }}" loading="lazy">
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </section>
+
+  <!-- Doodle divider -->
+  <div class="doodle-divider"><span class="doodle-star">&#10022;</span></div>
+
+  <!-- ===== CONTACT ===== -->
+  <section class="contact" id="contact">
+    <div class="note-card">
+      <h2>Place an Order</h2>
+      {{ sections.contact.html }}
+      <p>Send your order details to:</p>
+      <p><a href="mailto:{{ email }}" class="email-link">{{ email }}</a></p>
+      {% if discord %}
+      <p>Or DM me on Discord: <span class="email-link" style="cursor: default;">{{ discord }}</span></p>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Doodle divider -->
+  <div class="doodle-divider"><span class="doodle-star">&#9829;</span></div>
+
+  <!-- ===== CLOSING CTA ===== -->
+  <section class="closing" id="closing">
+    <p class="closing-message">{{ sections.closing.text }}</p>
+    <div class="closing-images">
+      {% set closing_tapes = ['tape-yellow', 'tape-blue', 'tape-green', 'tape-purple', 'tape-orange'] %}
+      {% for image in sections.closing.images %}
+      <div class="taped-photo {{ closing_tapes[loop.index0 % closing_tapes|length] }}">
+        <img src="{{ image.path }}" alt="{{ image.alt }}" loading="lazy">
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>{{ title }} &mdash; Handmade with love</p>
+  </footer>
+
+</div><!-- end scrapbook-page -->
+
+<!-- Lightbox overlay -->
+<div class="lightbox-overlay" id="lightbox">
+  <img src="" alt="Enlarged view" id="lightbox-img">
+</div>
+
+<script>
+  // === LIGHTBOX ===
+  (function() {
+    var overlay = document.getElementById('lightbox');
+    var lightboxImg = document.getElementById('lightbox-img');
+
+    document.querySelectorAll('.taped-photo img').forEach(function(img) {
+      img.style.cursor = 'pointer';
+      img.addEventListener('click', function(e) {
+        e.stopPropagation();
+        lightboxImg.src = this.src;
+        lightboxImg.alt = this.alt;
+        overlay.classList.add('active');
+      });
+    });
+
+    overlay.addEventListener('click', function() {
+      overlay.classList.remove('active');
+      lightboxImg.src = '';
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && overlay.classList.contains('active')) {
+        overlay.classList.remove('active');
+        lightboxImg.src = '';
+      }
+    });
+  })();
+
+  // === SMOOTH SCROLL FOR NAV ===
+  document.querySelectorAll('.nav a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      var href = this.getAttribute('href');
+      if (href.startsWith('#')) {
+        e.preventDefault();
+        var target = document.querySelector(href);
+        if (target) {
+          var offset = document.getElementById('navbar').offsetHeight + 10;
+          var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }
+      }
+    });
+  });
+
+  // === HIDE NAV ON SCROLL DOWN, SHOW ON SCROLL UP ===
+  (function() {
+    var lastScroll = 0;
+    var navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', function() {
+      var currentScroll = window.pageYOffset;
+      if (currentScroll > lastScroll && currentScroll > 80) {
+        navbar.style.transform = 'translateY(-100%)';
+      } else {
+        navbar.style.transform = 'translateY(0)';
+      }
+      lastScroll = currentScroll;
+    });
+  })();
+
+  // === SCATTER RANDOM DECORATIVE ELEMENTS ===
+  (function() {
+    var page = document.querySelector('.scrapbook-page');
+    var shapes = ['\u2605', '\u2764', '\u2726', '\u2727', '\u273F', '\u2740'];
+    var colors = ['#f0c040', '#e8a0b0', '#90d2a0', '#96bee6', '#c8aadc', '#ffc88c'];
+    for (var i = 0; i < 12; i++) {
+      var span = document.createElement('span');
+      span.className = 'floating-deco';
+      span.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+      span.style.color = colors[Math.floor(Math.random() * colors.length)];
+      span.style.top = (Math.random() * 95) + '%';
+      span.style.left = Math.random() < 0.5 ? (Math.random() * 6) + '%' : (94 + Math.random() * 6) + '%';
+      span.style.fontSize = (16 + Math.random() * 18) + 'px';
+      span.style.transform = 'rotate(' + (Math.random() * 60 - 30) + 'deg)';
+      span.style.opacity = (0.3 + Math.random() * 0.3).toString();
+      page.appendChild(span);
+    }
+  })();
+</script>
+
+</body>
+</html>
