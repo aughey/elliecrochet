@@ -1,7 +1,5 @@
 ---
 title: Ellie Does Crochet and Stuff
-email: Eleanor@aughey.com
-discord: patton_pup
 ---
 
 # Hero
@@ -50,6 +48,8 @@ A collection of handmade hats and hoods, each one crafted with care and a whole 
 
 # Contact
 
+## Place an Order
+
 Every piece is made to order. Just send me the details and we'll create something you'll love.
 
 ### What I'll Need From You
@@ -58,6 +58,10 @@ Every piece is made to order. Just send me the details and we'll create somethin
 - Character description
 - Hat style preference
 - Budget
+
+Send your order details to [Eleanor@aughey.com](mailto:Eleanor@aughey.com)
+
+Or DM me on Discord: patton_pup
 
 # Closing
 

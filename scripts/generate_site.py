@@ -145,8 +145,6 @@ def generate():
     # Render
     html = template.render(
         title=frontmatter.get("title", "My Website"),
-        email=frontmatter.get("email", ""),
-        discord=frontmatter.get("discord", ""),
         sections=sections,
     )
 
