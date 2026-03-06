@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-ink: #1a1a1a;
+  --color-paper: #faf8f5;
+  --color-accent: #c45b3e;
+  --color-muted: #6b6560;
+  --color-rule: #d4cfc9;
+  --color-cream: #f0ebe4;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Montserrat', Helvetica, Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-serif);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ---- Utility ---- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section-rule {
+  border: none;
+  border-top: 1px solid var(--color-rule);
+  margin: 0;
+}
+
+.section-rule--thick {
+  border-top-width: 3px;
+  border-color: var(--color-ink);
+}
+
+/* ---- Top Bar ---- */
+.topbar {
+  text-align: center;
+  padding: 1rem 0 0.5rem;
+  border-bottom: 3px double var(--color-ink);
+}
+
+.topbar__date {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* ---- Masthead ---- */
+.masthead {
+  text-align: center;
+  padding: 2rem 0 1.5rem;
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.masthead__title {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(2.2rem, 6vw, 4.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+
+.masthead__subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-top: 0.5rem;
+}
+
+/* ---- Hero ---- */
+.hero {
+  padding: 2rem 0;
+}
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.hero__img-wrap {
+  overflow: hidden;
+  position: relative;
+}
+
+.hero__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.hero__img-wrap:hover img {
+  transform: scale(1.03);
+}
+
+.hero__img-wrap--center {
+  aspect-ratio: 3/4;
+}
+
+.hero__img-wrap--side {
+  aspect-ratio: 2/3;
+}
+
+.hero__caption {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* ---- About / Editorial ---- */
+.about {
+  padding: 3rem 0;
+}
+
+.about__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.about__heading {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 2.4rem;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--color-ink);
+  padding-bottom: 0.75rem;
+}
+
+.about__body {
+  font-size: 1.1rem;
+  color: var(--color-ink);
+  line-height: 1.85;
+}
+
+.about__body p {
+  margin-bottom: 1rem;
+  text-indent: 1.5em;
+}
+
+.about__body p:first-child {
+  text-indent: 0;
+}
+
+.about__body p:first-child::first-letter {
+  font-size: 3.8em;
+  float: left;
+  line-height: 0.8;
+  margin: 0.05em 0.12em 0 0;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.pull-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.6rem;
+  line-height: 1.4;
+  color: var(--color-accent);
+  border-left: 3px solid var(--color-accent);
+  padding: 1rem 0 1rem 1.5rem;
+  margin: 1.5rem 0;
+  text-indent: 0 !important;
+}
+
+.about__images-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.about__img-wrap {
+  overflow: hidden;
+}
+
+.about__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  aspect-ratio: 4/5;
+  transition: transform 0.5s ease;
+}
+
+.about__img-wrap:hover img {
+  transform: scale(1.04);
+}
+
+.about__img-wrap:first-child {
+  grid-column: 1 / -1;
+}
+
+.about__img-wrap:first-child img {
+  aspect-ratio: 16/9;
+}
+
+/* ---- Gallery ---- */
+.gallery {
+  padding: 3rem 0;
+}
+
+.gallery__header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.gallery__title {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: 2.8rem;
+  letter-spacing: -0.01em;
+}
+
+.gallery__subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-top: 0.4rem;
+}
+
+.gallery-category {
+  margin-bottom: 3rem;
+}
+
+.gallery-category__name {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.carousel-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.carousel-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-ink);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  transition: background 0.25s, color 0.25s;
+  color: var(--color-ink);
+}
+
+.carousel-btn:hover {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.carousel-track-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 0.5rem;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-track__item {
+  flex: 0 0 auto;
+  width: 300px;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-track__item img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.carousel-track__item:hover img {
+  transform: scale(1.04);
+}
+
+/* ---- Contact ---- */
+.contact {
+  padding: 3rem 0;
+}
+
+.contact__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.contact__heading {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 2.2rem;
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+}
+
+.contact__body {
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.contact__body p {
+  margin-bottom: 1rem;
+}
+
+.contact__body ul {
+  list-style: none;
+  margin: 1.25rem 0;
+  padding: 0;
+}
+
+.contact__body ul li {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--color-rule);
+  letter-spacing: 0.03em;
+}
+
+.contact__body ul li:first-child {
+  border-top: 1px solid var(--color-rule);
+}
+
+.contact__body strong {
+  font-weight: 600;
+}
+
+.contact__body a {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-accent);
+  padding-bottom: 2px;
+  transition: color 0.25s, border-color 0.25s;
+}
+
+.contact__body a:hover {
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+}
+
+.contact__img-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.contact__img-grid img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---- CTA / Closing ---- */
+.closing {
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.closing__text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.8rem;
+  line-height: 1.5;
+  max-width: 700px;
+  margin: 0 auto 2.5rem;
+  color: var(--color-ink);
+}
+
+.closing__images {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.closing__images img {
+  flex: 0 0 auto;
+  width: 200px;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.closing__images img:hover {
+  transform: scale(1.03);
+}
+
+/* ---- Footer ---- */
+.footer {
+  text-align: center;
+  padding: 2rem 0;
+  border-top: 3px double var(--color-ink);
+  margin-top: 1rem;
+}
+
+.footer__text {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .hero__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .hero__img-wrap--side:last-child {
+    display: none;
+  }
+  .about__layout,
+  .contact__layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .carousel-track__item {
+    width: 260px;
+  }
+  .closing__images img {
+    width: 160px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 0 1rem;
+  }
+  .hero__grid {
+    grid-template-columns: 1fr;
+  }
+  .hero__img-wrap--side {
+    display: none;
+  }
+  .hero__img-wrap--center img {
+    aspect-ratio: 4/5;
+  }
+  .about__heading {
+    font-size: 1.8rem;
+  }
+  .about__images-col {
+    grid-template-columns: 1fr 1fr;
+  }
+  .gallery__title {
+    font-size: 2rem;
+  }
+  .carousel-track__item {
+    width: 220px;
+  }
+  .pull-quote {
+    font-size: 1.3rem;
+  }
+  .closing__text {
+    font-size: 1.4rem;
+  }
+  .closing__images img {
+    width: 130px;
+  }
+  .contact__img-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="container">
+    <p class="topbar__date">Handmade with love &mdash; One stitch at a time</p>
+  </div>
+</div>
+
+<!-- Masthead -->
+<header class="masthead">
+  <div class="container">
+    <h1 class="masthead__title">{{ title | replace(' and ', '<br>and ') }}</h1>
+    <p class="masthead__subtitle">Custom hats &bull; Character designs &bull; Wearable art</p>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero__grid">
+      {% for image in sections.hero.images %}
+      <div class="hero__img-wrap {% if loop.index == 2 %}hero__img-wrap--center{% else %}hero__img-wrap--side{% endif %}">
+        <img src="{{ image.path }}" alt="{{ image.alt }}">
+      </div>
+      {% endfor %}
+    </div>
+    <p class="hero__caption">The latest from the hook &mdash; Custom creations, made to order</p>
+  </div>
+</section>
+
+<div class="container"><hr class="section-rule section-rule--thick"></div>
+
+<!-- About -->
+<section class="about">
+  <div class="container">
+    <div class="about__layout">
+      <div class="about__text-col">
+        <h2 class="about__heading">About</h2>
+        <div class="about__body">
+          {{ sections.about.html }}
+        </div>
+      </div>
+      <div class="about__images-col">
+        {% for image in sections.about.images %}
+        <div class="about__img-wrap">
+          <img src="{{ image.path }}" alt="{{ image.alt }}">
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container"><hr class="section-rule"></div>
+
+<!-- Gallery -->
+<section class="gallery">
+  <div class="container">
+    <div class="gallery__header">
+      <h2 class="gallery__title">The Collection</h2>
+      {% if sections.gallery.description %}
+      <p class="gallery__subtitle">{{ sections.gallery.description }}</p>
+      {% endif %}
+    </div>
+
+    {% for category in sections.gallery.categories %}
+    <div class="gallery-category">
+      <div class="gallery-category__name">
+        <span>{{ category.name }}</span>
+        <div class="carousel-controls">
+          <button class="carousel-btn carousel-btn--prev" aria-label="Scroll left">&larr;</button>
+          <button class="carousel-btn carousel-btn--next" aria-label="Scroll right">&rarr;</button>
+        </div>
+      </div>
+      <div class="carousel-track-wrapper">
+        <div class="carousel-track">
+          {% for image in category.images %}
+          <div class="carousel-track__item"><img src="{{ image.path }}" alt="{{ image.alt }}"></div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<div class="container"><hr class="section-rule section-rule--thick"></div>
+
+<!-- Contact -->
+<section class="contact">
+  <div class="container">
+    <div class="contact__layout">
+      <div>
+        <h2 class="contact__heading">Place an Order</h2>
+        <div class="contact__body">
+          {{ sections.contact.html }}
+        </div>
+      </div>
+      <div class="contact__img-grid">
+        {% for image in sections.about.images %}
+        <img src="{{ image.path }}" alt="{{ image.alt }}">
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container"><hr class="section-rule"></div>
+
+<!-- Closing CTA -->
+<section class="closing">
+  <div class="container">
+    <p class="closing__text">&ldquo;{{ sections.closing.text }}&rdquo;</p>
+    <div class="closing__images">
+      {% for image in sections.closing.images %}
+      <img src="{{ image.path }}" alt="{{ image.alt }}">
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <p class="footer__text">{{ title }} &copy; 2026 &mdash; All pieces handmade with love</p>
+  </div>
+</footer>
+
+<script>
+(function() {
+  document.querySelectorAll('.gallery-category').forEach(function(category) {
+    var track = category.querySelector('.carousel-track');
+    var prevBtn = category.querySelector('.carousel-btn--prev');
+    var nextBtn = category.querySelector('.carousel-btn--next');
+    var scrollAmount = 320;
+
+    if (!track || !prevBtn || !nextBtn) return;
+
+    prevBtn.addEventListener('click', function() {
+      track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+
+    nextBtn.addEventListener('click', function() {
+      track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

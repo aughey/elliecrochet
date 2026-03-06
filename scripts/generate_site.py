@@ -138,19 +138,25 @@ def generate():
     raw_sections = split_sections(body)
     sections = build_section_data(raw_sections)
 
-    # Load template
+    # Load templates
     env = Environment(loader=FileSystemLoader(str(TEMPLATE_DIR)), autoescape=False)
-    template = env.get_template("base.html")
-
-    # Render
-    html = template.render(
+    template_vars = dict(
         title=frontmatter.get("title", "My Website"),
         sections=sections,
     )
 
-    # Write output
+    # Render all templates
     BUILD_DIR.mkdir(exist_ok=True)
-    (BUILD_DIR / "index.html").write_text(html, encoding="utf-8")
+
+    templates = [
+        ("base.html", "index.html"),
+        ("newspaper.html", "index2.html"),
+    ]
+    for template_name, output_name in templates:
+        template = env.get_template(template_name)
+        html = template.render(**template_vars)
+        (BUILD_DIR / output_name).write_text(html, encoding="utf-8")
+        print(f"  {template_name} -> {output_name}")
 
     # Copy images
     src_images = CONTENT_DIR / "images"
