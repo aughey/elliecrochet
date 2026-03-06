@@ -61,7 +61,7 @@ Every piece is made to order. Just send me the details and we'll create somethin
 
 # Closing
 
-If any of these hat styles interest you, shoot me a message and let's make something awesome together!
+If any of these hat styles interest you, shoot me a message and let's make something awesome together!  Testing by dad.
 
 ![Closing showcase 1](images/closing1.jpg)
 ![Closing showcase 2](images/closing2.jpg)
