@@ -1,5 +1,6 @@
 ---
 title: Ellie Does Crochet and Stuff
+banner: images/IMG_2450.jpg
 ---
 
 # Hero
@@ -32,6 +33,7 @@ A collection of handmade hats and hoods, each one crafted with care and a whole 
 
 ![Open hood 1](images/open_hoods1.jpg)
 ![Open hood 2](images/open_hoods2.jpg)
+![Fuzzy blue bear-ear hood](images/IMG_1689.jpg)
 
 ## Jester / Clown
 
@@ -45,6 +47,12 @@ A collection of handmade hats and hoods, each one crafted with care and a whole 
 ![Funky hat 1](images/funky1.jpg)
 ![Funky hat 2](images/funky2.jpg)
 ![Funky hat 3](images/funky3.jpg)
+
+## Character Creations
+
+![Purple character hood](images/IMG_1168.jpeg)
+![Yellow pup full suit](images/IMG_1946.jpeg)
+![Grey creature hood](images/IMG_0638.jpg)
 
 # Contact
 

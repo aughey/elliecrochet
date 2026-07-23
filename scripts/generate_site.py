@@ -142,6 +142,7 @@ def generate():
     env = Environment(loader=FileSystemLoader(str(TEMPLATE_DIR)), autoescape=False)
     template_vars = dict(
         title=frontmatter.get("title", "My Website"),
+        banner=frontmatter.get("banner"),
         sections=sections,
     )
 
@@ -164,7 +165,12 @@ def generate():
     if src_images.exists():
         if dst_images.exists():
             shutil.rmtree(dst_images)
-        shutil.copytree(src_images, dst_images)
+        # HEIC originals aren't web-servable; JPG conversions are referenced instead.
+        shutil.copytree(
+            src_images,
+            dst_images,
+            ignore=shutil.ignore_patterns("*.heic", "*.HEIC", ".DS_Store"),
+        )
 
     print(f"Site generated in {BUILD_DIR}/")
 

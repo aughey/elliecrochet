@@ -187,6 +187,29 @@
     padding: 60px 20px 40px;
     position: relative;
   }
+  .hero-title-banner {
+    position: relative;
+    margin-bottom: 10px;
+  }
+  /* Yarn-stash banner behind the title */
+  .hero-title-banner.has-banner {
+    background-size: cover;
+    background-position: center;
+    padding: 70px 25px;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 2px 4px 18px rgba(60, 40, 20, 0.25);
+  }
+  .hero-title-banner.has-banner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(247, 240, 228, 0.55);
+  }
+  .hero-title-banner.has-banner h1 {
+    position: relative;
+    z-index: 1;
+  }
   .hero h1 {
     font-size: clamp(2.4rem, 6vw, 4.5rem);
     color: #6b4c3b;
@@ -642,7 +665,9 @@
 
   <!-- ===== HERO ===== -->
   <section class="hero" id="hero">
-    <h1>{{ title | replace(' and ', '<br>and ') }}</h1>
+    <div class="hero-title-banner{% if banner %} has-banner{% endif %}"{% if banner %} style="background-image: url('{{ banner }}');"{% endif %}>
+      <h1>{{ title | replace(' and ', '<br>and ') }}</h1>
+    </div>
     <div class="hero-images">
       {% set tape_colors = ['tape-green', 'tape-double', 'tape-purple'] %}
       {% for image in sections.hero.images %}
