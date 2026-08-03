@@ -34,6 +34,8 @@ A collection of handmade hats and hoods, each one crafted with care and a whole 
 ![Open hood 1](images/open_hoods1.jpg)
 ![Open hood 2](images/open_hoods2.jpg)
 ![Fuzzy blue bear-ear hood](images/IMG_1689.jpg)
+![Green and grey hood with matching cowl](images/IMG_9037.jpeg)
+![Mustard pointed hood with cowl](images/IMG_9046.jpeg)
 
 ## Jester / Clown
 
@@ -47,12 +49,18 @@ A collection of handmade hats and hoods, each one crafted with care and a whole 
 ![Funky hat 1](images/funky1.jpg)
 ![Funky hat 2](images/funky2.jpg)
 ![Funky hat 3](images/funky3.jpg)
+![Tan bear-ear hat with scalloped brim](images/IMG_9019.jpeg)
+![Fuzzy cream hat with flower medallion and ear flaps](images/IMG_9021.jpeg)
+![Teal bear-ear hat with fuzzy brim](images/IMG_9022.jpeg)
+![Green headband with yellow stars](images/IMG_9033.jpeg)
+![Rust ear hat among autumn leaves](images/IMG_9047.jpeg)
 
 ## Character Creations
 
 ![Purple character hood](images/IMG_1168.jpeg)
 ![Yellow pup full suit](images/IMG_1946.jpeg)
 ![Grey creature hood](images/IMG_0638.jpg)
+![Teal bear-ear hood with flame details and cowl](images/IMG_9014.jpeg)
 
 # Contact
 

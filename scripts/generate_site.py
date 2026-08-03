@@ -8,12 +8,18 @@ from pathlib import Path
 import markdown
 import yaml
 from jinja2 import Environment, FileSystemLoader
+from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parent.parent
 CONTENT_DIR = ROOT / "content"
 TEMPLATE_DIR = ROOT / "templates"
 BUILD_DIR = ROOT / "build"
 CONTENT_FILE = CONTENT_DIR / "page.md"
+
+# Camera originals run 2-4 MB each; downscale them for web delivery.
+MAX_IMAGE_DIM = 1600
+JPEG_QUALITY = 82
+RASTER_SUFFIXES = {".jpg", ".jpeg", ".png", ".webp"}
 
 
 def parse_frontmatter(text):
@@ -128,6 +134,59 @@ def build_section_data(raw_sections):
     return sections
 
 
+def process_images():
+    """Copy content images into the build, downscaling rasters for web delivery."""
+    src_images = CONTENT_DIR / "images"
+    dst_images = BUILD_DIR / "images"
+    if not src_images.exists():
+        return
+
+    if dst_images.exists():
+        shutil.rmtree(dst_images)
+    dst_images.mkdir(parents=True)
+
+    before_total = 0
+    after_total = 0
+    for src in sorted(src_images.iterdir()):
+        if not src.is_file() or src.name == ".DS_Store":
+            continue
+        suffix = src.suffix.lower()
+        # HEIC originals aren't web-servable; JPG conversions are referenced instead.
+        if suffix == ".heic":
+            continue
+
+        dst = dst_images / src.name
+        if suffix not in RASTER_SUFFIXES:
+            shutil.copy2(src, dst)
+            continue
+
+        original_size = src.stat().st_size
+        with Image.open(src) as img:
+            # Honour EXIF rotation, otherwise phone shots come out sideways.
+            img = ImageOps.exif_transpose(img)
+            img.thumbnail((MAX_IMAGE_DIM, MAX_IMAGE_DIM), Image.LANCZOS)
+            if suffix == ".png":
+                img.save(dst, "PNG", optimize=True)
+            elif suffix == ".webp":
+                img.save(dst, "WEBP", quality=JPEG_QUALITY, method=6)
+            else:
+                img.convert("RGB").save(
+                    dst, "JPEG", quality=JPEG_QUALITY, optimize=True, progressive=True
+                )
+
+        # Small hand-tuned images can grow when re-encoded; keep whichever is smaller.
+        if dst.stat().st_size >= original_size:
+            shutil.copy2(src, dst)
+        before_total += original_size
+        after_total += dst.stat().st_size
+
+    mib = 1024 * 1024
+    print(
+        f"  images: {before_total / mib:.1f} MiB -> {after_total / mib:.1f} MiB "
+        f"(max {MAX_IMAGE_DIM}px, quality {JPEG_QUALITY})"
+    )
+
+
 def generate():
     """Main generation pipeline."""
     # Read content
@@ -159,18 +218,7 @@ def generate():
         (BUILD_DIR / output_name).write_text(html, encoding="utf-8")
         print(f"  {template_name} -> {output_name}")
 
-    # Copy images
-    src_images = CONTENT_DIR / "images"
-    dst_images = BUILD_DIR / "images"
-    if src_images.exists():
-        if dst_images.exists():
-            shutil.rmtree(dst_images)
-        # HEIC originals aren't web-servable; JPG conversions are referenced instead.
-        shutil.copytree(
-            src_images,
-            dst_images,
-            ignore=shutil.ignore_patterns("*.heic", "*.HEIC", ".DS_Store"),
-        )
+    process_images()
 
     print(f"Site generated in {BUILD_DIR}/")
 
